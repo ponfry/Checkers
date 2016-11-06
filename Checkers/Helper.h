@@ -3,8 +3,18 @@
 
 struct WindowSize 
 {
-	int Weigth = 1000;
-	int Heigth = 500;
+	int Weigth;
+	int Heigth;
+	WindowSize()
+	{
+		Weigth = 1300;
+		Heigth = 650;
+	}
+	void Set(int weigth, int heigth)
+	{
+		Weigth = weigth;
+		Heigth = heigth;
+	}
 };
 
 struct Characteristic
@@ -26,3 +36,4 @@ struct DrawTexture
 		characteristic = characteristi;
 	}
 };
+

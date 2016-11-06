@@ -5,7 +5,7 @@
 class ChessBoard
 {
 public:
-	void Draw();
+	void Draw(WindowSize);
 	ChessBoard();
 private:
 	DrawTexture* draw;

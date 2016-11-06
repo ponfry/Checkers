@@ -3,10 +3,14 @@
 #include "glew.h"
 #include "Texture.h"
 
-void ChessBoard::Draw() 
+void ChessBoard::Draw(WindowSize window_size) 
 {
+	int board = window_size.Weigth / 2.26;
+	int indentX = board*0.2;
+	int indentY = (window_size.Heigth - board )/ 2;
+	
 	draw = Texture::Init(L"texture/metall.jpg");
-	glViewport(350, 100, 300, 300);
+	glViewport(indentX, indentY, board, board);
 	glColor3f(1, 1, 1);
 	glBegin(GL_TRIANGLE_STRIP);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
@@ -14,6 +18,7 @@ void ChessBoard::Draw()
 	glVertex3f(1.0f, -1.0f, 1.0f);
 	glVertex3f(1.0f, 1.0f, 1.0f);
 	glEnd();
+
 	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
@@ -60,7 +65,6 @@ void ChessBoard::Draw()
 	glDisable(GL_TEXTURE_2D);
 }
 
-ChessBoard::ChessBoard()
-{	
-	
+ChessBoard::ChessBoard(): draw(nullptr)
+{
 }

@@ -1,12 +1,12 @@
 ﻿#pragma once
-#include "il.h"
 #include "Helper.h"
+
 
 class ChessBoard
 {
 public:
-	void Draw() const;
+	void Draw();
 	ChessBoard();
 private:
-	::Draw* draw;
+	DrawTexture* draw;
 };

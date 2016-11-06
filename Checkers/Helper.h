@@ -1,13 +1,13 @@
 #pragma once
+#include "il.h"
 
-class WindowSize 
+struct WindowSize 
 {
-public: 
-	static const int Weigth = 1000;
-	static const int Heigth = 500;
+	int Weigth = 1000;
+	int Heigth = 500;
 };
 
-struct Characteristc
+struct Characteristic
 {
 	ILubyte* texture;
 	ILuint width;
@@ -15,9 +15,14 @@ struct Characteristc
 	ILuint type;
 	ILuint format;
 };
-class Draw
+struct DrawTexture
 {
-public:
 	unsigned int* textures;
-	Characteristc* characteristic;
+	Characteristic* characteristic;
+	DrawTexture(unsigned int* texture,
+	Characteristic* characteristi)
+	{
+		textures = texture;
+		characteristic = characteristi;
+	}
 };

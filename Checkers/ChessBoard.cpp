@@ -1,9 +1,11 @@
-﻿#include "ChessBoard.h"
+﻿#pragma once
+#include "ChessBoard.h"
 #include "glew.h"
 #include "Texture.h"
 
-void ChessBoard::Draw() const
+void ChessBoard::Draw() 
 {
+	draw = Texture::Init(L"texture/metall.jpg");
 	glViewport(350, 100, 300, 300);
 	glColor3f(1, 1, 1);
 	glBegin(GL_TRIANGLE_STRIP);
@@ -59,7 +61,6 @@ void ChessBoard::Draw() const
 }
 
 ChessBoard::ChessBoard()
-{
+{	
 	
-	draw = Texture::Init(L"texture/metall.jpg");
 }

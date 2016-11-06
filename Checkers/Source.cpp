@@ -1,18 +1,17 @@
+#pragma once
 #include <iostream>
 #include "glew.h"
 #include "glut.h"
 #include "ChessBoard.h"
 #include "Helper.h"
-
-
 using namespace std;
-
+WindowSize windowSize;
+ChessBoard chess_board;
 
 void display()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glViewport(0, 0, WindowSize::Weigth, WindowSize::Heigth);	
-	ChessBoard chess_board;
+	glViewport(0, 0, windowSize.Weigth, windowSize.Heigth);		
 
 	glColor3f(0.9, 0.9, 0.9);
 	glBegin(GL_TRIANGLE_STRIP);
@@ -21,6 +20,7 @@ void display()
 	glVertex3f(1.0f, -1.0f, 1.0f);
 	glVertex3f(1.0f, 1.0f, 1.0f);
 	glEnd();
+	
 	chess_board.Draw();
 	
 
@@ -42,14 +42,14 @@ void main(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	glutInitWindowPosition(100, 100);
 
-	glutInitWindowSize(WindowSize::Weigth, WindowSize::Heigth);
+	glutInitWindowSize(windowSize.Weigth, windowSize.Heigth);
 
 	glutCreateWindow("Test Window");
 	ilInit();
 
-	glutMotionFunc(mouse);
-	glutPassiveMotionFunc(mouse);
-	glutEntryFunc(enter);
+	//glutMotionFunc(mouse);
+	//glutPassiveMotionFunc(mouse);
+	//glutEntryFunc(enter);
 	glutDisplayFunc(display);
 	glewInit();
 	glutMainLoop();

@@ -3,29 +3,26 @@
 #include "glew.h"
 #include "Helper.h"
 #include <iostream>
-#include <stdio.h>
 
 class Texture
 {
 public:
-	static Draw* Init(const wchar_t* filename)
+	static DrawTexture* Init(const wchar_t* filename)
 	{
-		ILuint *images = new ILuint;
-		Draw* draw = new Draw;
+		ILuint *images = new ILuint;		
 		unsigned int* textures = new unsigned int[2];
-		ilGenImages(1, images);
+		Characteristic* characteristic = new Characteristic;
 
-		draw->characteristic = Load(filename, *images);
-		
+		ilGenImages(1, images);
+		characteristic = Load(filename, *images);		
 		glGenTextures(1, textures);
 		
-		draw->textures = textures;
-		return draw;
+		return new DrawTexture(textures, characteristic);
 	}
 private:	
-	static Characteristc* Load(const wchar_t* filename, ILuint image)
+	static Characteristic* Load(const wchar_t* filename, ILuint image)
 	{
-		Characteristc* result = new Characteristc;
+		Characteristic* result = new Characteristic;
 		ilBindImage(image);
 		ilLoadImage(filename);
 		

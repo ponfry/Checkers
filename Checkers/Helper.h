@@ -1,7 +1,6 @@
 #pragma once
-#include "il.h"
 
-static class WindowSize 
+class WindowSize 
 {
 public: 
 	static const int Weigth = 1000;
@@ -16,6 +15,9 @@ struct Characteristc
 	ILuint type;
 	ILuint format;
 };
-
-ILuint *images = new ILuint[2];
-Characteristc characteristics1, characteristics2, result;
+class Draw
+{
+public:
+	unsigned int* textures;
+	Characteristc* characteristic;
+};

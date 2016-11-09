@@ -25,6 +25,7 @@ struct Characteristic
 	ILuint type;
 	ILuint format;
 };
+
 struct DrawTexture
 {
 	unsigned int* textures;
@@ -37,3 +38,22 @@ struct DrawTexture
 	}
 };
 
+struct Coordinate
+{
+	int X, Y;
+	void Set(int x, int y)
+	{
+		X = x;
+		Y = y;
+	}
+};
+
+struct CoordinateF
+{
+	float X, Y;
+	void Set(float x, float y)
+	{
+		X = x;
+		Y = y;
+	}
+};

@@ -7,7 +7,7 @@ void ChessBoard::Draw(WindowSize window_size)
 {
 	int board = window_size.Weigth / 2.26;
 	int indentX = board*0.2;
-	int indentY = (window_size.Heigth - board )/ 2;
+	int indentY = (window_size.Heigth - board )/ 2.0;
 	
 	draw = Texture::Init(L"texture/metall.jpg");
 	glViewport(indentX, indentY, board, board);

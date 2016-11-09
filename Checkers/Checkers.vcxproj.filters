@@ -24,6 +24,12 @@
     <ClCompile Include="ChessBoard.cpp">
       <Filter>Header Files\game</Filter>
     </ClCompile>
+    <ClCompile Include="checker.cpp">
+      <Filter>Header Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseXY.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Helper.h">
@@ -34,6 +40,12 @@
     </ClInclude>
     <ClInclude Include="ChessBoard.h">
       <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="checker.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseXY.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

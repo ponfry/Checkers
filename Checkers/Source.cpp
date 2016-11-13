@@ -17,7 +17,19 @@ Coordinate coordinate;
 CoordinateF coordf;
 MouseXY mouse_xy;
 float X, Y;
-
+void Textout(char* str, float x, float y, float phi)
+{
+	int i=2;
+	glRasterPos2f(x, y);
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[0]);
+	
+	while(str[i-1] != '\0')
+	{
+		glRasterPos2f(x + i*phi, y);
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i-1]);
+		i++;		
+	}
+}
 void display()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -41,6 +53,11 @@ void display()
 	glVertex2f(-1.0f, Y);
 	glVertex2f(X, Y);
 	glEnd();
+	X = (-2) * (windowSize.Weigth / 2.0 - 50) / windowSize.Weigth;
+	Y = 2 * (windowSize.Heigth / 2.0 - 25) / windowSize.Heigth;
+	glColor3f(0, 0, 1);
+	Textout("Menu", X, Y, 0.02);
+	
 
 	chess_board.Draw(&windowSize);
 	mouse_xy.Init(&windowSize);

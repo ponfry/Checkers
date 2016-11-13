@@ -17,6 +17,7 @@ struct WindowSize
 		IndentX = 230;
 		IndentY = 37;
 		Board = 575; 
+
 	}
 
 	void Set(int weigth, int heigth)

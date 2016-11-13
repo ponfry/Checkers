@@ -3,12 +3,9 @@
 #include "glew.h"
 #include "Texture.h"
 
-void Checker::Draw(Coordinate coordinate)
+
+void Checker::Draw(float x, float y)
 {
-	CoordinateF coordf = mouse_xy.ConvertIntTOFloat(coordinate.X, coordinate.Y);
-	float x = coordf.X, y = coordf.Y;
-	std::cout << x << "===" << y << std::endl;
-	draw = Texture::Init(L"texture/checkerwhite.png");
 	glActiveTexture(GL_TEXTURE0);
 
 	glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
@@ -40,8 +37,19 @@ void Checker::Draw(Coordinate coordinate)
 	glDisable(GL_BLEND);
 }
 
-Checker::Checker(WindowSize* window_size)
+Checker::Checker(WindowSize* window_size, int color)
 {
-	draw = nullptr;
+	switch (color)
+	{
+	case 1:
+		draw = Texture::Init(L"texture/checkerblack2.png");
+		break;
+	case 2:
+		draw = Texture::Init(L"texture/checkerwhite.png");
+		break;
+	default:
+		draw = nullptr;
+		break;
+	}	
 	mouse_xy.Init(window_size);
 }

@@ -3,22 +3,21 @@
 #include "glew.h"
 #include "Texture.h"
 
-void ChessBoard::Draw(WindowSize window_size) 
+void ChessBoard::Draw(WindowSize* window_size) 
 {
-	int board = window_size.Weigth / 2.26;
-	int indentX = board*0.2;
-	int indentY = (window_size.Heigth - board )/ 2.0;
-	
-	draw = Texture::Init(L"texture/metall.jpg");
-	glViewport(indentX, indentY, board, board);
+	glViewport(window_size->IndentX, window_size->IndentY,
+		window_size->Board, window_size->Board);
+
 	glColor3f(1, 1, 1);
+
 	glBegin(GL_TRIANGLE_STRIP);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
+	glVertex2f(-1.0f, -1.0f);
+	glVertex2f(-1.0f, 1.0f);
+	glVertex2f(1.0f, -1.0f);
+	glVertex2f(1.0f, 1.0f);
 	glEnd();
 
+	draw = Texture::Init(L"texture/metall2.jpg");
 	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
@@ -26,8 +25,12 @@ void ChessBoard::Draw(WindowSize window_size)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, 4, draw->characteristic->width, draw->characteristic->height,
-		0, draw->characteristic->format,draw-> characteristic->type, draw->characteristic->texture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, draw->characteristic->width,
+		draw->characteristic->height,
+		0, draw->characteristic->format,
+		draw-> characteristic->type,
+		draw->characteristic->texture);
 
 	int count = 0;
 	float x = -0.75, y = -1.0;

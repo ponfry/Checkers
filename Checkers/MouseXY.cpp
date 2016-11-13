@@ -1,5 +1,4 @@
 ﻿#include "MouseXY.h"
-#include <iostream>
 
 CoordinateF MouseXY::ConvertIntTOFloat(int x, int y)
 {
@@ -7,14 +6,13 @@ CoordinateF MouseXY::ConvertIntTOFloat(int x, int y)
 	int indentX = board*0.2;
 	int indentY = (_window_size->Heigth - board) / 2.0;
 	float board2 = board / 2.0f;
-	CoordinateF res;
 	if(InSquare(x,y))
 	{
 		int X = x - indentX;
 		int Y = y - indentY;
 
 		
-		if(X>=board/2.0)
+		if(X >= board2)
 		{
 			res.X = (X - board2) / board2;			
 		}
@@ -23,7 +21,7 @@ CoordinateF MouseXY::ConvertIntTOFloat(int x, int y)
 			res.X = (-1) * (board2 -X)  / board2;
 		}
 
-		if(Y>=board/2.0)
+		if(Y >= board2)
 		{
 			res.Y = (-1)*(Y - board2) / board2;
 		}
@@ -36,7 +34,9 @@ CoordinateF MouseXY::ConvertIntTOFloat(int x, int y)
 	}
 	else
 	{
+		
 
+		return res;
 	}
 }
 

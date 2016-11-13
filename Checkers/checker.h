@@ -5,8 +5,8 @@
 class Checker
 {
 public:
-	void Draw(Coordinate);
-	Checker(WindowSize*);
+	void Draw(float, float);
+	Checker(WindowSize*, int color);
 private:
 	DrawTexture* draw;
 	MouseXY mouse_xy;

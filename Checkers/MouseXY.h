@@ -11,4 +11,5 @@ public:
 private:
 	bool InSquare(int x, int y);
 	WindowSize* _window_size;
+	CoordinateF res;
 };

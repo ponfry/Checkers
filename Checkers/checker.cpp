@@ -1,11 +1,10 @@
-﻿#pragma once
-#include "checker.h"
+﻿#include "checker.h"
 #include "glew.h"
 #include "Texture.h"
 
-
-void Checker::Draw(float x, float y)
+void Checker::Draw(int color)
 {
+	Init(color);
 	glActiveTexture(GL_TEXTURE0);
 
 	glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
@@ -22,27 +21,27 @@ void Checker::Draw(float x, float y)
 	glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
 	glBegin(GL_TRIANGLE_STRIP);
 	glTexCoord2f(0, 1);
-	glVertex2f(x - 0.125f, y - 0.125f);
+	glVertex2f(coordinate_f.X - 0.125f, coordinate_f.Y - 0.125f);
 
 	glTexCoord2f(0, 0);
-	glVertex2f(x - 0.125f, y + 0.125f);
+	glVertex2f(coordinate_f.X - 0.125f, coordinate_f.Y + 0.125f);
 
 	glTexCoord2f(1, 1);
-	glVertex2f(x + 0.125f, y - 0.125f);
+	glVertex2f(coordinate_f.X + 0.125f, coordinate_f.Y - 0.125f);
 
 	glTexCoord2f(1, 0);
-	glVertex2f(x + 0.125f, y + 0.125f);
+	glVertex2f(coordinate_f.X + 0.125f, coordinate_f.Y + 0.125f);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
 }
 
-Checker::Checker(WindowSize* window_size, int color)
+void Checker::Init(int color)
 {
 	switch (color)
 	{
 	case 1:
-		draw = Texture::Init(L"texture/checkerblack2.png");
+		draw = Texture::Init(L"texture/checkerblack.png");
 		break;
 	case 2:
 		draw = Texture::Init(L"texture/checkerwhite.png");
@@ -50,6 +49,7 @@ Checker::Checker(WindowSize* window_size, int color)
 	default:
 		draw = nullptr;
 		break;
-	}	
-	mouse_xy.Init(window_size);
+	}
+
 }
+

@@ -1,23 +1,20 @@
-#pragma once
 #include <iostream>
 #include "glew.h"
 #include "glut.h"
-#include "ChessBoard.h"
-#include "Helper.h"
-#include "Texture.h"
+#include "WindowSize.h"
 #include "checker.h"
-
+#include "ChessBoard.h"
+#include "CoordinateInt.h"
+#include "CoordinatesFloat.h"
 using namespace std;
 
-WindowSize windowSize, chessWindowSize;
 ChessBoard chess_board;
 Checker* checkerWhite;
 Checker* checkerBlack;
-Coordinate coordinate;
-CoordinateF coordf;
-MouseXY mouse_xy;
+
 float X, Y;
-void Textout(char* str, float x, float y, float phi)
+
+void Textout(char* str, float x, float y, float phi = 0.02)
 {
 	int i=2;
 	glRasterPos2f(x, y);
@@ -25,15 +22,16 @@ void Textout(char* str, float x, float y, float phi)
 	
 	while(str[i-1] != '\0')
 	{
-		glRasterPos2f(x + i*phi, y);
+		glRasterPos2f(x + i * phi, y);
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[i-1]);
 		i++;		
 	}
 }
+
 void display()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glViewport(0, 0, windowSize.Weigth, windowSize.Heigth);		
+	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
 
 	glColor3f(0.9, 0.9, 0.9);
 	glBegin(GL_TRIANGLE_STRIP);
@@ -43,8 +41,8 @@ void display()
 	glVertex3f(1.0f, 1.0f, 1.0f);
 	glEnd();
 	
-	X = (-2) * (windowSize.Weigth / 2.0 - 163) / windowSize.Weigth;
-	Y = 2 * (windowSize.Heigth / 2.0 - 33) / windowSize.Heigth;
+	X = (-2) * (window_size.Weigth / 2.0 - 163) / window_size.Weigth;
+	Y = 2 * (window_size.Heigth / 2.0 - 33) / window_size.Heigth;
 
 	glColor3f(1.0f, 0, 0);
 	glBegin(GL_TRIANGLE_STRIP);
@@ -53,75 +51,19 @@ void display()
 	glVertex2f(-1.0f, Y);
 	glVertex2f(X, Y);
 	glEnd();
-	X = (-2) * (windowSize.Weigth / 2.0 - 50) / windowSize.Weigth;
-	Y = 2 * (windowSize.Heigth / 2.0 - 25) / windowSize.Heigth;
+	X = (-2) * (window_size.Weigth / 2.0 - 50) / window_size.Weigth;
+	Y = 2 * (window_size.Heigth / 2.0 - 25) / window_size.Heigth;
 	glColor3f(0, 0, 1);
-	Textout("Menu", X, Y, 0.02);
+	Textout("Menu", X, Y);
+
+	chess_board.Draw();
 	
-
-	chess_board.Draw(&windowSize);
-	mouse_xy.Init(&windowSize);
-
-	coordf = mouse_xy.ConvertIntTOFloat(coordinate.X, coordinate.Y);
-
-	int count = 0;
-	float x = -0.625f, y = -0.875f;
-	
-	
-	while (y <= -0.375f)
-	{
-		while (x < 1.0f)
-		{
-			checkerBlack->Draw(x, y);
-			x += 0.5f;
-		}
-		count++;
-		if (count % 2 == 0)
-		{
-			x = -0.625f;
-		}
-		else
-		{
-			x = -0.875f;
-		}
-		y += 0.25f;
-		if (count == 3)
-		{
-			count = 1;
-			break;
-		}
-	}
-
-	y = 0.375f;
-	while (y <= 1.0f)
-	{
-		while (x < 1.0f)
-		{
-			checkerWhite->Draw(x, y);
-			x += 0.5f;
-		}
-		count++;
-		if (count % 2 == 0)
-		{
-			x = -0.625f;
-		}
-		else
-		{
-			x = -0.875f;
-		}
-		y += 0.25f;
-		if (count == 4)
-		{
-			break;
-		}
-	}
-		
 	glutSwapBuffers();
 }
 
 void mouse(int x, int y)
 {
-	coordinate.Set(x, y);	
+	coordinateMouse.Set(x, y);	
 	glutPostRedisplay();
 }
 
@@ -136,17 +78,17 @@ void ChangeWH(int w, int h)
 	{
 		if (((h - w / 2.26 - 33) / 2.0) > 1)
 		{
-			windowSize.Set(w, h);
+			window_size.Set(w, h);
 		}
 		else
 		{
-			glutReshapeWindow(windowSize.Weigth, windowSize.Heigth);
+			glutReshapeWindow(window_size.Weigth, window_size.Heigth);
 		}
 	}
 	else
 	{
-		windowSize.Set(501, 301);
-		glutReshapeWindow(windowSize.Weigth, windowSize.Heigth);
+		window_size.Set(501, 301);
+		glutReshapeWindow(window_size.Weigth, window_size.Heigth);
 	}
 	char title[20];
 	sprintf_s(title, "%d x %d", w, h);
@@ -157,12 +99,12 @@ void main(int argc, char* argv[])
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(windowSize.Weigth, windowSize.Heigth);	
+	glutInitWindowSize(window_size.Weigth, window_size.Heigth);
 	glutCreateWindow("Checkers");
 
 	ilInit();
-	checkerWhite = new Checker(&windowSize, 2);
-	checkerBlack = new Checker(&windowSize, 1);
+	checkerWhite = new Checker();
+	checkerBlack = new Checker();
 	glutMotionFunc(mouse);
 	//glutPassiveMotionFunc(mouse);
 	glutEntryFunc(enter);

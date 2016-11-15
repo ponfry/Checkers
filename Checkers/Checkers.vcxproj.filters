@@ -16,25 +16,34 @@
     <Filter Include="Header Files\game">
       <UniqueIdentifier>{75b3d932-1482-42af-bae7-2284a3a7363a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\types">
+      <UniqueIdentifier>{b57332d3-284b-4e3b-84dd-521169419a54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\game">
+      <UniqueIdentifier>{f51bd3d4-0e29-4849-bba6-0aa19b1fb18c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="ChessBoard.cpp">
-      <Filter>Header Files\game</Filter>
+    <ClCompile Include="CoordinateMouse.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="checker.cpp">
-      <Filter>Header Files\game</Filter>
+      <Filter>Resource Files\game</Filter>
     </ClCompile>
-    <ClCompile Include="MouseXY.cpp">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="ChessBoard.cpp">
+      <Filter>Resource Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Resource Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Helper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -44,8 +53,29 @@
     <ClInclude Include="checker.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
-    <ClInclude Include="MouseXY.h">
+    <ClInclude Include="player.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateMouse.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowSize.h">
+      <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="Characterictics.h">
+      <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawTexture.h">
+      <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateInt.h">
+      <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinatesFloat.h">
+      <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="StateChecker.h">
+      <Filter>Header Files\types</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

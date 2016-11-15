@@ -149,15 +149,23 @@
   <ItemGroup>
     <ClCompile Include="checker.cpp" />
     <ClCompile Include="ChessBoard.cpp" />
-    <ClCompile Include="MouseXY.cpp" />
+    <ClCompile Include="CoordinateMouse.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Characterictics.h" />
     <ClInclude Include="checker.h" />
     <ClInclude Include="ChessBoard.h" />
-    <ClInclude Include="Helper.h" />
-    <ClInclude Include="MouseXY.h" />
+    <ClInclude Include="CoordinateInt.h" />
+    <ClInclude Include="CoordinatesFloat.h" />
+    <ClInclude Include="DrawTexture.h" />
+    <ClInclude Include="CoordinateMouse.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="StateChecker.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="WindowSize.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

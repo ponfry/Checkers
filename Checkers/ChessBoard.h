@@ -1,11 +1,10 @@
 ﻿#pragma once
-#include "Helper.h"
-
+#include "DrawTexture.h"
 
 class ChessBoard
 {
 public:
-	void Draw(WindowSize*);
+	void Draw();
 	ChessBoard();
 private:
 	DrawTexture* draw;

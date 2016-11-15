@@ -1,13 +1,14 @@
-﻿#pragma once
+﻿#include "glew.h"
 #include "ChessBoard.h"
-#include "glew.h"
+#include  "WindowSize.h"
 #include "Texture.h"
+#include <iostream>
 
-void ChessBoard::Draw(WindowSize* window_size) 
+void ChessBoard::Draw() 
 {
-	glViewport(window_size->IndentX, window_size->IndentY,
-		window_size->Board, window_size->Board);
-
+	glViewport(window_size.IndentX, window_size.IndentY,
+		window_size.Board, window_size.Board);
+	std::cout << "chessboard" << window_size.IndentX << "=" << window_size.IndentY << "=" << window_size.Board << "=" << window_size.Board << std::endl;
 	glColor3f(1, 1, 1);
 
 	glBegin(GL_TRIANGLE_STRIP);
@@ -17,7 +18,7 @@ void ChessBoard::Draw(WindowSize* window_size)
 	glVertex2f(1.0f, 1.0f);
 	glEnd();
 
-	draw = Texture::Init(L"texture/metall2.jpg");
+	draw = Texture::Init(L"texture/metall.jpg");
 	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, draw->textures[0]);

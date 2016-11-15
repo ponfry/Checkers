@@ -1,13 +1,15 @@
 ﻿#pragma once
-#include "Helper.h"
-#include "MouseXY.h"
+#include "CoordinateMouse.h"
+#include "DrawTexture.h"
+#include "CoordinatesFloat.h"
 
 class Checker
 {
 public:
-	void Draw(float, float);
-	Checker(WindowSize*, int color);
+	void Draw(int);
 private:
+	void Init( int);
+	CoordinateFloat coordinate_f;
 	DrawTexture* draw;
-	MouseXY mouse_xy;
+	MyMouse mouse;
 };

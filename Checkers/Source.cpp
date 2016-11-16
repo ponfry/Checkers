@@ -2,15 +2,14 @@
 #include "glew.h"
 #include "glut.h"
 #include "WindowSize.h"
-#include "checker.h"
+#include "Checker.h"
+#include "CheckerWhite.h"
 #include "ChessBoard.h"
 #include "CoordinateInt.h"
-#include "CoordinatesFloat.h"
+#include "CoordinateFloat.h"
 using namespace std;
 
 ChessBoard chess_board;
-Checker* checkerWhite;
-Checker* checkerBlack;
 
 float X, Y;
 
@@ -57,7 +56,7 @@ void display()
 	Textout("Menu", X, Y);
 
 	chess_board.Draw();
-	
+
 	glutSwapBuffers();
 }
 
@@ -103,8 +102,6 @@ void main(int argc, char* argv[])
 	glutCreateWindow("Checkers");
 
 	ilInit();
-	checkerWhite = new Checker();
-	checkerBlack = new Checker();
 	glutMotionFunc(mouse);
 	//glutPassiveMotionFunc(mouse);
 	glutEntryFunc(enter);

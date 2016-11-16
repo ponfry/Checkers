@@ -4,6 +4,8 @@
 
 CoordinateFloat MyMouse::ConvertIntTOFloatForBoard(int x, int y)
 {
+	CoordinateFloat res;
+	res.Set(0, 0);
 	if(InBoard(x,y))
 	{
 		int X = x - window_size.IndentX;
@@ -36,10 +38,6 @@ CoordinateFloat MyMouse::ConvertIntTOFloatForBoard(int x, int y)
 
 		return res;
 	}
-}
-
-MyMouse::MyMouse()
-{
 }
 
 bool MyMouse::InBoard(int x, int y)

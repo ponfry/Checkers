@@ -2,7 +2,7 @@
 
 Player::Player()
 {
-	checker = new Checker[12];
+	//checker = new Checker[12];
 }
 void Player::Draw()
 {

@@ -42,6 +42,9 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="CheckerWhite.cpp">
+      <Filter>Resource Files\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -71,10 +74,13 @@
     <ClInclude Include="CoordinateInt.h">
       <Filter>Header Files\types</Filter>
     </ClInclude>
-    <ClInclude Include="CoordinatesFloat.h">
+    <ClInclude Include="StateChecker.h">
       <Filter>Header Files\types</Filter>
     </ClInclude>
-    <ClInclude Include="StateChecker.h">
+    <ClInclude Include="CheckerWhite.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateFloat.h">
       <Filter>Header Files\types</Filter>
     </ClInclude>
   </ItemGroup>

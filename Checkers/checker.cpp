@@ -1,11 +1,16 @@
 ﻿#include "checker.h"
 #include "glew.h"
 #include "Texture.h"
+#include "CoordinateMouse.h"
 
-void Checker::Draw(int color)
+Checker::Checker(int color)
 {
 	Init(color);
-	glActiveTexture(GL_TEXTURE0);
+}
+
+void Checker::Draw()
+{
+	//glActiveTexture(GL_TEXTURE0);
 
 	glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -53,3 +58,12 @@ void Checker::Init(int color)
 
 }
 
+void Checker::SetCoordinate(CoordinateInt coord)
+{
+	SetCoordinate(coord.X, coord.Y);
+}
+
+void Checker::SetCoordinate(int x, int y)
+{
+	coordinate_f = MyMouse::ConvertIntTOFloatForBoard(x, y);
+}

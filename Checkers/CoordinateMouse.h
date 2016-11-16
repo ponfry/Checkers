@@ -1,12 +1,9 @@
 ﻿#pragma once
-#include "CoordinatesFloat.h"
+#include "CoordinateFloat.h"
 
 class MyMouse
 {
 public:	
-	MyMouse();
-	CoordinateFloat ConvertIntTOFloatForBoard(int x, int y);
-	bool InBoard(int x, int y);
-private:	
-	CoordinateFloat res;
+	static CoordinateFloat ConvertIntTOFloatForBoard(int x, int y);
+	static bool InBoard(int x, int y);
 };

@@ -9,3 +9,5 @@ struct CoordinateFloat
 		Y = y;
 	}
 };
+
+__declspec(selectany) CoordinateFloat result;

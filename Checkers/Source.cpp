@@ -1,21 +1,21 @@
 #include <iostream>
 #include "glew.h"
 #include "glut.h"
+#include <windows.h>
 #include "WindowSize.h"
 #include "Checker.h"
-#include "CheckerWhite.h"
 #include "ChessBoard.h"
 #include "CoordinateInt.h"
 #include "CoordinateFloat.h"
 using namespace std;
 
-ChessBoard chess_board;
-
+ChessBoard* chess_board;
+Checker* checker;
 float X, Y;
-
+int i;
 void Textout(char* str, float x, float y, float phi = 0.02)
 {
-	int i=2;
+	i=2;
 	glRasterPos2f(x, y);
 	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, str[0]);
 	
@@ -27,7 +27,7 @@ void Textout(char* str, float x, float y, float phi = 0.02)
 	}
 }
 
-void display()
+void init()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
@@ -55,15 +55,55 @@ void display()
 	glColor3f(0, 0, 1);
 	Textout("Menu", X, Y);
 
-	chess_board.Draw();
+	chess_board->Draw();
+	checker->Draw();
 
 	glutSwapBuffers();
-}
+	
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
 
+	glColor3f(0.9, 0.9, 0.9);
+	glBegin(GL_TRIANGLE_STRIP);
+	glVertex3f(-1.0f, -1.0f, 1.0f);
+	glVertex3f(-1.0f, 1.0f, 1.0f);
+	glVertex3f(1.0f, -1.0f, 1.0f);
+	glVertex3f(1.0f, 1.0f, 1.0f);
+	glEnd();
+
+	X = (-2) * (window_size.Weigth / 2.0 - 163) / window_size.Weigth;
+	Y = 2 * (window_size.Heigth / 2.0 - 33) / window_size.Heigth;
+
+	glColor3f(1.0f, 0, 0);
+	glBegin(GL_TRIANGLE_STRIP);
+	glVertex2f(-1.0f, 1.0f);
+	glVertex2f(X, 1.0f);
+	glVertex2f(-1.0f, Y);
+	glVertex2f(X, Y);
+	glEnd();
+	X = (-2) * (window_size.Weigth / 2.0 - 50) / window_size.Weigth;
+	Y = 2 * (window_size.Heigth / 2.0 - 25) / window_size.Heigth;
+	glColor3f(0, 0, 1);
+	Textout("Menu", X, Y);
+	chess_board->Draw();
+	checker->Draw();
+	glutSwapBuffers();
+	
+}
+void display()
+{
+	chess_board->Draw();
+	checker->Draw();
+	//Sleep(20);
+	glutSwapBuffers();
+}
 void mouse(int x, int y)
 {
 	coordinateMouse.Set(x, y);	
-	glutPostRedisplay();
+	
+	checker->SetCoordinate(coordinateMouse);
+	
+	display();
 }
 
 void enter(int state)
@@ -102,10 +142,12 @@ void main(int argc, char* argv[])
 	glutCreateWindow("Checkers");
 
 	ilInit();
+	checker = new Checker(2);
+	chess_board = new ChessBoard();
 	glutMotionFunc(mouse);
 	//glutPassiveMotionFunc(mouse);
 	glutEntryFunc(enter);
-	glutDisplayFunc(display);
+	glutDisplayFunc(init);
 	glutReshapeFunc(ChangeWH);
 	glewInit();
 	glutMainLoop();

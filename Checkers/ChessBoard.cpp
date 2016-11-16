@@ -2,13 +2,11 @@
 #include "ChessBoard.h"
 #include  "WindowSize.h"
 #include "Texture.h"
-#include <iostream>
 
 void ChessBoard::Draw() 
 {
 	glViewport(window_size.IndentX, window_size.IndentY,
 		window_size.Board, window_size.Board);
-	std::cout << "chessboard" << window_size.IndentX << "=" << window_size.IndentY << "=" << window_size.Board << "=" << window_size.Board << std::endl;
 	glColor3f(1, 1, 1);
 
 	glBegin(GL_TRIANGLE_STRIP);
@@ -18,7 +16,6 @@ void ChessBoard::Draw()
 	glVertex2f(1.0f, 1.0f);
 	glEnd();
 
-	draw = Texture::Init(L"texture/metall.jpg");
 	//glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
@@ -69,6 +66,11 @@ void ChessBoard::Draw()
 	glDisable(GL_TEXTURE_2D);
 }
 
-ChessBoard::ChessBoard(): draw(nullptr)
+void ChessBoard::Init()
 {
+	draw = Texture::Init(L"texture/metall.jpg");
+}
+ChessBoard::ChessBoard()
+{
+	Init();
 }

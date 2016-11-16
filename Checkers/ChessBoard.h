@@ -6,6 +6,7 @@ class ChessBoard
 public:
 	void Draw();
 	ChessBoard();
+	void Init();
 private:
 	DrawTexture* draw;
 };

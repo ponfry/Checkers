@@ -2,7 +2,8 @@
 #include "glew.h"
 #include "Texture.h"
 #include "CoordinateMouse.h"
-
+#include <iostream>
+using namespace std;
 Checker::Checker(int color)
 {
 	Init(color);
@@ -26,19 +27,21 @@ void Checker::Draw()
 	glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
 	glBegin(GL_TRIANGLE_STRIP);
 	glTexCoord2f(0, 1);
-	glVertex2f(coordinate_f.X - 0.125f, coordinate_f.Y - 0.125f);
+	glVertex2f(coordinateDraw->X - 0.125f, coordinateDraw->Y );
 
 	glTexCoord2f(0, 0);
-	glVertex2f(coordinate_f.X - 0.125f, coordinate_f.Y + 0.125f);
+	glVertex2f(coordinateDraw->X - 0.125f, coordinateDraw->Y + 0.25f);
 
 	glTexCoord2f(1, 1);
-	glVertex2f(coordinate_f.X + 0.125f, coordinate_f.Y - 0.125f);
+	glVertex2f(coordinateDraw->X + 0.125f, coordinateDraw->Y);
 
 	glTexCoord2f(1, 0);
-	glVertex2f(coordinate_f.X + 0.125f, coordinate_f.Y + 0.125f);
+	glVertex2f(coordinateDraw->X + 0.125f, coordinateDraw->Y + 0.25f);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
+
+	
 }
 
 void Checker::Init(int color)
@@ -55,6 +58,7 @@ void Checker::Init(int color)
 		draw = nullptr;
 		break;
 	}
+	coordinateDraw = &result;
 
 }
 
@@ -65,5 +69,6 @@ void Checker::SetCoordinate(CoordinateInt coord)
 
 void Checker::SetCoordinate(int x, int y)
 {
-	coordinate_f = MyMouse::ConvertIntTOFloatForBoard(x, y);
+	coordinateDraw = MyMouse::ConvertIntTOFloatForBoard(x, y);
+	cout << "checker" << coordinateDraw->X << "=" << coordinateDraw->Y << "=" << x << "=" << y << endl;
 }

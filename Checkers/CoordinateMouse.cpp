@@ -1,11 +1,11 @@
 ﻿#include "CoordinateMouse.h"
 #include "WindowSize.h"
 #include <iostream>
-
-CoordinateFloat MyMouse::ConvertIntTOFloatForBoard(int x, int y)
+using namespace std;
+CoordinateFloat* MyMouse::ConvertIntTOFloatForBoard(int x, int y)
 {
-	CoordinateFloat res;
-	res.Set(0, 0);
+
+	result.Set(0, 0);
 	if(InBoard(x,y))
 	{
 		int X = x - window_size.IndentX;
@@ -14,29 +14,28 @@ CoordinateFloat MyMouse::ConvertIntTOFloatForBoard(int x, int y)
 		
 		if(X >= window_size.Board2)
 		{
-			res.X = (X - window_size.Board2) / window_size.Board2;
+			result.X = (X - window_size.Board2) / window_size.Board2d;
 		}
 		else
 		{
-			res.X = (-1) * (window_size.Board2 - X)  / window_size.Board2;
+			result.X = (-1) * (window_size.Board2 - X) / window_size.Board2d;
 		}
 
 		if(Y >= window_size.Board2)
 		{
-			res.Y = (-1)*(Y - window_size.Board2) / window_size.Board2;
+			result.Y = (-1)*(Y - window_size.Board2) / window_size.Board2d;
 		}
 		else
 		{
-			res.Y = (window_size.Board2 - Y) / window_size.Board2;
+			result.Y = (window_size.Board2 - Y) / window_size.Board2d;
 			
 		}
-		return res;
+		cout << "m" << result.X << "=" << result.Y << endl;
+		return &result;
 	}
 	else
 	{
-		
-
-		return res;
+		return &result;
 	}
 }
 

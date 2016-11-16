@@ -13,6 +13,7 @@ public:
 	void SetCoordinate(int, int);
 protected:
 	virtual void Init(int);
-	CoordinateFloat coordinate_f, coordinateState;
+	CoordinateFloat* coordinateDraw; 
+	//CoordinateFloat coordinateState;
 	DrawTexture* draw;
 };

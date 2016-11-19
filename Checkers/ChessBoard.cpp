@@ -16,7 +16,7 @@ void ChessBoard::Draw()
 	glVertex2f(1.0f, 1.0f);
 	glEnd();
 
-	//glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

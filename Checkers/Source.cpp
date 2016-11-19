@@ -26,7 +26,28 @@ void Textout(char* str, float x, float y, float phi = 0.02)
 		i++;		
 	}
 }
+void fff(int X, int Y)
+{
+	CoordinateFloat results;
+	if (X >= window_size.Weigth / 2.0)
+	{
+		results.X = (X - window_size.Weigth / 2.0) / (window_size.Weigth / 2.0);
+	}
+	else
+	{
+		results.X = (-1) * (window_size.Weigth / 2.0 - X) / (window_size.Weigth / 2.0);
+	}
 
+	if (Y >= window_size.Heigth / 2.0)
+	{
+		results.Y = (-1)*(Y - window_size.Heigth / 2.0) / (window_size.Heigth / 2.0);
+	}
+	else
+	{
+		results.Y = (window_size.Heigth / 2.0 - Y) / (window_size.Heigth / 2.0);
+	}
+	cout << "oooo" << results.X << "=" << results.Y << endl;
+}
 void init()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -100,7 +121,7 @@ void display()
 void mouse(int x, int y)
 {
 	coordinateMouse.Set(x, y);	
-	
+	fff(x, y);
 	checker->SetCoordinate(coordinateMouse);
 	
 	display();

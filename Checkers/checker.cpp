@@ -70,5 +70,5 @@ void Checker::SetCoordinate(CoordinateInt coord)
 void Checker::SetCoordinate(int x, int y)
 {
 	coordinateDraw = MyMouse::ConvertIntTOFloatForBoard(x, y);
-	cout << "checker" << coordinateDraw->X << "=" << coordinateDraw->Y << "=" << x << "=" << y << endl;
+	//cout << "checker" << coordinateDraw->X << "=" << coordinateDraw->Y << "=" << x << "=" << y << endl;
 }

@@ -30,7 +30,7 @@ CoordinateFloat* MyMouse::ConvertIntTOFloatForBoard(int x, int y)
 			result.Y = (window_size.Board2 - Y) / window_size.Board2d;
 			
 		}
-		cout << "m" << result.X << "=" << result.Y << endl;
+		//cout << "m" << result.X << "=" << result.Y << endl;
 		return &result;
 	}
 	else

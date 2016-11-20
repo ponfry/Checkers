@@ -106,20 +106,18 @@ void reDraw()
 
 void mouseActive(int x, int y)
 {
-	coordinateMouseMoveI.Set(x, y);
-	player->ControlCoordinate();
+	coordinateMouseMove.Set(x, y);
 	reDraw();
-}
+}	
 
 void mousePassive(int x, int y)
 {
 	coordinateMousePassiveMove.Set(x, y);
-	if(player->CheckCoordinatePassive())
+	if (player->CheckCoordinatePassive())
 	{
-		chess_board->Draw();
-		player->Draw();
-		glutSwapBuffers();
-	}
+		reDraw();
+	}	
+
 	char title[20];
 	sprintf_s(title, "%d x %d", coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
 	glutSetWindowTitle(title);
@@ -143,14 +141,24 @@ void ChangeWH(int w, int h)
 		window_size.Set(501, 301);
 		glutReshapeWindow(window_size.Weigth, window_size.Heigth);
 	}
-	/*char title[20];
-	sprintf_s(title, "%d x %d", coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
-	glutSetWindowTitle(title);*/
 }
 
 void mouse(int button, int state, int x, int y)
 {
-	cout << button << "=" << state << "=" << x << "=" << y << endl;
+	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		coordinateMouseMove.Set(x,y);
+		player->SetStateSelectChecker();
+
+		reDraw();
+	}
+	if(button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+	{
+		coordinateMouseMove.Set(x, y);
+		player->Setc();
+
+		reDraw();
+	}
 }
 void main(int argc, char* argv[])
 {

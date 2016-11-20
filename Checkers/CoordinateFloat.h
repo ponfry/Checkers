@@ -9,6 +9,11 @@ struct CoordinateFloat
 		X = x;
 		Y = y;
 	}
+	void Set(CoordinateFloat coordinate)
+	{
+		X = coordinate.X;
+		Y = coordinate.Y;
+	}
 };
 
-__declspec(selectany) CoordinateFloat result;
+//__declspec(selectany) CoordinateFloat result;

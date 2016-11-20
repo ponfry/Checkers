@@ -6,10 +6,13 @@ class Player
 public:
 	Player();
 	void Draw();
-	void ControlCoordinate();
+	void SetStateSelectChecker();
 	bool CheckCoordinatePassive();
+	void Setc();
 private:
 	void InitChecker();
+	void CheckCheckers();
 	CheckerWhite checker[12];
 	CoordinateFloat* checkCoordf;
+	int index;
 };

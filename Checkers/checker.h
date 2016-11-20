@@ -7,20 +7,23 @@
 
 class Checker
 {
-public:
-	void Draw();
+public:	
 	Checker(int color=1);
+	void Draw();
+
 	void SetCoordinate(CoordinateInt);
 	void SetCoordinate(int, int);
 	void SetCoordinate(float, float);
+
 	bool CheckCoordinate(float, float);
+	bool CheckCoordinate(int, int);
 	void SetState(StateChecker);
 protected:
 	virtual void Init(int);
 	void InitDraw();
 	void Print();
-	CoordinateFloat* coordinateDraw; 
-	//CoordinateFloat coordinateState;
+
+	CoordinateFloat* coordinateDraw, *coordinateState; 
 	DrawTexture* draw, *select, *lighting;
 	StateChecker state;
 };

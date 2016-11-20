@@ -9,19 +9,18 @@ Checker::Checker(int color)
 {
 	state = StateChecker::draw;
 	coordinateDraw = new CoordinateFloat;
-	Init(color);
+	coordinateState = new CoordinateFloat;
+	Checker::Init(color);
 }
 
 void Checker::Draw()
 {
-	if (state == StateChecker::notdraw)
+	if (state != StateChecker::notdraw)
 	{
-		return;
-	}
-	InitDraw();	
+		InitDraw();
 
-	Print();
-	
+		Print();
+	}	
 }
 
 void Checker::Init(int color)
@@ -92,14 +91,15 @@ void Checker::Print()
 	switch(state)
 	{
 	case StateChecker::select:
-		
-		coordinateDraw = MyMouse::ConvertIntTOFloatForBoard(coordinateMouseMoveI.X,
-			coordinateMouseMoveI.Y);
+		delete coordinateDraw;
+		coordinateDraw = MyMouse::ConvertIntTOFloatForBoard(coordinateMouseMove.X,
+			coordinateMouseMove.Y);
 		break;
 	default:
-
+		coordinateDraw->Set(*coordinateState);
 		break;
 	}
+
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -128,19 +128,19 @@ void Checker::SetCoordinate(CoordinateInt coord)
 
 void Checker::SetCoordinate(int x, int y)
 {
-	coordinateDraw = MyMouse::ConvertIntTOFloatForBoard(x, y);
+	delete coordinateState;
+	coordinateState = MyMouse::ConvertIntTOFloatForBoard(x, y);
 }
 
 void Checker::SetCoordinate(float x, float y)
 {
-	coordinateDraw->X = x;
-	coordinateDraw->Y = y;
+	coordinateState->Set(x, y);
 }
 
 bool Checker::CheckCoordinate(float x, float y)
 {
-	if(x < (coordinateDraw->X + 0.125f) && x > (coordinateDraw->X - 0.125f) 
-		&& y < (coordinateDraw->Y + 0.125f) && y > (coordinateDraw->Y - 0.125f))
+	if(x < (coordinateState->X + 0.125f) && x > (coordinateState->X - 0.125f)
+		&& y < (coordinateState->Y + 0.125f) && y > (coordinateState->Y - 0.125f))
 	{
 
 		return true;
@@ -148,11 +148,26 @@ bool Checker::CheckCoordinate(float x, float y)
 	return false;
 }
 
+bool Checker::CheckCoordinate(int x, int y)
+{
+	CoordinateFloat *res = MyMouse::ConvertIntTOFloatForBoard(x, y);
+	float X =res->X;
+	float Y = res->Y;
+
+	delete res;
+	return CheckCoordinate(X, Y);
+}
+
 void Checker::SetState(StateChecker state_)
 {
-	if(state == StateChecker::notdraw)
+	if(state != StateChecker::notdraw)
 	{
-		return;
+		state = state_;
 	}
-	state = state_;
+
+	if (state_ == StateChecker::select)
+	{
+		coordinateState->Set(*coordinateDraw);
+	}
+	
 }

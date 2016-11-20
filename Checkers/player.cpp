@@ -14,26 +14,19 @@ void Player::Draw()
 	}
 }
 
-void Player::ControlCoordinate()
+void Player::SetStateSelectChecker()
 {
-	checkCoordf = MyMouse::ConvertIntTOFloatForBoard(coordinateMouseMoveI.X,
-		coordinateMouseMoveI.Y);
-	for (int i = 0; i < 12; i++)
+	CheckCheckers();
+
+	if (index < 12 && index >= 0)
 	{
-		if (checker[i].CheckCoordinate(checkCoordf->X, checkCoordf->Y))
-		{
-			checker[i].SetState(StateChecker::select);
-			return;
-		}
-		else
-		{
-			checker[i].SetState(StateChecker::draw);
-		}
+		checker[index].SetState(StateChecker::select);
 	}
 }
 
 bool Player::CheckCoordinatePassive()
 {
+	delete checkCoordf;
 	checkCoordf = MyMouse::ConvertIntTOFloatForBoard(coordinateMousePassiveMove.X,
 		coordinateMousePassiveMove.Y);
 	for (int i = 0; i < 12; i++)
@@ -49,6 +42,17 @@ bool Player::CheckCoordinatePassive()
 		}
 	}
 	return false;
+}
+
+void Player::Setc()
+{
+	if(index < 12 && index >=0)
+	{
+		checker[index].SetCoordinate(coordinateMouseMove);
+		checker[index].SetState(StateChecker::draw);
+	}
+	
+
 }
 
 void Player::InitChecker()
@@ -78,8 +82,20 @@ void Player::InitChecker()
 
 		if (count == 3)
 		{
-			count = 1;
 			break;
 		}
 	}
+}
+
+void Player::CheckCheckers()
+{
+	for(int i = 0; i < 12; i++)
+	{
+		if(checker[i].CheckCoordinate(coordinateMouseMove.X, coordinateMouseMove.Y))
+		{
+			index = i;
+			return;
+		}
+	}
+	index = 12;
 }

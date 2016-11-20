@@ -4,7 +4,8 @@
 using namespace std;
 CoordinateFloat* MyMouse::ConvertIntTOFloatForBoard(int x, int y)
 {
-	result.Set(0, 0);
+	CoordinateFloat *result = new CoordinateFloat();
+	result->Set(0, 0);
 	if(InBoard(x,y))
 	{
 		int X = x - window_size.IndentX;
@@ -13,28 +14,28 @@ CoordinateFloat* MyMouse::ConvertIntTOFloatForBoard(int x, int y)
 		
 		if(X >= window_size.Board2)
 		{
-			result.X = (X - window_size.Board2) / window_size.Board2f;
+			result->X = (X - window_size.Board2) / window_size.Board2f;
 		}
 		else
 		{
-			result.X = (-1) * (window_size.Board2 - X) / window_size.Board2f;
+			result->X = (-1) * (window_size.Board2 - X) / window_size.Board2f;
 		}
 
 		if(Y >= window_size.Board2)
 		{
-			result.Y = (-1)*(Y - window_size.Board2) / window_size.Board2f;
+			result->Y = (-1)*(Y - window_size.Board2) / window_size.Board2f;
 		}
 		else
 		{
-			result.Y = (window_size.Board2 - Y) / window_size.Board2f;
+			result->Y = (window_size.Board2 - Y) / window_size.Board2f;
 			
 		}
 
-		return &result;
+		return result;
 	}
 	else
 	{
-		return &result;
+		return result;
 	}
 }
 

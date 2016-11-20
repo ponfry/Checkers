@@ -11,4 +11,5 @@ struct CoordinateInt
 	}
 };
 
-__declspec(selectany)CoordinateInt coordinateMouse;
+__declspec(selectany)CoordinateInt coordinateMouseMoveI;
+__declspec(selectany)CoordinateInt coordinateMousePassiveMove;

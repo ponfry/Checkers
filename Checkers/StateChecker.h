@@ -3,5 +3,6 @@ enum StateChecker
 {
 	draw = 0,
 	notdraw,
-	select
+	select,
+	lighting
 };

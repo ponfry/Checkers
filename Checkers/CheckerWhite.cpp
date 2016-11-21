@@ -7,7 +7,7 @@ CheckerWhite::CheckerWhite()
 }
 void CheckerWhite::Init()
 {
-	draw = Texture::Init(L"whiteChecker/checker.png");
-	select = Texture::Init(L"whiteChecker/select.png");
+	drawing = Texture::Init(L"whiteChecker/checker.png");
+	selected = Texture::Init(L"whiteChecker/select.png");
 	lighting = Texture::Init(L"whiteChecker/lighting.png");
 }

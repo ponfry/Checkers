@@ -6,6 +6,7 @@ Player::Player()
 {
 	InitChecker();
 }
+
 void Player::Draw()
 {
 	for(int i=0; i<12; i++)
@@ -18,10 +19,19 @@ void Player::SetStateSelectChecker()
 {
 	CheckCheckers();
 
-	if (index < 12 && index >= 0)
+	if (indexSelected < 12 && indexSelected >= 0)
 	{
-		checker[index].SetState(StateChecker::select);
+		checker[indexSelected].SetState(StateChecker::selected);
+		result = checker[indexSelected];
+		checker[indexSelected] = checker[11];
+		checker[11] = result;
 	}
+}
+
+void Player::SetStateUnSelectChecker()
+{
+	if (indexSelected < 12 && indexSelected >= 0)
+		checker[11].SetState(StateChecker::draw);
 }
 
 bool Player::CheckCoordinatePassive()
@@ -31,7 +41,7 @@ bool Player::CheckCoordinatePassive()
 		coordinateMousePassiveMove.Y);
 	for (int i = 0; i < 12; i++)
 	{
-		if (checker[i].CheckCoordinate(checkCoordf->X, checkCoordf->Y))
+		if (checker[i].CheckCoordinate(checkCoordf))
 		{
 			checker[i].SetState(StateChecker::lighting);
 			return true;
@@ -44,15 +54,13 @@ bool Player::CheckCoordinatePassive()
 	return false;
 }
 
-void Player::Setc()
+void Player::SetCoordinateSelectedChecker(CoordinateFloat* coordinate)
 {
-	if(index < 12 && index >=0)
+	if (indexSelected < 12 && indexSelected >= 0)
 	{
-		checker[index].SetCoordinate(coordinateMouseMove);
-		checker[index].SetState(StateChecker::draw);
+		checker[11].SetCoordinate(coordinate->X, coordinate->Y);
+		checker[11].SetState(StateChecker::draw);
 	}
-	
-
 }
 
 void Player::InitChecker()
@@ -91,11 +99,11 @@ void Player::CheckCheckers()
 {
 	for(int i = 0; i < 12; i++)
 	{
-		if(checker[i].CheckCoordinate(coordinateMouseMove.X, coordinateMouseMove.Y))
+		if(checker[i].CheckCoordinate(&coordinateMouseMove))
 		{
-			index = i;
+			indexSelected = i;
 			return;
 		}
 	}
-	index = 12;
+	indexSelected = 12;
 }

@@ -28,13 +28,13 @@ void Checker::Init(int color)
 	switch (color)
 	{
 	case 1:
-		draw = Texture::Init(L"texture/checkerblack.png");
+		drawing = Texture::Init(L"texture/checkerblack.png");
 		break;
 	case 2:
-		draw = Texture::Init(L"texture/checkerwhite.png");
+		drawing = Texture::Init(L"texture/checkerwhite.png");
 		break;
 	default:
-		draw = nullptr;
+		drawing = nullptr;
 		break;
 	}
 }
@@ -44,42 +44,15 @@ void Checker::InitDraw()
 	switch (state)
 	{
 	case StateChecker::draw:
-		glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, 4, draw->characteristic->width,
-			draw->characteristic->height,
-			0, draw->characteristic->format,
-			draw->characteristic->type,
-			draw->characteristic->texture);
+		Texture::LoadDraw(drawing);
 		break;
 
-	case StateChecker::select:
-		glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, 4, select->characteristic->width,
-			select->characteristic->height,
-			0, select->characteristic->format,
-			select->characteristic->type,
-			select->characteristic->texture);
+	case StateChecker::selected:
+		Texture::LoadDraw(selected);
 		break;
 
 	case StateChecker::lighting:
-		glBindTexture(GL_TEXTURE_2D, draw->textures[0]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, 4, lighting->characteristic->width,
-			lighting->characteristic->height,
-			0, lighting->characteristic->format,
-			lighting->characteristic->type,
-			lighting->characteristic->texture);
+		Texture::LoadDraw(lighting);
 		break;
 	default:
 		break;
@@ -90,13 +63,13 @@ void Checker::Print()
 {
 	switch(state)
 	{
-	case StateChecker::select:
+	case StateChecker::selected:
 		delete coordinateDraw;
 		coordinateDraw = MyMouse::ConvertIntTOFloatForBoard(coordinateMouseMove.X,
 			coordinateMouseMove.Y);
 		break;
 	default:
-		coordinateDraw->Set(*coordinateState);
+		coordinateDraw->Set(coordinateState);
 		break;
 	}
 
@@ -121,9 +94,9 @@ void Checker::Print()
 	glDisable(GL_BLEND);
 }
 
-void Checker::SetCoordinate(CoordinateInt coord)
+void Checker::SetCoordinate(CoordinateInt *coord)
 {
-	SetCoordinate(coord.X, coord.Y);
+	SetCoordinate(coord->X, coord->Y);
 }
 
 void Checker::SetCoordinate(int x, int y)
@@ -139,23 +112,26 @@ void Checker::SetCoordinate(float x, float y)
 
 bool Checker::CheckCoordinate(float x, float y)
 {
-	if(x < (coordinateState->X + 0.125f) && x > (coordinateState->X - 0.125f)
-		&& y < (coordinateState->Y + 0.125f) && y > (coordinateState->Y - 0.125f))
-	{
-
-		return true;
-	}	
-	return false;
+	return coordinateState->CheckQuad(x, y);
 }
 
 bool Checker::CheckCoordinate(int x, int y)
 {
 	CoordinateFloat *res = MyMouse::ConvertIntTOFloatForBoard(x, y);
-	float X =res->X;
-	float Y = res->Y;
+	result = coordinateState->CheckQuad(res);
 
 	delete res;
-	return CheckCoordinate(X, Y);
+	return result;
+}
+
+bool Checker::CheckCoordinate(CoordinateFloat* coord)
+{
+	return coordinateState->CheckQuad(coord);
+}
+
+bool Checker::CheckCoordinate(CoordinateInt* coord)
+{
+	return CheckCoordinate(coord->X, coord->Y);
 }
 
 void Checker::SetState(StateChecker state_)
@@ -165,9 +141,9 @@ void Checker::SetState(StateChecker state_)
 		state = state_;
 	}
 
-	if (state_ == StateChecker::select)
+	if (state_ == StateChecker::selected)
 	{
-		coordinateState->Set(*coordinateDraw);
+		coordinateState->Set(coordinateDraw);
 	}
 	
 }

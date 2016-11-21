@@ -39,6 +39,11 @@ CoordinateFloat* MyMouse::ConvertIntTOFloatForBoard(int x, int y)
 	}
 }
 
+CoordinateFloat* MyMouse::ConvertIntTOFloatForBoard(CoordinateInt* coordinate)
+{
+	return ConvertIntTOFloatForBoard(coordinate->X, coordinate->Y);
+}
+
 bool MyMouse::InBoard(int x, int y)
 {
 

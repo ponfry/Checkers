@@ -11,12 +11,16 @@ public:
 	Checker(int color=1);
 	void Draw();
 
-	void SetCoordinate(CoordinateInt);
+	void SetCoordinate(CoordinateInt*);
 	void SetCoordinate(int, int);
 	void SetCoordinate(float, float);
 
 	bool CheckCoordinate(float, float);
 	bool CheckCoordinate(int, int);
+
+	bool CheckCoordinate(CoordinateFloat*);
+	bool CheckCoordinate(CoordinateInt*);
+
 	void SetState(StateChecker);
 protected:
 	virtual void Init(int);
@@ -24,6 +28,7 @@ protected:
 	void Print();
 
 	CoordinateFloat* coordinateDraw, *coordinateState; 
-	DrawTexture* draw, *select, *lighting;
+	DrawTexture *drawing, *selected, *lighting;
 	StateChecker state;
+	bool result;
 };

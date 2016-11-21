@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h>
 #include "glew.h"
 #include "glut.h"
 #include "WindowSize.h"
@@ -6,10 +7,12 @@
 #include "CoordinateInt.h"
 #include "CoordinateFloat.h"
 #include "player.h"
+#include "Texture.h"
 using namespace std;
 
 ChessBoard* chess_board;
 Player* player;
+DrawTexture* drawErrorWrong;
 float X, Y;
 
 void Textout(char* str, float X, float Y, float phi = 0.02)
@@ -38,10 +41,10 @@ void init()
 
 	glColor3f(0.9, 0.9, 0.9);
 	glBegin(GL_TRIANGLE_STRIP);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
+	glVertex2f(-1.0f, -1.0f);
+	glVertex2f(-1.0f, 1.0f);
+	glVertex2f(1.0f, -1.0f);
+	glVertex2f(1.0f, 1.0f);
 	glEnd();
 	
 	X = (-2) * (window_size.Weigth / 2.0 - 163) / window_size.Weigth;
@@ -69,10 +72,10 @@ void init()
 
 	glColor3f(0.9, 0.9, 0.9);
 	glBegin(GL_TRIANGLE_STRIP);
-	glVertex3f(-1.0f, -1.0f, 1.0f);
-	glVertex3f(-1.0f, 1.0f, 1.0f);
-	glVertex3f(1.0f, -1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 1.0f);
+	glVertex2f(-1.0f, -1.0f);
+	glVertex2f(-1.0f, 1.0f);
+	glVertex2f(1.0f, -1.0f);
+	glVertex2f(1.0f, 1.0f);
 	glEnd();
 
 	X = (-2) * (window_size.Weigth / 2.0 - 163) / window_size.Weigth;
@@ -102,6 +105,29 @@ void reDraw()
 	chess_board->Draw();
 	player->Draw();
 	glutSwapBuffers();
+}
+
+void drawError()
+{
+	Texture::LoadDraw(drawErrorWrong);
+	glBegin(GL_TRIANGLE_STRIP);
+	glTexCoord2f(0, 1);
+	glVertex2f(-0.5f, -0.25f);
+
+	glTexCoord2f(0, 0);
+	glVertex2f(-0.5f, 0.25f);
+
+	glTexCoord2f(1, 1);
+	glVertex2f(0.5f, -0.25f);
+
+	glTexCoord2f(1, 0);
+	glVertex2f(0.5f, 0.25f);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
+	glutSwapBuffers();
+	Sleep(1500);
+	reDraw();
 }
 
 void mouseActive(int x, int y)
@@ -155,11 +181,19 @@ void mouse(int button, int state, int x, int y)
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
 		coordinateMouseMove.Set(x, y);
-		player->Setc();
-
-		reDraw();
+		if(chess_board->CheckCoordinate())
+		{
+			player->SetCoordinateSelectedChecker(chess_board->GetEntryCoordinate());
+			reDraw();
+		}
+		else
+		{
+			player->SetStateUnSelectChecker();
+			drawError();
+		}
 	}
 }
+
 void main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
@@ -171,7 +205,7 @@ void main(int argc, char* argv[])
 	ilInit();
 	player = new Player();
 	chess_board = new ChessBoard();
-
+	drawErrorWrong = Texture::Init(L"errors/ErrorWrongMove.png");
 	glutMotionFunc(mouseActive);
 	glutPassiveMotionFunc(mousePassive);
 	glutMouseFunc(mouse);

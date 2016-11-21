@@ -126,7 +126,7 @@ void drawError()
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
 	glutSwapBuffers();
-	Sleep(1500);
+	Sleep(1250);
 	reDraw();
 }
 

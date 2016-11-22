@@ -4,7 +4,9 @@ class CheckerWhite :
 	public Checker
 {
 public:
-	CheckerWhite();
-	void Init();
+	CheckerWhite();	
+	 bool CheckWalkCoordinate(CoordinateFloat*) override;
+protected:	
+	void Init() override;
 };
 

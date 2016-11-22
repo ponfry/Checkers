@@ -4,7 +4,8 @@
 
 Player::Player()
 {
-	InitChecker();
+	checker = new CheckerWhite[12];
+	Player::InitChecker();	
 }
 
 void Player::Draw()
@@ -15,23 +16,25 @@ void Player::Draw()
 	}
 }
 
-void Player::SetStateSelectChecker()
+bool Player::SetStateSelectChecker()
 {
 	CheckCheckers();
 
 	if (indexSelected < 12 && indexSelected >= 0)
 	{
-		checker[indexSelected].SetState(StateChecker::selected);
+		checker[indexSelected].SetState(selected);
 		result = checker[indexSelected];
 		checker[indexSelected] = checker[11];
 		checker[11] = result;
+		return true;
 	}
+	return false;
 }
 
 void Player::SetStateUnSelectChecker()
 {
 	if (indexSelected < 12 && indexSelected >= 0)
-		checker[11].SetState(StateChecker::draw);
+		checker[11].SetState(draw);
 }
 
 bool Player::CheckCoordinatePassive()
@@ -41,26 +44,30 @@ bool Player::CheckCoordinatePassive()
 		coordinateMousePassiveMove.Y);
 	for (int i = 0; i < 12; i++)
 	{
-		if (checker[i].CheckCoordinate(checkCoordf))
+		if (checker[i].CheckContactCoordinate(checkCoordf))
 		{
-			checker[i].SetState(StateChecker::lighting);
+			checker[i].SetState(light);
 			return true;
 		}
-		else
-		{
-			checker[i].SetState(StateChecker::draw);
-		}
+		checker[i].SetState(draw);
 	}
 	return false;
 }
 
-void Player::SetCoordinateSelectedChecker(CoordinateFloat* coordinate)
+bool Player::SetCoordinateSelectedChecker(CoordinateFloat* coordinate)
 {
 	if (indexSelected < 12 && indexSelected >= 0)
 	{
-		checker[11].SetCoordinate(coordinate->X, coordinate->Y);
-		checker[11].SetState(StateChecker::draw);
+		if((checker[11].CheckWalkCoordinate(coordinate) || 
+			checker[11].CheckBeatCoordinate(coordinate)) && 
+			!CheckСonflictCoordinateCheckers(coordinate))
+		{
+			checker[11].SetCoordinate(coordinate->X, coordinate->Y);
+			checker[11].SetState(draw);
+			return true;
+		}		
 	}
+	return false;
 }
 
 void Player::InitChecker()
@@ -99,11 +106,24 @@ void Player::CheckCheckers()
 {
 	for(int i = 0; i < 12; i++)
 	{
-		if(checker[i].CheckCoordinate(&coordinateMouseMove))
+		if(checker[i].CheckContactCoordinate(&coordinateMouseMove))
 		{
 			indexSelected = i;
 			return;
 		}
 	}
 	indexSelected = 12;
+}
+
+bool Player::CheckСonflictCoordinateCheckers(CoordinateFloat* coordinate)
+{
+	for (int i = 0; i < 12; i++)
+	{
+		if(checker[i].CheckContactCoordinate(coordinate))
+		{
+			return true;
+		}
+			
+	}
+	return false;
 }

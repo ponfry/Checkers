@@ -6,14 +6,18 @@
 #include "ChessBoard.h"
 #include "CoordinateInt.h"
 #include "CoordinateFloat.h"
-#include "player.h"
 #include "Texture.h"
+#include "FlagsPlayer.h"
+#include "PlayerOne.h"
+#include "PlayerTwo.h"
 using namespace std;
 
 ChessBoard* chess_board;
-Player* player;
+PlayerTwo* playerTwo;
+PlayerOne* playerOne;
 DrawTexture* drawErrorWrong;
 float X, Y;
+
 
 void Textout(char* str, float X, float Y, float phi = 0.02)
 {
@@ -63,7 +67,8 @@ void init()
 	Textout("Menu", X, Y);
 
 	chess_board->Draw();
-	player->Draw();
+	playerOne->Draw();
+	playerTwo->Draw();
 
 	glutSwapBuffers();
 	
@@ -94,7 +99,8 @@ void init()
 	Textout("Menu", X, Y);
 
 	chess_board->Draw();
-	player->Draw();
+	playerOne->Draw();
+	playerTwo->Draw();
 
 	glutSwapBuffers();
 	
@@ -103,13 +109,15 @@ void init()
 void reDraw()
 {
 	chess_board->Draw();
-	player->Draw();
+	playerOne->Draw();
+	playerTwo->Draw();
 	glutSwapBuffers();
 }
 
 void drawError()
 {
 	Texture::LoadDraw(drawErrorWrong);
+	
 	glBegin(GL_TRIANGLE_STRIP);
 	glTexCoord2f(0, 1);
 	glVertex2f(-0.5f, -0.25f);
@@ -127,7 +135,6 @@ void drawError()
 	glDisable(GL_BLEND);
 	glutSwapBuffers();
 	Sleep(1250);
-	reDraw();
 }
 
 void mouseActive(int x, int y)
@@ -139,7 +146,7 @@ void mouseActive(int x, int y)
 void mousePassive(int x, int y)
 {
 	coordinateMousePassiveMove.Set(x, y);
-	if (player->CheckCoordinatePassive())
+	if (playerTwo->CheckCoordinatePassive() || playerOne->CheckCoordinatePassive())
 	{
 		reDraw();
 	}	
@@ -174,24 +181,48 @@ void mouse(int button, int state, int x, int y)
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 		coordinateMouseMove.Set(x,y);
-		player->SetStateSelectChecker();
-
-		reDraw();
+		flags_player_one.CaptureChecker = playerOne->SetStateSelectChecker();
+		flags_player_two.CaptureChecker = playerTwo->SetStateSelectChecker();	
 	}
+
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
-		coordinateMouseMove.Set(x, y);
-		if(chess_board->CheckCoordinate())
+		if(flags_player_one.CaptureChecker|| flags_player_two.CaptureChecker)
 		{
-			player->SetCoordinateSelectedChecker(chess_board->GetEntryCoordinate());
-			reDraw();
-		}
-		else
-		{
-			player->SetStateUnSelectChecker();
-			drawError();
+			if (flags_player_one.CaptureChecker)
+			{
+				coordinateMouseMove.Set(x, y);
+				flags_player_one.CheckChessBoardCoordinate = chess_board->CheckCoordinate();
+				if (flags_player_one.CheckChessBoardCoordinate)
+				{
+					flags_player_one.WasSetCoordinateChecker =
+						playerOne->SetCoordinateSelectedChecker(chess_board->GetEntryCoordinate());
+				}
+				if (!flags_player_one.CheckAll())
+				{
+					playerOne->SetStateUnSelectChecker();
+					drawError();
+				}
+			}
+
+			if (flags_player_two.CaptureChecker)
+			{
+				coordinateMouseMove.Set(x, y);
+				flags_player_two.CheckChessBoardCoordinate = chess_board->CheckCoordinate();
+				if (flags_player_two.CheckChessBoardCoordinate)
+				{
+					flags_player_two.WasSetCoordinateChecker =
+						playerTwo->SetCoordinateSelectedChecker(chess_board->GetEntryCoordinate());
+				}
+				if (!flags_player_two.CheckAll())
+				{
+					playerTwo->SetStateUnSelectChecker();
+					drawError();
+				}
+			}
 		}
 	}
+	reDraw();
 }
 
 void main(int argc, char* argv[])
@@ -203,7 +234,8 @@ void main(int argc, char* argv[])
 	glutCreateWindow("Checkers");
 
 	ilInit();
-	player = new Player();
+	playerTwo = new PlayerTwo();
+	playerOne = new PlayerOne();
 	chess_board = new ChessBoard();
 	drawErrorWrong = Texture::Init(L"errors/ErrorWrongMove.png");
 	glutMotionFunc(mouseActive);

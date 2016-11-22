@@ -22,6 +22,18 @@
     <Filter Include="Resource Files\game">
       <UniqueIdentifier>{f51bd3d4-0e29-4849-bba6-0aa19b1fb18c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{4a0f9694-5233-4223-9f4d-4fa584397260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\game\checker">
+      <UniqueIdentifier>{067ca130-fc40-48f9-bcd7-2178b6d907de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\game\checker">
+      <UniqueIdentifier>{84d4c7e6-d7ed-4e65-ac31-8e2cd56b8702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Player">
+      <UniqueIdentifier>{ee73ca36-9f87-4628-a5f8-7d380605166f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -30,20 +42,29 @@
     <ClCompile Include="CoordinateMouse.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="checker.cpp">
-      <Filter>Resource Files\game</Filter>
-    </ClCompile>
     <ClCompile Include="ChessBoard.cpp">
-      <Filter>Resource Files\game</Filter>
-    </ClCompile>
-    <ClCompile Include="player.cpp">
       <Filter>Resource Files\game</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="checker.cpp">
+      <Filter>Resource Files\game\checker</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckerBlack.cpp">
+      <Filter>Resource Files\game\checker</Filter>
+    </ClCompile>
     <ClCompile Include="CheckerWhite.cpp">
-      <Filter>Resource Files\game</Filter>
+      <Filter>Resource Files\game\checker</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerOne.cpp">
+      <Filter>Resource Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTwo.cpp">
+      <Filter>Resource Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Resource Files\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,12 +72,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChessBoard.h">
-      <Filter>Header Files\game</Filter>
-    </ClInclude>
-    <ClInclude Include="checker.h">
-      <Filter>Header Files\game</Filter>
-    </ClInclude>
-    <ClInclude Include="player.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
     <ClInclude Include="CoordinateMouse.h">
@@ -77,10 +92,28 @@
     <ClInclude Include="StateChecker.h">
       <Filter>Header Files\types</Filter>
     </ClInclude>
-    <ClInclude Include="CheckerWhite.h">
-      <Filter>Header Files\game</Filter>
-    </ClInclude>
     <ClInclude Include="CoordinateFloat.h">
+      <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerOne.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckerWhite.h">
+      <Filter>Header Files\game\checker</Filter>
+    </ClInclude>
+    <ClInclude Include="checker.h">
+      <Filter>Header Files\game\checker</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckerBlack.h">
+      <Filter>Header Files\game\checker</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTwo.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="FlagsPlayer.h">
       <Filter>Header Files\types</Filter>
     </ClInclude>
   </ItemGroup>

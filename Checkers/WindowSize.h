@@ -38,6 +38,4 @@ struct WindowSize
 	}
 };
 
-
-
 __declspec(selectany) WindowSize window_size;

@@ -1,20 +1,24 @@
 ﻿#pragma once
-#include "CheckerWhite.h"
 #include "CoordinateFloat.h"
+#include "CheckerWhite.h"
+#include "CheckerBlack.h"
 
 class Player
 {
 public:
 	Player();
 	void Draw();
-	void SetStateSelectChecker();
-	void SetStateUnSelectChecker();
 	bool CheckCoordinatePassive();
-	void SetCoordinateSelectedChecker(CoordinateFloat*);
-private:
-	void InitChecker();
+
+	bool SetStateSelectChecker();
+	void SetStateUnSelectChecker();
+	
+	bool SetCoordinateSelectedChecker(CoordinateFloat*);
+	bool CheckСonflictCoordinateCheckers(CoordinateFloat*);
+protected:
+	virtual void InitChecker();
 	void CheckCheckers();
-	CheckerWhite checker[12], result;
 	CoordinateFloat* checkCoordf;
 	int indexSelected;
+	Checker* checker, result;
 };

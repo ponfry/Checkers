@@ -15,20 +15,23 @@ public:
 	void SetCoordinate(int, int);
 	void SetCoordinate(float, float);
 
-	bool CheckCoordinate(float, float);
-	bool CheckCoordinate(int, int);
+	bool CheckContactCoordinate(float, float);
+	bool CheckContactCoordinate(int, int);
 
-	bool CheckCoordinate(CoordinateFloat*);
-	bool CheckCoordinate(CoordinateInt*);
+	bool CheckContactCoordinate(CoordinateFloat*);
+	bool CheckContactCoordinate(CoordinateInt*);
 
+	bool CheckBeatCoordinate(CoordinateFloat*);
+	virtual bool CheckWalkCoordinate(CoordinateFloat*);
+	
 	void SetState(StateChecker);
 protected:
-	virtual void Init(int);
+	virtual void Init();
 	void InitDraw();
 	void Print();
 
-	CoordinateFloat* coordinateDraw, *coordinateState; 
-	DrawTexture *drawing, *selected, *lighting;
+	CoordinateFloat* coordinateDraw, *coordinateState, *coordinateCheck; 
+	DrawTexture *drawing, *selecting, *lighting;
 	StateChecker state;
 	bool result;
 };

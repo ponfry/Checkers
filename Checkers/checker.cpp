@@ -7,15 +7,16 @@ using namespace std;
 
 Checker::Checker(int color)
 {
-	state = StateChecker::draw;
+	state = draw;
 	coordinateDraw = new CoordinateFloat;
 	coordinateState = new CoordinateFloat;
-	Checker::Init(color);
+	coordinateCheck = new CoordinateFloat;
+	Checker::Init();
 }
 
 void Checker::Draw()
 {
-	if (state != StateChecker::notdraw)
+	if (state != notdraw)
 	{
 		InitDraw();
 
@@ -23,35 +24,24 @@ void Checker::Draw()
 	}	
 }
 
-void Checker::Init(int color)
+void Checker::Init()
 {
-	switch (color)
-	{
-	case 1:
-		drawing = Texture::Init(L"texture/checkerblack.png");
-		break;
-	case 2:
-		drawing = Texture::Init(L"texture/checkerwhite.png");
-		break;
-	default:
-		drawing = nullptr;
-		break;
-	}
+	drawing = Texture::Init(L"texture/checkerwhite.png");
 }
 
 void Checker::InitDraw()
 {
 	switch (state)
 	{
-	case StateChecker::draw:
+	case draw:
 		Texture::LoadDraw(drawing);
 		break;
 
-	case StateChecker::selected:
-		Texture::LoadDraw(selected);
+	case selected:
+		Texture::LoadDraw(selecting);
 		break;
 
-	case StateChecker::lighting:
+	case light:
 		Texture::LoadDraw(lighting);
 		break;
 	default:
@@ -63,7 +53,7 @@ void Checker::Print()
 {
 	switch(state)
 	{
-	case StateChecker::selected:
+	case selected:
 		delete coordinateDraw;
 		coordinateDraw = MyMouse::ConvertIntTOFloatForBoard(coordinateMouseMove.X,
 			coordinateMouseMove.Y);
@@ -110,12 +100,12 @@ void Checker::SetCoordinate(float x, float y)
 	coordinateState->Set(x, y);
 }
 
-bool Checker::CheckCoordinate(float x, float y)
+bool Checker::CheckContactCoordinate(float x, float y)
 {
 	return coordinateState->CheckQuad(x, y);
 }
 
-bool Checker::CheckCoordinate(int x, int y)
+bool Checker::CheckContactCoordinate(int x, int y)
 {
 	CoordinateFloat *res = MyMouse::ConvertIntTOFloatForBoard(x, y);
 	result = coordinateState->CheckQuad(res);
@@ -124,24 +114,59 @@ bool Checker::CheckCoordinate(int x, int y)
 	return result;
 }
 
-bool Checker::CheckCoordinate(CoordinateFloat* coord)
+bool Checker::CheckContactCoordinate(CoordinateFloat* coord)
 {
 	return coordinateState->CheckQuad(coord);
 }
 
-bool Checker::CheckCoordinate(CoordinateInt* coord)
+bool Checker::CheckContactCoordinate(CoordinateInt* coord)
 {
-	return CheckCoordinate(coord->X, coord->Y);
+	return CheckContactCoordinate(coord->X, coord->Y);
+}
+
+bool Checker::CheckBeatCoordinate(CoordinateFloat* coordinate)
+{
+	coordinateCheck->Set(coordinateState->X + 0.5f, coordinateState->Y + 0.5f);
+	if (coordinateCheck->CheckQuad(coordinate))
+		return true;
+
+	coordinateCheck->Set(coordinateState->X - 0.5f, coordinateState->Y + 0.5f);
+	if (coordinateCheck->CheckQuad(coordinate))
+		return true;
+
+	coordinateCheck->Set(coordinateState->X - 0.5f, coordinateState->Y - 0.5f);
+	if (coordinateCheck->CheckQuad(coordinate))
+		return true;
+
+	coordinateCheck->Set(coordinateState->X + 0.5f, coordinateState->Y - 0.5f);
+	if (coordinateCheck->CheckQuad(coordinate))
+		return true;
+
+	return false;
+}
+
+bool Checker::CheckWalkCoordinate(CoordinateFloat* coordinate)
+{
+	//ОБЯЗАТЕЛЬНО ПЕРЕОПРЕДЕЛИТЬ!!!!!!!!!!!!!!!!!!
+	coordinateCheck->Set(coordinateState->X + 0.25f,coordinateState->Y + 0.25f);
+	if(coordinateCheck->CheckQuad(coordinate))
+		return true;
+
+	coordinateCheck->Set(coordinateState->X - 0.25f, coordinateState->Y + 0.25f);
+	if (coordinateCheck->CheckQuad(coordinate))
+		return true;
+
+	return false;
 }
 
 void Checker::SetState(StateChecker state_)
 {
-	if(state != StateChecker::notdraw)
+	if(state != notdraw)
 	{
 		state = state_;
 	}
 
-	if (state_ == StateChecker::selected)
+	if (state_ == selected)
 	{
 		coordinateState->Set(coordinateDraw);
 	}

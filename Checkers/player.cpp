@@ -56,6 +56,10 @@ bool Player::CheckCoordinatePassive()
 
 bool Player::SetCoordinateSelectedChecker(CoordinateFloat* coordinate)
 {
+	if (coordinate == nullptr)
+	{
+		return false;
+	}
 	if (indexSelected < 12 && indexSelected >= 0)
 	{
 		if((checker[11].CheckWalkCoordinate(coordinate) || 
@@ -117,6 +121,10 @@ void Player::CheckCheckers()
 
 bool Player::CheckСonflictCoordinateCheckers(CoordinateFloat* coordinate)
 {
+	if (coordinate == nullptr)
+	{
+		return false;
+	}
 	for (int i = 0; i < 12; i++)
 	{
 		if(checker[i].CheckContactCoordinate(coordinate))

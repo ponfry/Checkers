@@ -134,7 +134,7 @@ void drawError()
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
 	glutSwapBuffers();
-	Sleep(1250);
+	Sleep(1150);
 }
 
 void mouseActive(int x, int y)
@@ -193,7 +193,8 @@ void mouse(int button, int state, int x, int y)
 			{
 				coordinateMouseMove.Set(x, y);
 				flags_player_one.CheckChessBoardCoordinate = chess_board->CheckCoordinate();
-				if (flags_player_one.CheckChessBoardCoordinate)
+				flags_player_one.IsConflictOtherPlayerCheckers = playerTwo->CheckÑonflictCoordinateCheckers(chess_board->GetEntryCoordinate());
+				if (flags_player_one.CheckChessBoardCoordinate && !flags_player_one.IsConflictOtherPlayerCheckers)
 				{
 					flags_player_one.WasSetCoordinateChecker =
 						playerOne->SetCoordinateSelectedChecker(chess_board->GetEntryCoordinate());
@@ -209,7 +210,9 @@ void mouse(int button, int state, int x, int y)
 			{
 				coordinateMouseMove.Set(x, y);
 				flags_player_two.CheckChessBoardCoordinate = chess_board->CheckCoordinate();
-				if (flags_player_two.CheckChessBoardCoordinate)
+				flags_player_two.IsConflictOtherPlayerCheckers = playerOne->CheckÑonflictCoordinateCheckers(chess_board->GetEntryCoordinate());
+
+				if (flags_player_two.CheckChessBoardCoordinate && !flags_player_two.IsConflictOtherPlayerCheckers)
 				{
 					flags_player_two.WasSetCoordinateChecker =
 						playerTwo->SetCoordinateSelectedChecker(chess_board->GetEntryCoordinate());

@@ -5,9 +5,10 @@ struct FlagsGame
 	bool CaptureChecker = false;
 	bool CheckChessBoardCoordinate = false;
 	bool WasSetCoordinateChecker = false;
+	bool IsConflictOtherPlayerCheckers = false;
 	bool CheckAll()
 	{
-		if(CaptureChecker && CheckChessBoardCoordinate && WasSetCoordinateChecker)
+		if(CaptureChecker && CheckChessBoardCoordinate && WasSetCoordinateChecker && !IsConflictOtherPlayerCheckers)
 		{
 			return true;
 		}
@@ -18,6 +19,7 @@ struct FlagsGame
 		CaptureChecker = false;
 		CheckChessBoardCoordinate = false;
 		WasSetCoordinateChecker = false;
+		IsConflictOtherPlayerCheckers = false;
 	}
 };
 

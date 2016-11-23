@@ -4,6 +4,18 @@ struct CoordinateFloat
 {
 	float X;
 	float Y;
+	CoordinateFloat()
+	{
+		X = 0;
+		Y = 0;
+	}
+
+	CoordinateFloat(float x, float y)
+	{
+		X = x;
+		Y = y;
+	}
+
 	void Set(float x, float y)
 	{
 		X = x;
@@ -28,6 +40,15 @@ struct CoordinateFloat
 	{		
 		return CheckQuad(coordinate->X, coordinate->Y);
 	}
+	bool operator ==(CoordinateFloat* coordinateone)
+	{
+		if(coordinateone->X == X && coordinateone->Y == Y)
+		{
+			return true;
+		}
+		return false;
+	}
 };
 
-//__declspec(selectany) CoordinateFloat result;
+__declspec(selectany) CoordinateFloat startBeatCoordinateChecker;
+__declspec(selectany) CoordinateFloat endBeatCoordinateChecker;

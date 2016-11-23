@@ -4,7 +4,7 @@
 using namespace std;
 CoordinateFloat* MyMouse::ConvertIntTOFloatForBoard(int x, int y)
 {
-	CoordinateFloat *result = new CoordinateFloat();
+	CoordinateFloat *result = new CoordinateFloat;
 	result->Set(0, 0);
 	if(InBoard(x,y))
 	{

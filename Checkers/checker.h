@@ -14,6 +14,7 @@ public:
 	void SetCoordinate(CoordinateInt*);
 	void SetCoordinate(int, int);
 	void SetCoordinate(float, float);
+	CoordinateFloat* GetCurrentCoordinate();
 
 	bool CheckContactCoordinate(float, float);
 	bool CheckContactCoordinate(int, int);

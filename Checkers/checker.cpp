@@ -86,82 +86,119 @@ void Checker::Print()
 
 void Checker::SetCoordinate(CoordinateInt *coord)
 {
+
 	SetCoordinate(coord->X, coord->Y);
 }
 
 void Checker::SetCoordinate(int x, int y)
 {
-	delete coordinateState;
-	coordinateState = MyMouse::ConvertIntTOFloatForBoard(x, y);
+	if (state != notdraw)
+	{
+		delete coordinateState;
+		coordinateState = MyMouse::ConvertIntTOFloatForBoard(x, y);
+	}
 }
 
 void Checker::SetCoordinate(float x, float y)
 {
-	coordinateState->Set(x, y);
+	if (state != notdraw)
+	{
+		coordinateState->Set(x, y);
+	}
+}
+
+CoordinateFloat* Checker::GetCurrentCoordinate()
+{
+	if (state != notdraw)
+	{
+		CoordinateFloat* result = new CoordinateFloat;
+		result->Set(coordinateState);
+		return result;
+	}
+	return nullptr;
 }
 
 bool Checker::CheckContactCoordinate(float x, float y)
 {
-	return coordinateState->CheckQuad(x, y);
+	if (state != notdraw)
+	{
+		return coordinateState->CheckQuad(x, y);
+	}
+	return false;
 }
 
 bool Checker::CheckContactCoordinate(int x, int y)
 {
-	CoordinateFloat *res = MyMouse::ConvertIntTOFloatForBoard(x, y);
-	result = coordinateState->CheckQuad(res);
+	if (state != notdraw)
+	{
+		CoordinateFloat *res = MyMouse::ConvertIntTOFloatForBoard(x, y);
+		result = coordinateState->CheckQuad(res);
 
-	delete res;
-	return result;
+		delete res;
+		return result;
+	}
+	return false;
 }
 
 bool Checker::CheckContactCoordinate(CoordinateFloat* coord)
 {
-	return coordinateState->CheckQuad(coord);
+	if (state != notdraw)
+	{
+		return coordinateState->CheckQuad(coord);
+	}
+	return false;
 }
 
 bool Checker::CheckContactCoordinate(CoordinateInt* coord)
 {
-	return CheckContactCoordinate(coord->X, coord->Y);
+	if (state != notdraw)
+	{
+		return CheckContactCoordinate(coord->X, coord->Y);
+	}
+	return false;
 }
 
 bool Checker::CheckBeatCoordinate(CoordinateFloat* coordinate)
 {
-	coordinateCheck->Set(coordinateState->X + 0.5f, coordinateState->Y + 0.5f);
-	if (coordinateCheck->CheckQuad(coordinate))
-		return true;
+	if (state != notdraw)
+	{
+		coordinateCheck->Set(coordinateState->X + 0.5f, coordinateState->Y + 0.5f);
+		if (coordinateCheck->CheckQuad(coordinate))
+			return true;
 
-	coordinateCheck->Set(coordinateState->X - 0.5f, coordinateState->Y + 0.5f);
-	if (coordinateCheck->CheckQuad(coordinate))
-		return true;
+		coordinateCheck->Set(coordinateState->X - 0.5f, coordinateState->Y + 0.5f);
+		if (coordinateCheck->CheckQuad(coordinate))
+			return true;
 
-	coordinateCheck->Set(coordinateState->X - 0.5f, coordinateState->Y - 0.5f);
-	if (coordinateCheck->CheckQuad(coordinate))
-		return true;
+		coordinateCheck->Set(coordinateState->X - 0.5f, coordinateState->Y - 0.5f);
+		if (coordinateCheck->CheckQuad(coordinate))
+			return true;
 
-	coordinateCheck->Set(coordinateState->X + 0.5f, coordinateState->Y - 0.5f);
-	if (coordinateCheck->CheckQuad(coordinate))
-		return true;
-
+		coordinateCheck->Set(coordinateState->X + 0.5f, coordinateState->Y - 0.5f);
+		if (coordinateCheck->CheckQuad(coordinate))
+			return true;
+	}
 	return false;
 }
 
 bool Checker::CheckWalkCoordinate(CoordinateFloat* coordinate)
 {
-	//ОБЯЗАТЕЛЬНО ПЕРЕОПРЕДЕЛИТЬ!!!!!!!!!!!!!!!!!!
-	coordinateCheck->Set(coordinateState->X + 0.25f,coordinateState->Y + 0.25f);
-	if(coordinateCheck->CheckQuad(coordinate))
-		return true;
+	if (state != notdraw)
+	{
+		coordinateCheck->Set(coordinateState->X + 0.25f, coordinateState->Y + 0.25f);
+		if (coordinateCheck->CheckQuad(coordinate))
+			return true;
 
-	coordinateCheck->Set(coordinateState->X - 0.25f, coordinateState->Y + 0.25f);
-	if (coordinateCheck->CheckQuad(coordinate))
-		return true;
-
+		coordinateCheck->Set(coordinateState->X - 0.25f, coordinateState->Y + 0.25f);
+		if (coordinateCheck->CheckQuad(coordinate))
+			return true;
+	}
 	return false;
 }
 
 void Checker::SetState(StateChecker state_)
 {
-	if(state != notdraw)
+	if (state != notdraw)
 	{
 		state = state_;
 	}
@@ -170,5 +207,10 @@ void Checker::SetState(StateChecker state_)
 	{
 		coordinateState->Set(coordinateDraw);
 	}
-	
+
+	if (state_ == notdraw)
+	{
+		state = notdraw;
+		coordinateState = nullptr;
+	}
 }

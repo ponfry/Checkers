@@ -176,6 +176,51 @@ void ChangeWH(int w, int h)
 	}
 }
 
+CoordinateFloat* Calculate()
+{
+	float x, y;
+	x = startBeatCoordinateChecker.X - (startBeatCoordinateChecker.X - endBeatCoordinateChecker.X)/2;
+	y = startBeatCoordinateChecker.Y - (startBeatCoordinateChecker.Y - endBeatCoordinateChecker.Y)/2;
+	return new CoordinateFloat(x, y);
+}
+
+void CheckFlags(FlagsPlayer* flagplayer, Player* player, Player* player1)
+{
+	if (flagplayer->CaptureChecker)
+	{
+		flagplayer->CheckChessBoardCoordinate = chess_board->CheckCoordinate();
+		CoordinateFloat* result = chess_board->GetEntryCoordinate();
+
+		flagplayer->IsConflictOtherPlayerCheckers = 
+			player1->CheckÑonflictCoordinateCheckers(result);
+
+		if (flagplayer->CheckChessBoardCoordinate && !flagplayer->IsConflictOtherPlayerCheckers)
+		{
+			flagplayer->WasSetWalkCoordinateChecker =
+				player->SetWalkCoordinateSelectedChecker(result);
+
+			player->InitStartEndBeatCoordinate(result);
+
+			if(!flagplayer->WasSetWalkCoordinateChecker && player1->CheckÑonflictCoordinateCheckers(Calculate()))
+			{
+				flagplayer->WasSetBeatCoordinateChecker =
+					player->SetBeatCoordinateSelectedChecker(result);
+
+				player1->SetStateNotDrawChecker(Calculate());
+			}
+
+		}
+		//delete result;
+
+		if (!flagplayer->CheckAll())
+		{
+			player->SetStateUnSelectChecker();
+			drawError();
+		}
+	}
+	flagplayer->SetFalseAll();
+}
+
 void mouse(int button, int state, int x, int y)
 {
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -189,40 +234,11 @@ void mouse(int button, int state, int x, int y)
 	{
 		if(flags_player_one.CaptureChecker|| flags_player_two.CaptureChecker)
 		{
-			if (flags_player_one.CaptureChecker)
-			{
-				coordinateMouseMove.Set(x, y);
-				flags_player_one.CheckChessBoardCoordinate = chess_board->CheckCoordinate();
-				flags_player_one.IsConflictOtherPlayerCheckers = playerTwo->CheckÑonflictCoordinateCheckers(chess_board->GetEntryCoordinate());
-				if (flags_player_one.CheckChessBoardCoordinate && !flags_player_one.IsConflictOtherPlayerCheckers)
-				{
-					flags_player_one.WasSetCoordinateChecker =
-						playerOne->SetCoordinateSelectedChecker(chess_board->GetEntryCoordinate());
-				}
-				if (!flags_player_one.CheckAll())
-				{
-					playerOne->SetStateUnSelectChecker();
-					drawError();
-				}
-			}
+			coordinateMouseMove.Set(x, y);
 
-			if (flags_player_two.CaptureChecker)
-			{
-				coordinateMouseMove.Set(x, y);
-				flags_player_two.CheckChessBoardCoordinate = chess_board->CheckCoordinate();
-				flags_player_two.IsConflictOtherPlayerCheckers = playerOne->CheckÑonflictCoordinateCheckers(chess_board->GetEntryCoordinate());
-
-				if (flags_player_two.CheckChessBoardCoordinate && !flags_player_two.IsConflictOtherPlayerCheckers)
-				{
-					flags_player_two.WasSetCoordinateChecker =
-						playerTwo->SetCoordinateSelectedChecker(chess_board->GetEntryCoordinate());
-				}
-				if (!flags_player_two.CheckAll())
-				{
-					playerTwo->SetStateUnSelectChecker();
-					drawError();
-				}
-			}
+			CheckFlags(&flags_player_one, playerOne, playerTwo);
+			
+			CheckFlags(&flags_player_two, playerTwo, playerOne);
 		}
 	}
 	reDraw();

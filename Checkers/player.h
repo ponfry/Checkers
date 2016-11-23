@@ -13,8 +13,13 @@ public:
 	bool SetStateSelectChecker();
 	void SetStateUnSelectChecker();
 	
-	bool SetCoordinateSelectedChecker(CoordinateFloat*);
+	bool SetWalkCoordinateSelectedChecker(CoordinateFloat*);
+	bool SetBeatCoordinateSelectedChecker(CoordinateFloat*);
+
 	bool CheckСonflictCoordinateCheckers(CoordinateFloat*);
+	
+	bool SetStateNotDrawChecker(CoordinateFloat*);
+	void InitStartEndBeatCoordinate(CoordinateFloat*);
 protected:
 	virtual void InitChecker();
 	void CheckCheckers();

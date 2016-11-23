@@ -1,6 +1,8 @@
 ﻿#include "player.h"
 #include "CoordinateMouse.h"
 #include "StateChecker.h"
+#include <ostream>
+#include <iostream>
 
 Player::Player()
 {
@@ -54,7 +56,7 @@ bool Player::CheckCoordinatePassive()
 	return false;
 }
 
-bool Player::SetCoordinateSelectedChecker(CoordinateFloat* coordinate)
+bool Player::SetWalkCoordinateSelectedChecker(CoordinateFloat* coordinate)
 {
 	if (coordinate == nullptr)
 	{
@@ -62,11 +64,11 @@ bool Player::SetCoordinateSelectedChecker(CoordinateFloat* coordinate)
 	}
 	if (indexSelected < 12 && indexSelected >= 0)
 	{
-		if((checker[11].CheckWalkCoordinate(coordinate) || 
-			checker[11].CheckBeatCoordinate(coordinate)) && 
+		if(checker[11].CheckWalkCoordinate(coordinate) && 
 			!CheckСonflictCoordinateCheckers(coordinate))
 		{
 			checker[11].SetCoordinate(coordinate->X, coordinate->Y);
+			delete coordinate;
 			checker[11].SetState(draw);
 			return true;
 		}		
@@ -134,4 +136,47 @@ bool Player::CheckСonflictCoordinateCheckers(CoordinateFloat* coordinate)
 			
 	}
 	return false;
+}
+
+bool Player::SetBeatCoordinateSelectedChecker(CoordinateFloat* coordinate)
+{
+	if (coordinate == nullptr)
+	{
+		return false;
+	}
+	if (indexSelected < 12 && indexSelected >= 0)
+	{
+		if (checker[11].CheckBeatCoordinate(coordinate) &&
+			!CheckСonflictCoordinateCheckers(coordinate))
+		{
+			checker[11].SetCoordinate(coordinate->X, coordinate->Y);
+
+			delete coordinate;
+			checker[11].SetState(draw);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Player::SetStateNotDrawChecker(CoordinateFloat* coordinate)
+{
+	for (int i = 0; i < 12; i++)
+	{
+		if (checker[i].GetCurrentCoordinate() != nullptr && checker[i].GetCurrentCoordinate()->operator==(coordinate))
+		{
+			checker[i].SetState(notdraw);
+			return true;
+		}
+	}
+	return false;
+}
+
+void Player::InitStartEndBeatCoordinate(CoordinateFloat* coordinate)
+{
+	CoordinateFloat* res = checker[11].GetCurrentCoordinate();
+	startBeatCoordinateChecker.Set(res);
+	delete res;
+
+	endBeatCoordinateChecker.Set(coordinate);
 }

@@ -1,14 +1,15 @@
 ﻿#pragma once
 
-struct FlagsGame
+struct FlagsPlayer
 {
 	bool CaptureChecker = false;
 	bool CheckChessBoardCoordinate = false;
-	bool WasSetCoordinateChecker = false;
+	bool WasSetWalkCoordinateChecker = false;
+	bool WasSetBeatCoordinateChecker = false;
 	bool IsConflictOtherPlayerCheckers = false;
 	bool CheckAll()
 	{
-		if(CaptureChecker && CheckChessBoardCoordinate && WasSetCoordinateChecker && !IsConflictOtherPlayerCheckers)
+		if(CaptureChecker && CheckChessBoardCoordinate && (WasSetWalkCoordinateChecker || WasSetBeatCoordinateChecker)&& !IsConflictOtherPlayerCheckers)
 		{
 			return true;
 		}
@@ -18,10 +19,11 @@ struct FlagsGame
 	{
 		CaptureChecker = false;
 		CheckChessBoardCoordinate = false;
-		WasSetCoordinateChecker = false;
+		WasSetWalkCoordinateChecker = false;
+		WasSetBeatCoordinateChecker = false;
 		IsConflictOtherPlayerCheckers = false;
 	}
 };
 
-__declspec(selectany) FlagsGame flags_player_one;
-__declspec(selectany) FlagsGame flags_player_two;
+__declspec(selectany) FlagsPlayer flags_player_one;
+__declspec(selectany) FlagsPlayer flags_player_two;

@@ -38,6 +38,7 @@ void Checker::InitDraw()
 		break;
 
 	case selected:
+	case constant:
 		Texture::LoadDraw(selecting);
 		break;
 
@@ -86,7 +87,6 @@ void Checker::Print()
 
 void Checker::SetCoordinate(CoordinateInt *coord)
 {
-
 	SetCoordinate(coord->X, coord->Y);
 }
 

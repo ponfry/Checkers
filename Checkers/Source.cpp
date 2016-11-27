@@ -15,9 +15,20 @@ using namespace std;
 ChessBoard* chess_board;
 PlayerTwo* playerTwo;
 PlayerOne* playerOne;
-DrawTexture* drawErrorWrong;
+
+DrawTexture* drawErrorWrong, *drawErrorPlayer;
+
+CheckerWhite  *checkerWhite;
+CheckerBlack *checkerBlack;
+
 float X, Y;
 
+struct FlagsGame
+{
+	bool FirstPlayerMove = true;
+	bool SecondPlayerMove = false;
+	bool BeginGame = false;
+}flags_game;
 
 void Textout(char* str, float X, float Y, float phi = 0.02)
 {
@@ -66,6 +77,13 @@ void init()
 	glColor3f(0, 0, 1);
 	Textout("Menu", X, Y);
 
+	glViewport(window_size.Weigth - window_size.Heigth, 0, window_size.Heigth, window_size.Heigth);
+
+	checkerWhite->Draw();
+	checkerBlack->Draw();
+
+	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
+
 	chess_board->Draw();
 	playerOne->Draw();
 	playerTwo->Draw();
@@ -98,20 +116,19 @@ void init()
 	glColor3f(0, 0, 1);
 	Textout("Menu", X, Y);
 
+	glViewport(window_size.Weigth - window_size.Heigth, 0, window_size.Heigth, window_size.Heigth);
+
+	checkerWhite->Draw();
+	checkerBlack->Draw();
+
+	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
+
 	chess_board->Draw();
 	playerOne->Draw();
 	playerTwo->Draw();
 
 	glutSwapBuffers();
 	
-}
-
-void reDraw()
-{
-	chess_board->Draw();
-	playerOne->Draw();
-	playerTwo->Draw();
-	glutSwapBuffers();
 }
 
 void drawError()
@@ -137,6 +154,66 @@ void drawError()
 	Sleep(1150);
 }
 
+void drawErrorPlayers()
+{
+	Texture::LoadDraw(drawErrorPlayer);
+
+	glBegin(GL_TRIANGLE_STRIP);
+	glTexCoord2f(0, 1);
+	glVertex2f(-0.5f, -0.25f);
+
+	glTexCoord2f(0, 0);
+	glVertex2f(-0.5f, 0.25f);
+
+	glTexCoord2f(1, 1);
+	glVertex2f(0.5f, -0.25f);
+
+	glTexCoord2f(1, 0);
+	glVertex2f(0.5f, 0.25f);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
+	glutSwapBuffers();
+	Sleep(1150);
+}
+
+void reDrawCheckers()
+{
+	checkerWhite->Draw();
+	checkerBlack->Draw();
+}
+void drawWhoMove()
+{
+	glViewport(window_size.Weigth-window_size.Heigth, 0, window_size.Heigth, window_size.Heigth);
+	if (flags_game.FirstPlayerMove)
+	{
+		checkerWhite->SetState(constant);
+		checkerBlack->SetState(draw);
+		char title[20];
+		sprintf_s(title, "%dx%dc%dx%d", window_size.Weigth, window_size.Heigth, coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
+		glutSetWindowTitle(title);
+	}
+	if (flags_game.SecondPlayerMove)
+	{
+		checkerWhite->SetState(draw);
+		checkerBlack->SetState(constant);
+	}
+	reDrawCheckers();
+
+	glViewport(window_size.IndentX, window_size.IndentY,
+		window_size.Board, window_size.Board);
+}
+
+void reDraw()
+{
+	chess_board->Draw();
+	playerOne->Draw();
+	playerTwo->Draw();
+	drawWhoMove();
+
+	glutSwapBuffers();
+}
+
 void mouseActive(int x, int y)
 {
 	coordinateMouseMove.Set(x, y);
@@ -146,13 +223,18 @@ void mouseActive(int x, int y)
 void mousePassive(int x, int y)
 {
 	coordinateMousePassiveMove.Set(x, y);
-	if (playerTwo->CheckCoordinatePassive() || playerOne->CheckCoordinatePassive())
+	if (flags_game.FirstPlayerMove)
 	{
-		reDraw();
-	}	
-
+		playerOne->CheckCoordinatePassive();
+	}
+	if (flags_game.SecondPlayerMove)
+	{
+		playerTwo->CheckCoordinatePassive();
+	}
+	reDraw();
 	char title[20];
-	sprintf_s(title, "%d x %d", coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
+	sprintf_s(title, "%dx%dc%dx%d", window_size.Weigth, window_size.Heigth, coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
+
 	glutSetWindowTitle(title);
 }
 
@@ -184,8 +266,9 @@ CoordinateFloat* Calculate()
 	return new CoordinateFloat(x, y);
 }
 
-void CheckFlags(FlagsPlayer* flagplayer, Player* player, Player* player1)
+bool CheckFlags(FlagsPlayer* flagplayer, Player* player, Player* player1)
 {
+	bool resultB = true;
 	if (flagplayer->CaptureChecker)
 	{
 		flagplayer->CheckChessBoardCoordinate = chess_board->CheckCoordinate();
@@ -210,15 +293,16 @@ void CheckFlags(FlagsPlayer* flagplayer, Player* player, Player* player1)
 			}
 
 		}
-		//delete result;
 
 		if (!flagplayer->CheckAll())
 		{
 			player->SetStateUnSelectChecker();
 			drawError();
+			resultB = false;
 		}
 	}
 	flagplayer->SetFalseAll();
+	return resultB;
 }
 
 void mouse(int button, int state, int x, int y)
@@ -226,24 +310,49 @@ void mouse(int button, int state, int x, int y)
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 		coordinateMouseMove.Set(x,y);
-		flags_player_one.CaptureChecker = playerOne->SetStateSelectChecker();
-		flags_player_two.CaptureChecker = playerTwo->SetStateSelectChecker();	
+		if (flags_game.FirstPlayerMove)
+		{
+			flags_player_one.CaptureChecker = playerOne->SetStateSelectChecker();
+		}
+		if (flags_game.SecondPlayerMove)
+		{
+			flags_player_two.CaptureChecker = playerTwo->SetStateSelectChecker();
+		}
 	}
 
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
-		if(flags_player_one.CaptureChecker|| flags_player_two.CaptureChecker)
+		coordinateMouseMove.Set(x, y);
+		if(flags_player_one.CaptureChecker && CheckFlags(&flags_player_one, playerOne, playerTwo))
 		{
-			coordinateMouseMove.Set(x, y);
+			flags_game.FirstPlayerMove = false;
+			flags_game.SecondPlayerMove = true;			
+		}
 
-			CheckFlags(&flags_player_one, playerOne, playerTwo);
-			
-			CheckFlags(&flags_player_two, playerTwo, playerOne);
+		if (flags_player_two.CaptureChecker && CheckFlags(&flags_player_two, playerTwo, playerOne))
+		{
+			flags_game.FirstPlayerMove = true;
+			flags_game.SecondPlayerMove = false;
 		}
 	}
 	reDraw();
 }
 
+void InitGame()
+{
+	playerTwo = new PlayerTwo();
+	playerOne = new PlayerOne();
+	chess_board = new ChessBoard();
+	drawErrorWrong = Texture::Init(L"errors/ErrorWrongMove.png");
+	drawErrorPlayer = Texture::Init(L"errors/ErrorPlayer.png");
+	checkerWhite = new CheckerWhite();
+	checkerBlack = new CheckerBlack();
+
+	checkerWhite->SetCoordinate(0.4f, -0.7f);
+	checkerBlack->SetCoordinate(0.8f, -0.7f);
+
+	checkerWhite->SetState(constant);
+}
 void main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
@@ -253,10 +362,7 @@ void main(int argc, char* argv[])
 	glutCreateWindow("Checkers");
 
 	ilInit();
-	playerTwo = new PlayerTwo();
-	playerOne = new PlayerOne();
-	chess_board = new ChessBoard();
-	drawErrorWrong = Texture::Init(L"errors/ErrorWrongMove.png");
+	InitGame();
 	glutMotionFunc(mouseActive);
 	glutPassiveMotionFunc(mousePassive);
 	glutMouseFunc(mouse);

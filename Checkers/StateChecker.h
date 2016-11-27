@@ -4,5 +4,6 @@ enum StateChecker
 	draw = 0,
 	notdraw,
 	selected,
-	light
+	light,
+	constant
 };

@@ -31,8 +31,9 @@ protected:
 	void InitDraw();
 	void Print();
 
-	CoordinateFloat* coordinateDraw, *coordinateState, *coordinateCheck; 
+	CoordinateFloat* coordinateDraw, *coordinateState, *coordinateCheck, *availableMoves;
 	DrawTexture *drawing, *selecting, *lighting;
 	StateChecker state;
+	
 	bool result;
 };

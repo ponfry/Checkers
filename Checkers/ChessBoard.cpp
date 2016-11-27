@@ -46,7 +46,7 @@ void ChessBoard::Init()
 {
 	draw = Texture::Init(L"texture/metall.jpg");
 	int count = 0, i = 0;
-	float x = -0.625f, y = -0.875f;
+	float x = -0.875f, y = -0.875f;
 
 	while (y <= 1.0f)
 	{
@@ -59,11 +59,12 @@ void ChessBoard::Init()
 		count++;
 		if (count % 2 == 0)
 		{
-			x = -0.625f;
+			x = -0.875f;
 		}
 		else
 		{
-			x = -0.875f;
+			x = -0.625f;
+			
 		}
 		y += 0.25f;
 

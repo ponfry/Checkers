@@ -66,6 +66,9 @@
     <ClCompile Include="player.cpp">
       <Filter>Resource Files\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Helper.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -115,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="FlagsPlayer.h">
       <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixMove.h">
+      <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

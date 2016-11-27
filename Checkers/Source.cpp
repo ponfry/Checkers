@@ -10,6 +10,9 @@
 #include "FlagsPlayer.h"
 #include "PlayerOne.h"
 #include "PlayerTwo.h"
+#include "MatrixMove.h"
+
+#include <ctime>    
 using namespace std;
 
 ChessBoard* chess_board;
@@ -18,7 +21,7 @@ PlayerOne* playerOne;
 
 DrawTexture* drawErrorWrong, *drawErrorPlayer;
 
-CheckerWhite  *checkerWhite;
+CheckerWhite *checkerWhite;
 CheckerBlack *checkerBlack;
 
 float X, Y;
@@ -182,6 +185,7 @@ void reDrawCheckers()
 	checkerWhite->Draw();
 	checkerBlack->Draw();
 }
+
 void drawWhoMove()
 {
 	glViewport(window_size.Weigth-window_size.Heigth, 0, window_size.Heigth, window_size.Heigth);
@@ -189,9 +193,9 @@ void drawWhoMove()
 	{
 		checkerWhite->SetState(constant);
 		checkerBlack->SetState(draw);
-		char title[20];
+		/*char title[20];
 		sprintf_s(title, "%dx%dc%dx%d", window_size.Weigth, window_size.Heigth, coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
-		glutSetWindowTitle(title);
+		glutSetWindowTitle(title);*/
 	}
 	if (flags_game.SecondPlayerMove)
 	{
@@ -232,10 +236,7 @@ void mousePassive(int x, int y)
 		playerTwo->CheckCoordinatePassive();
 	}
 	reDraw();
-	char title[20];
-	sprintf_s(title, "%dx%dc%dx%d", window_size.Weigth, window_size.Heigth, coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
-
-	glutSetWindowTitle(title);
+	
 }
 
 void ChangeWH(int w, int h)
@@ -340,6 +341,27 @@ void mouse(int button, int state, int x, int y)
 
 void InitGame()
 {
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			MatrixGameField[i][j] = freely;
+		}	
+
+		for (int j = 0; j < 8; j += 2)
+		{
+			if (i % 2 == 0)
+			{
+				MatrixGameField[i][j] = incorrect;
+			}
+			else
+			{
+				MatrixGameField[i][j + 1] = incorrect;
+			}
+		}
+		
+	}
+	
 	playerTwo = new PlayerTwo();
 	playerOne = new PlayerOne();
 	chess_board = new ChessBoard();
@@ -352,9 +374,20 @@ void InitGame()
 	checkerBlack->SetCoordinate(0.8f, -0.7f);
 
 	checkerWhite->SetState(constant);
+	
+	/*cout << busy << incorrect << freely<< endl;
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			cout << MatrixGameField[i][j] <<" ";		
+		}
+		cout << endl;
+	}*/
 }
 void main(int argc, char* argv[])
 {
+	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
 	glutInitWindowPosition(0, 0);
@@ -363,11 +396,26 @@ void main(int argc, char* argv[])
 
 	ilInit();
 	InitGame();
+
 	glutMotionFunc(mouseActive);
 	glutPassiveMotionFunc(mousePassive);
 	glutMouseFunc(mouse);
 	glutDisplayFunc(init);
 	glutReshapeFunc(ChangeWH);
 	glewInit();
+	
 	glutMainLoop();
+	
 }
+
+
+/*char title[20];
+sprintf_s(title, "%dx%dc%dx%d", window_size.Weigth, window_size.Heigth, coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
+
+glutSetWindowTitle(title);*/
+
+//clock_t start, finish;
+//start = clock();
+//finish = clock();
+//cout << "time=";
+//cout << (finish - start) << endl;

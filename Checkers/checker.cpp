@@ -3,6 +3,7 @@
 #include "Texture.h"
 #include "CoordinateMouse.h"
 #include <iostream>
+#include "MatrixMove.h"
 using namespace std;
 
 Checker::Checker(int color)
@@ -11,6 +12,7 @@ Checker::Checker(int color)
 	coordinateDraw = new CoordinateFloat;
 	coordinateState = new CoordinateFloat;
 	coordinateCheck = new CoordinateFloat;
+	availableMoves = new CoordinateFloat[15];
 	Checker::Init();
 }
 
@@ -94,6 +96,7 @@ void Checker::SetCoordinate(int x, int y)
 {
 	if (state != notdraw)
 	{
+		MatrixGameField[0][0];
 		delete coordinateState;
 		coordinateState = MyMouse::ConvertIntTOFloatForBoard(x, y);
 	}
@@ -103,6 +106,7 @@ void Checker::SetCoordinate(float x, float y)
 {
 	if (state != notdraw)
 	{
+		MatrixGameField[0][0];
 		coordinateState->Set(x, y);
 	}
 }
@@ -198,9 +202,18 @@ bool Checker::CheckWalkCoordinate(CoordinateFloat* coordinate)
 
 void Checker::SetState(StateChecker state_)
 {
-	if (state != notdraw)
+	if (state == notdraw)
+		return;
+
+	if (state_ != notdraw)
 	{
 		state = state_;
+	}
+	else
+	{
+		state = notdraw;
+		coordinateState = nullptr;
+		return;
 	}
 
 	if (state_ == selected)
@@ -208,9 +221,5 @@ void Checker::SetState(StateChecker state_)
 		coordinateState->Set(coordinateDraw);
 	}
 
-	if (state_ == notdraw)
-	{
-		state = notdraw;
-		coordinateState = nullptr;
-	}
+	
 }

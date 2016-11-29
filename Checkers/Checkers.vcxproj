@@ -152,7 +152,7 @@
     <ClCompile Include="CheckerWhite.cpp" />
     <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="CoordinateMouse.cpp" />
-    <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="Conversion.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="PlayerOne.cpp" />
     <ClCompile Include="PlayerTwo.cpp" />
@@ -170,7 +170,7 @@
     <ClInclude Include="DrawTexture.h" />
     <ClInclude Include="CoordinateMouse.h" />
     <ClInclude Include="FlagsPlayer.h" />
-    <ClInclude Include="Helper.h" />
+    <ClInclude Include="Conversion.h" />
     <ClInclude Include="MatrixMove.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="PlayerOne.h" />

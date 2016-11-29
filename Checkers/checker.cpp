@@ -4,6 +4,7 @@
 #include "CoordinateMouse.h"
 #include <iostream>
 #include "MatrixMove.h"
+#include "Conversion.h"
 using namespace std;
 
 Checker::Checker(int color)
@@ -96,9 +97,17 @@ void Checker::SetCoordinate(int x, int y)
 {
 	if (state != notdraw)
 	{
-		MatrixGameField[0][0];
-		delete coordinateState;
-		coordinateState = MyMouse::ConvertIntTOFloatForBoard(x, y);
+		CoordinateFloat *result = MyMouse::ConvertIntTOFloatForBoard(x, y);
+		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(result);
+
+		if(coord != nullptr)
+		{
+			MatrixGameField[coord->X][coord->Y] = busy;
+			coord = Conversion::GetCoordinateForMatrix(coordinateState);
+			MatrixGameField[coord->X][coord->Y] = freely;
+			delete coordinateState;
+			coordinateState = result;
+		}		
 	}
 }
 
@@ -106,8 +115,15 @@ void Checker::SetCoordinate(float x, float y)
 {
 	if (state != notdraw)
 	{
-		MatrixGameField[0][0];
-		coordinateState->Set(x, y);
+		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(new CoordinateFloat(x, y));
+		if (coord != nullptr)
+		{
+			MatrixGameField[coord->X][coord->Y] = busy;
+			coord = Conversion::GetCoordinateForMatrix(coordinateState);
+			if(coord!=NULL)
+				MatrixGameField[coord->X][coord->Y] = freely;
+			coordinateState->Set(x, y);
+		}		
 	}
 }
 
@@ -212,6 +228,8 @@ void Checker::SetState(StateChecker state_)
 	else
 	{
 		state = notdraw;
+		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(coordinateState);
+		MatrixGameField[coord->X][coord->Y] = freely;
 		coordinateState = nullptr;
 		return;
 	}

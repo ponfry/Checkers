@@ -50,6 +50,6 @@ struct CoordinateFloat
 	}
 };
 
-__declspec(selectany) CoordinateFloat startBeatCoordinateChecker;
-__declspec(selectany) CoordinateFloat endBeatCoordinateChecker;
-__declspec(selectany) CoordinateFloat MatrixCheckBoard[8][8];
+__declspec(selectany) CoordinateFloat coordinateNotDrawChecker;
+
+__declspec(selectany) CoordinateFloat* MatrixCheckBoard[8][8];

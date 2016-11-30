@@ -1,10 +1,12 @@
 #include "PlayerTwo.h"
+#include "FlagsPlayer.h"
 
 
 PlayerTwo::PlayerTwo()
 {
-	checker = new CheckerBlack[12];
-	InitChecker();
+	checker = new CheckerBlack[CountCheckers + 1];
+	flags = &flags_player_two;
+	PlayerTwo::InitChecker();
 }
 
 void PlayerTwo::InitChecker()

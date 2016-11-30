@@ -9,13 +9,16 @@ using namespace std;
 
 Checker::Checker(int color)
 {
+	drawing = nullptr; 
+	selecting = nullptr;
+	lighting = nullptr;
+	result = false;
 	state = draw;
 	coordinateDraw = new CoordinateFloat;
 	coordinateState = new CoordinateFloat;
 	coordinateCheck = new CoordinateFloat;
-	availableMoves = new CoordinateFloat[15];
+	availableMoves = new Move[15];
 	countMove = 0;
-	Checker::Init();
 }
 
 void Checker::Draw()
@@ -25,11 +28,6 @@ void Checker::Draw()
 		InitDraw();
 		Print();
 	}	
-}
-
-void Checker::Init()
-{
-	drawing = Texture::Init(L"texture/checkerwhite.png");
 }
 
 void Checker::InitDraw()
@@ -88,13 +86,27 @@ void Checker::Print()
 	glDisable(GL_BLEND);
 }
 
+void Checker::Init()
+{
+}
+
+void Checker::CheckBeatCoordinate(CoordinateInt*)
+{
+}
+
+void Checker::CheckWalkCoordinate(CoordinateInt*)
+{
+}
+
 void Checker::ControlMove()
 {
-	CoordinateInt* coord = Conversion::GetCoordinateForMatrix(coordinateState);
-	if((coord->X+1 < SizeMatrix || coord->X-1 >=0) && 
-		(coord->Y + 1 < SizeMatrix || coord->Y - 1 >= 0))
+	if (state != notdraw)
 	{
-		countMove = 1;
+		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(coordinateState);
+		countMove = 0;
+
+		CheckWalkCoordinate(coord);
+		CheckBeatCoordinate(coord);
 	}
 }
 
@@ -103,38 +115,12 @@ void Checker::SetCoordinate(CoordinateInt *coord)
 	SetCoordinate(coord->X, coord->Y);
 }
 
-void Checker::SetCoordinate(int x, int y)
+void Checker::SetCoordinate(int, int)
 {
-	if (state != notdraw)
-	{
-		CoordinateFloat *result = MyMouse::ConvertIntTOFloatForBoard(x, y);
-		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(result);
-
-		if(coord != nullptr)
-		{
-			MatrixGameField[coord->X][coord->Y] = busy;
-			coord = Conversion::GetCoordinateForMatrix(coordinateState);
-			MatrixGameField[coord->X][coord->Y] = freely;
-			delete coordinateState;
-			coordinateState = result;
-		}		
-	}
 }
 
-void Checker::SetCoordinate(float x, float y)
+void Checker::SetCoordinate(float, float)
 {
-	if (state != notdraw)
-	{
-		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(new CoordinateFloat(x, y));
-		if (coord != nullptr)
-		{
-			MatrixGameField[coord->X][coord->Y] = busy;
-			coord = Conversion::GetCoordinateForMatrix(coordinateState);
-			if(coord!=NULL)
-				MatrixGameField[coord->X][coord->Y] = freely;
-			coordinateState->Set(x, y);
-		}		
-	}
 }
 
 CoordinateFloat* Checker::GetCurrentCoordinate()
@@ -188,53 +174,58 @@ bool Checker::CheckContactCoordinate(CoordinateInt* coord)
 	return false;
 }
 
-bool Checker::CheckBeatCoordinate(CoordinateFloat* coordinate)
+bool Checker::HaveBeatMove()
 {
 	if (state != notdraw)
 	{
-		coordinateCheck->Set(coordinateState->X + 0.5f, coordinateState->Y + 0.5f);
-		if (coordinateCheck->CheckQuad(coordinate))
-			return true;
+		ControlMove();
+		for (int i = 0; i < countMove; i++)
+		{
+			if (availableMoves[i].IsBeat)
+			{
+				return true;
+			}
+		}
 
-		coordinateCheck->Set(coordinateState->X - 0.5f, coordinateState->Y + 0.5f);
-		if (coordinateCheck->CheckQuad(coordinate))
-			return true;
-
-		coordinateCheck->Set(coordinateState->X - 0.5f, coordinateState->Y - 0.5f);
-		if (coordinateCheck->CheckQuad(coordinate))
-			return true;
-
-		coordinateCheck->Set(coordinateState->X + 0.5f, coordinateState->Y - 0.5f);
-		if (coordinateCheck->CheckQuad(coordinate))
-			return true;
 	}
 	return false;
 }
 
-int Checker::GetCountMove()
+CoordinateFloat* Checker::GetAllBeatMove()
 {
-	if(state !=notdraw)
+	if(countMove == 0)
 	{
-		ControlMove();
-		return countMove;
+		return nullptr;
 	}
-	else
+
+	CoordinateFloat* result = new CoordinateFloat [countMove];
+	int j = 0;
+
+	for (int i = 0; i < countMove; i++)
 	{
-		return 0;
+		if(availableMoves[i].IsBeat)
+		{
+			result[j] = *availableMoves[i].Coordinate;
+			j++;
+		}
 	}
+
+	if(j==0)
+	{
+		return nullptr;
+	}
+
+	return result;
 }
 
-bool Checker::CheckWalkCoordinate(CoordinateFloat* coordinate)
+bool Checker::CheckMove(CoordinateFloat *coordinate)
 {
-	if (state != notdraw)
-	{
-		coordinateCheck->Set(coordinateState->X + 0.25f, coordinateState->Y + 0.25f);
-		if (coordinateCheck->CheckQuad(coordinate))
+	for (int i = 0; i < countMove; i++)
+	{	
+		if(availableMoves[i].Coordinate->operator==(coordinate))
+		{
 			return true;
-
-		coordinateCheck->Set(coordinateState->X - 0.25f, coordinateState->Y + 0.25f);
-		if (coordinateCheck->CheckQuad(coordinate))
-			return true;
+		}
 	}
 	return false;
 }

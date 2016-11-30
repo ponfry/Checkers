@@ -3,11 +3,14 @@
 #include "StateChecker.h"
 #include <ostream>
 #include <iostream>
-int CountCheckers = 12;
+#include <windows.h>
+
+
 Player::Player()
 {
-	checker = new CheckerWhite[CountCheckers];
-	Player::InitChecker();	
+	CountCheckers = 12;
+	checker = new CheckerWhite[CountCheckers+1];	
+	//InitChecker();	
 }
 
 void Player::Draw()
@@ -25,9 +28,10 @@ bool Player::SetStateSelectChecker()
 	if (indexSelected < CountCheckers && indexSelected >= 0)
 	{
 		checker[indexSelected].SetState(selected);
-		result = checker[indexSelected];
+		checker[12] = checker[indexSelected];
 		checker[indexSelected] = checker[11];
-		checker[11] = result;
+		checker[11] = checker[12];
+
 		return true;
 	}
 	return false;
@@ -52,26 +56,6 @@ bool Player::CheckCoordinatePassive()
 			return true;
 		}
 		checker[i].SetState(draw);
-	}
-	return false;
-}
-
-bool Player::SetWalkCoordinateSelectedChecker(CoordinateFloat* coordinate)
-{
-	if (coordinate == nullptr)
-	{
-		return false;
-	}
-	if (indexSelected < CountCheckers && indexSelected >= 0)
-	{
-		if(checker[11].CheckWalkCoordinate(coordinate) && 
-			!CheckСonflictCoordinateCheckers(coordinate))
-		{
-			checker[11].SetCoordinate(coordinate->X, coordinate->Y);
-			delete coordinate;
-			checker[11].SetState(draw);
-			return true;
-		}		
 	}
 	return false;
 }
@@ -121,50 +105,12 @@ void Player::CheckCheckers()
 	indexSelected = 12;
 }
 
-bool Player::CheckСonflictCoordinateCheckers(CoordinateFloat* coordinate)
-{
-	if (coordinate == nullptr)
-	{
-		return false;
-	}
-	for (int i = 0; i < CountCheckers; i++)
-	{
-		if(checker[i].CheckContactCoordinate(coordinate))
-		{
-			return true;
-		}
-			
-	}
-	return false;
-}
-
-bool Player::SetBeatCoordinateSelectedChecker(CoordinateFloat* coordinate)
-{
-	if (coordinate == nullptr)
-	{
-		return false;
-	}
-	if (indexSelected < CountCheckers && indexSelected >= 0)
-	{
-		if (checker[11].CheckBeatCoordinate(coordinate) &&
-			!CheckСonflictCoordinateCheckers(coordinate))
-		{
-			checker[11].SetCoordinate(coordinate->X, coordinate->Y);
-
-			delete coordinate;
-			checker[11].SetState(draw);
-			return true;
-		}
-	}
-	return false;
-}
-
-bool Player::SetStateNotDrawChecker(CoordinateFloat* coordinate)
+bool Player::SetStateNotDrawChecker()
 {
 	for (int i = 0; i < CountCheckers; i++)
 	{
 		if (checker[i].GetCurrentCoordinate() != nullptr &&
-			checker[i].GetCurrentCoordinate()->operator==(coordinate))
+			checker[i].GetCurrentCoordinate()->operator==(&coordinateNotDrawChecker))
 		{
 			checker[i].SetState(notdraw);
 			return true;
@@ -173,19 +119,88 @@ bool Player::SetStateNotDrawChecker(CoordinateFloat* coordinate)
 	return false;
 }
 
-void Player::InitStartEndBeatCoordinate(CoordinateFloat* coordinate)
-{
-	CoordinateFloat* res = checker[11].GetCurrentCoordinate();
-	startBeatCoordinateChecker.Set(res);
-	delete res;
-
-	endBeatCoordinateChecker.Set(coordinate);
-}
-
 void Player::ControlMovesCheckers()
 {
 	for (int i = 0; i < CountCheckers; i++)
 	{
-		checker[i].GetCountMove();
+		checker[i].ControlMove();
 	}
+}
+
+bool Player::SetNewCoordinateChecker(CoordinateFloat *coordinate)
+{	
+	if (CheckСonflictCoordinateCheckers(coordinate))
+	{
+		return false;
+	}
+
+	bool resultB = false, ismove = false;
+	int* moves = new int[11];
+	int j = 0;
+	for (int i = 0; i < 12; i++)
+	{
+		if (checker[i].HaveBeatMove())
+		{
+			if (i != 11)
+			{
+				moves[j] = i;
+				j++;
+			}
+			if(i==11)
+				ismove = true;
+		}
+	}
+	if ((j == 0) && !ismove)
+	{
+		if (checker[11].CheckMove(coordinate))
+		{
+			checker[11].SetCoordinate(coordinate->X, coordinate->Y);
+			checker[11].SetState(draw);
+			delete coordinate;
+
+			resultB = true;
+		}
+	}
+	else
+	{
+		if (ismove)
+		{
+			CoordinateFloat* begin = checker[11].GetCurrentCoordinate();
+			coordinateNotDrawChecker.Set(begin->X - (begin->X - coordinate->X) / 2.0,
+				begin->Y - (begin->Y - coordinate->Y) / 2.0);
+
+
+			flags->WasBeat = true;
+
+			checker[11].SetCoordinate(coordinate->X, coordinate->Y);
+			checker[11].SetState(draw);
+
+			delete coordinate;
+			delete begin;
+			resultB = true;
+		}
+		else
+		{
+			std::cout << "move";
+		}
+	}
+
+	return resultB;
+}
+
+bool Player::CheckСonflictCoordinateCheckers(CoordinateFloat* coordinate)
+{
+	if (coordinate == nullptr)
+	{
+		return false;
+	}
+	for (int i = 0; i < CountCheckers; i++)
+	{
+		if (checker[i].CheckContactCoordinate(coordinate))
+		{
+			return true;
+		}
+
+	}
+	return false;
 }

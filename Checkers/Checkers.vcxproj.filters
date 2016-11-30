@@ -125,5 +125,8 @@
     <ClInclude Include="Conversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Header Files\types</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

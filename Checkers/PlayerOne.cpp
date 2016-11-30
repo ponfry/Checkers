@@ -1,9 +1,11 @@
 #include "PlayerOne.h"
+#include "FlagsPlayer.h"
 
 PlayerOne::PlayerOne()
 {
-	checker = new CheckerWhite[12];
-	InitChecker();
+	checker = new CheckerWhite[CountCheckers + 1];
+	flags = &flags_player_one;
+	PlayerOne::InitChecker();
 }
 
 void PlayerOne::InitChecker()
@@ -37,3 +39,4 @@ void PlayerOne::InitChecker()
 		}
 	}
 }
+

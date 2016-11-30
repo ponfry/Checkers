@@ -4,13 +4,22 @@ struct FlagsPlayer
 {
 	bool CaptureChecker = false;
 	bool CheckChessBoardCoordinate = false;
-	bool WasSetWalkCoordinateChecker = false;
-	bool WasSetBeatCoordinateChecker = false;
-	bool IsConflictOtherPlayerCheckers = false;
+	bool WasSetNewCoordinate = false;
+	bool WasDeleteCheckerOtherPlayer = false;
+	bool WasBeat = false;
+
 	bool CheckAll()
 	{
-		if(CaptureChecker && CheckChessBoardCoordinate && (WasSetWalkCoordinateChecker || WasSetBeatCoordinateChecker)&& !IsConflictOtherPlayerCheckers)
+		if(CaptureChecker && CheckChessBoardCoordinate && WasSetNewCoordinate)	
 		{
+			if (WasBeat)
+			{
+				if(WasDeleteCheckerOtherPlayer)
+				{
+					return true;
+				}
+				return false;
+			}				
 			return true;
 		}
 		return false;
@@ -19,9 +28,9 @@ struct FlagsPlayer
 	{
 		CaptureChecker = false;
 		CheckChessBoardCoordinate = false;
-		WasSetWalkCoordinateChecker = false;
-		WasSetBeatCoordinateChecker = false;
-		IsConflictOtherPlayerCheckers = false;
+		WasSetNewCoordinate = false;
+		WasDeleteCheckerOtherPlayer = false;
+		WasBeat = false;
 	}
 };
 

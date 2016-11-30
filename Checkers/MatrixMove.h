@@ -1,9 +1,10 @@
 #pragma once
 enum StateGameField
 {
-	busy = 0,
-	freely,
-	incorrect
+	incorrect = 0,
+	white,
+	black,
+	freely
 };
 
 __declspec(selectany) StateGameField MatrixGameField[8][8];

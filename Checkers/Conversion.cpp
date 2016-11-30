@@ -7,7 +7,7 @@ CoordinateInt* Conversion::GetCoordinateForMatrix(CoordinateFloat *coordinate)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			if(MatrixCheckBoard[i][j].CheckQuad(coordinate))
+			if(MatrixCheckBoard[i][j]->CheckQuad(coordinate))
 			{
 				CoordinateInt* result = new CoordinateInt(i, j);
 				return result;
@@ -44,7 +44,7 @@ void Conversion::Init()
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			MatrixCheckBoard[i][j] = CoordinateFloat(xset + offset*j, yset - offset*i);
+			MatrixCheckBoard[i][j] = new CoordinateFloat(xset + offset*j, yset - offset*i);
 		}
 	}
 }

@@ -5,9 +5,13 @@ class CheckerWhite :
 {
 public:
 	CheckerWhite();	
-	 bool CheckWalkCoordinate(CoordinateFloat*) override;
+	void SetCoordinate(int, int) override;
+	void SetCoordinate(float, float) override;
 protected:	
 	void Init() override;
-	void ControlMove() override;
+	void CheckWalkCoordinate(CoordinateInt*) override;
+	void CheckBeatCoordinate(CoordinateInt*) override;
+
+	
 };
 

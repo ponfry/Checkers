@@ -10,9 +10,7 @@
 #include "FlagsPlayer.h"
 #include "PlayerOne.h"
 #include "PlayerTwo.h"
-#include "MatrixMove.h"
-
-#include <ctime>    
+//#include <ctime>    
 #include "Conversion.h"
 using namespace std;
 
@@ -212,8 +210,16 @@ void drawWhoMove()
 void reDraw()
 {
 	chess_board->Draw();
-	playerOne->Draw();
-	playerTwo->Draw();
+	if (flags_game.FirstPlayerMove)
+	{
+		playerTwo->Draw();
+		playerOne->Draw();
+	}
+	if (flags_game.SecondPlayerMove)
+	{
+		playerOne->Draw();
+		playerTwo->Draw();
+	}
 	drawWhoMove();
 
 	glutSwapBuffers();
@@ -260,42 +266,29 @@ void ChangeWH(int w, int h)
 	}
 }
 
-CoordinateFloat* Calculate()
-{
-	float x, y;
-	x = startBeatCoordinateChecker.X - (startBeatCoordinateChecker.X - endBeatCoordinateChecker.X)/2;
-	y = startBeatCoordinateChecker.Y - (startBeatCoordinateChecker.Y - endBeatCoordinateChecker.Y)/2;
-	return new CoordinateFloat(x, y);
-}
-
 bool CheckFlags(FlagsPlayer* flagplayer, Player* player, Player* player1)
 {
 	bool resultB = true;
 	if (flagplayer->CaptureChecker)
 	{
 		flagplayer->CheckChessBoardCoordinate = chess_board->CheckCoordinate();
-		CoordinateFloat* result = chess_board->GetEntryCoordinate();
-
-		flagplayer->IsConflictOtherPlayerCheckers = 
-			player1->CheckÑonflictCoordinateCheckers(result);
-
-		if (flagplayer->CheckChessBoardCoordinate && !flagplayer->IsConflictOtherPlayerCheckers)
+		if(flagplayer->CheckChessBoardCoordinate)
 		{
-			flagplayer->WasSetWalkCoordinateChecker =
-				player->SetWalkCoordinateSelectedChecker(result);
+			CoordinateFloat* result = chess_board->GetEntryCoordinate();
 
-			player->InitStartEndBeatCoordinate(result);
+			player->ControlMovesCheckers();
 
-			if(!flagplayer->WasSetWalkCoordinateChecker && player1->CheckÑonflictCoordinateCheckers(Calculate()))
+			flagplayer->WasSetNewCoordinate = player->SetNewCoordinateChecker(result);
+
+			if (flagplayer->WasBeat)
 			{
-				flagplayer->WasSetBeatCoordinateChecker =
-					player->SetBeatCoordinateSelectedChecker(result);
-
-				player1->SetStateNotDrawChecker(Calculate());
+				flagplayer->WasDeleteCheckerOtherPlayer = player1->SetStateNotDrawChecker();
 			}
 
 		}
-		player->ControlMovesCheckers();
+			
+		
+		
 		if (!flagplayer->CheckAll())
 		{
 			player->SetStateUnSelectChecker();
@@ -359,15 +352,16 @@ void InitGame()
 
 	checkerWhite->SetState(constant);
 	 
-	cout << busy << incorrect << freely<< endl;
+	/*cout << busy << incorrect << freely<< endl;
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			cout << " "<< MatrixGameField[i][j];
+			cout << " "<< MatrixCheckBoard[i][j]->X << MatrixCheckBoard[i][j]->Y 
+			;
 		}
 		cout << endl;
-	}
+	}*/
 }
 void main(int argc, char* argv[])
 {

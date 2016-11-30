@@ -2,6 +2,7 @@
 #include "CoordinateFloat.h"
 #include "CheckerWhite.h"
 #include "CheckerBlack.h"
+#include "FlagsPlayer.h"
 
 class Player
 {
@@ -11,22 +12,19 @@ public:
 	bool CheckCoordinatePassive();
 
 	bool SetStateSelectChecker();
-	void SetStateUnSelectChecker();
-	
-	bool SetWalkCoordinateSelectedChecker(CoordinateFloat*);
-	bool SetBeatCoordinateSelectedChecker(CoordinateFloat*);
+	void SetStateUnSelectChecker();	
+	bool SetStateNotDrawChecker();	
+
+	void ControlMovesCheckers();
+	bool SetNewCoordinateChecker(CoordinateFloat*);
 
 	bool CheckСonflictCoordinateCheckers(CoordinateFloat*);
 	
-	bool SetStateNotDrawChecker(CoordinateFloat*);
-	
-
-	void ControlMovesCheckers();
-
 protected:
 	virtual void InitChecker();
 	void CheckCheckers();
+	FlagsPlayer* flags;
 	CoordinateFloat* checkCoordf;
-	int indexSelected;
-	Checker* checker, result;
+	int indexSelected, CountCheckers;
+	Checker *checker;
 };

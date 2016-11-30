@@ -172,6 +172,7 @@
     <ClInclude Include="FlagsPlayer.h" />
     <ClInclude Include="Conversion.h" />
     <ClInclude Include="MatrixMove.h" />
+    <ClInclude Include="Move.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="PlayerOne.h" />
     <ClInclude Include="PlayerTwo.h" />

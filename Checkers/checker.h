@@ -3,6 +3,8 @@
 #include "CoordinateFloat.h"
 #include "CoordinateInt.h"
 #include "StateChecker.h"
+#include "Move.h"
+
 
 
 class Checker
@@ -12,8 +14,9 @@ public:
 	void Draw();
 
 	void SetCoordinate(CoordinateInt*);
-	void SetCoordinate(int, int);
-	void SetCoordinate(float, float);
+	virtual void SetCoordinate(int, int);
+	virtual void SetCoordinate(float, float);
+
 	CoordinateFloat* GetCurrentCoordinate();
 
 	bool CheckContactCoordinate(float, float);
@@ -22,21 +25,27 @@ public:
 	bool CheckContactCoordinate(CoordinateFloat*);
 	bool CheckContactCoordinate(CoordinateInt*);
 
-	bool CheckBeatCoordinate(CoordinateFloat*);
-	int GetCountMove();
-	void SetState(StateChecker);
+	bool HaveBeatMove();
+	CoordinateFloat* GetAllBeatMove();
 
-	virtual bool CheckWalkCoordinate(CoordinateFloat*);
+	bool CheckMove(CoordinateFloat*);
+	void ControlMove();
+
+	void SetState(StateChecker);
+	
 protected:
-	virtual void Init();
 	void InitDraw();
 	void Print();
 
-	virtual void ControlMove();
-	CoordinateFloat* coordinateDraw, *coordinateState, *coordinateCheck, *availableMoves;
+	virtual void Init();
+	virtual void CheckBeatCoordinate(CoordinateInt*);
+	virtual void CheckWalkCoordinate(CoordinateInt*);
+
+	CoordinateFloat* coordinateDraw, *coordinateState, *coordinateCheck;
 	DrawTexture *drawing, *selecting, *lighting;
 	StateChecker state;
 	
+	Move *availableMoves;
 	int countMove;
 	bool result;
 };

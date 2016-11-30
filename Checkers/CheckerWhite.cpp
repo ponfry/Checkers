@@ -2,6 +2,9 @@
 #include "Texture.h"
 #include "MatrixMove.h"
 #include "Conversion.h"
+#include "CoordinateMouse.h"
+#include <ostream>
+#include <iostream>
 
 CheckerWhite::CheckerWhite()
 {
@@ -14,28 +17,114 @@ void CheckerWhite::Init()
 	lighting = Texture::Init(L"whiteChecker/lighting.png");
 }
 
-void CheckerWhite::ControlMove()
+void CheckerWhite::CheckWalkCoordinate(CoordinateInt* coord)
 {
-	CoordinateInt* coord = Conversion::GetCoordinateForMatrix(coordinateState);
-	countMove = 0;
-	int coorr = MatrixGameField[coord->X + 1][coord->Y - 1];
-	int coorr2 = MatrixGameField[coord->X - 1][coord->Y - 1];
-	if (MatrixGameField[coord->X + 1][coord->Y - 1] == freely)
-			countMove++;
-	if (MatrixGameField[coord->X - 1][coord->Y - 1] == freely)
-			countMove++;
-	
+	int I = coord->X - 1;
+	int J = coord->Y + 1;
+	if (MatrixGameField[I][J] == freely)
+	{
+		availableMoves[countMove].Coordinate = MatrixCheckBoard[I][J];
+		availableMoves[countMove].IsBeat = false;
+		countMove++;
+	}
+	J -= 2;
+	if (MatrixGameField[I][J] == freely)
+	{
+		availableMoves[countMove].Coordinate = MatrixCheckBoard[I][J];
+		availableMoves[countMove].IsBeat = false;
+		countMove++;
+	}
 }
 
-bool CheckerWhite::CheckWalkCoordinate(CoordinateFloat* coordinate)
+void CheckerWhite::CheckBeatCoordinate(CoordinateInt*coord)
 {
-	coordinateCheck->Set(coordinateState->X + 0.25f, coordinateState->Y + 0.25f);
-	if (coordinateCheck->CheckQuad(coordinate))
-		return true;
+	int I = coord->X + 2;
+	int J = coord->Y + 2;
+	if (MatrixGameField[I][J] == freely)
+	{
+		if(MatrixGameField[I - 1][J - 1] == black)
+		{
+			availableMoves[countMove].Coordinate = MatrixCheckBoard[I][J];
+			availableMoves[countMove].IsBeat = true;
+			countMove++;
+			for (int i = 0; i < 8; i++)
+			{
+				for (int j = 0; j < 8; j++)
+				{
+					std::cout << " " << MatrixGameField[i][j];
+						;
+				}
+				std::cout << std::endl;
+			}
+		}		
+	}
+	I -= 4;
+	if (MatrixGameField[I][J] == freely)
+	{
+		if (MatrixGameField[I + 1][J - 1] == black)
+		{
+			availableMoves[countMove].Coordinate = MatrixCheckBoard[I][J];
+			availableMoves[countMove].IsBeat = true;
+			countMove++;
+		}
+	}
+	J -= 4;
+	if (MatrixGameField[I][J] == freely)
+	{
+		if (MatrixGameField[I + 1][J + 1] == black)
+		{
+			availableMoves[countMove].Coordinate = MatrixCheckBoard[I][J];
+			availableMoves[countMove].IsBeat = true;
+			countMove++;
+		}
+	}
+	I += 4;
+	if (MatrixGameField[I][J] == freely)
+	{
+		if (MatrixGameField[I - 1][J + 1] == black)
+		{
+			availableMoves[countMove].Coordinate = MatrixCheckBoard[I][J];
+			availableMoves[countMove].IsBeat = true;
+			countMove++;
+		}
+	}
+}
 
-	coordinateCheck->Set(coordinateState->X - 0.25f, coordinateState->Y + 0.25f);
-	if (coordinateCheck->CheckQuad(coordinate))
-		return true;
+void CheckerWhite::SetCoordinate(int x, int y)
+{
+	if (state != notdraw)
+	{
+		CoordinateFloat *result = MyMouse::ConvertIntTOFloatForBoard(x, y);
+		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(result);
 
-	return false;
+		if (coord != nullptr)
+		{
+			MatrixGameField[coord->X][coord->Y] = white;
+			coord = Conversion::GetCoordinateForMatrix(coordinateState);
+			MatrixGameField[coord->X][coord->Y] = freely;
+			delete coordinateState;
+			coordinateState = result;
+		}
+	}
+}
+
+void CheckerWhite::SetCoordinate(float x, float y)
+{
+	if (state != notdraw)
+	{
+		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(new CoordinateFloat(x, y));
+		if (coord != nullptr)
+		{
+			MatrixGameField[coord->X][coord->Y] = white;
+
+			if (coordinateState != nullptr)
+				coord = Conversion::GetCoordinateForMatrix(coordinateState);
+
+			coordinateState->Set(x, y);
+
+			if (coord != nullptr)
+				MatrixGameField[coord->X][coord->Y] = freely;
+
+		}
+	}
 }

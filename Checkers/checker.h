@@ -23,17 +23,20 @@ public:
 	bool CheckContactCoordinate(CoordinateInt*);
 
 	bool CheckBeatCoordinate(CoordinateFloat*);
-	virtual bool CheckWalkCoordinate(CoordinateFloat*);
-	
+	int GetCountMove();
 	void SetState(StateChecker);
+
+	virtual bool CheckWalkCoordinate(CoordinateFloat*);
 protected:
 	virtual void Init();
 	void InitDraw();
 	void Print();
 
+	virtual void ControlMove();
 	CoordinateFloat* coordinateDraw, *coordinateState, *coordinateCheck, *availableMoves;
 	DrawTexture *drawing, *selecting, *lighting;
 	StateChecker state;
 	
+	int countMove;
 	bool result;
 };

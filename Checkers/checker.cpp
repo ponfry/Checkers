@@ -14,6 +14,7 @@ Checker::Checker(int color)
 	coordinateState = new CoordinateFloat;
 	coordinateCheck = new CoordinateFloat;
 	availableMoves = new CoordinateFloat[15];
+	countMove = 0;
 	Checker::Init();
 }
 
@@ -22,7 +23,6 @@ void Checker::Draw()
 	if (state != notdraw)
 	{
 		InitDraw();
-
 		Print();
 	}	
 }
@@ -86,6 +86,16 @@ void Checker::Print()
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
+}
+
+void Checker::ControlMove()
+{
+	CoordinateInt* coord = Conversion::GetCoordinateForMatrix(coordinateState);
+	if((coord->X+1 < SizeMatrix || coord->X-1 >=0) && 
+		(coord->Y + 1 < SizeMatrix || coord->Y - 1 >= 0))
+	{
+		countMove = 1;
+	}
 }
 
 void Checker::SetCoordinate(CoordinateInt *coord)
@@ -199,6 +209,19 @@ bool Checker::CheckBeatCoordinate(CoordinateFloat* coordinate)
 			return true;
 	}
 	return false;
+}
+
+int Checker::GetCountMove()
+{
+	if(state !=notdraw)
+	{
+		ControlMove();
+		return countMove;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 bool Checker::CheckWalkCoordinate(CoordinateFloat* coordinate)

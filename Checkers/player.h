@@ -19,7 +19,10 @@ public:
 	bool CheckСonflictCoordinateCheckers(CoordinateFloat*);
 	
 	bool SetStateNotDrawChecker(CoordinateFloat*);
-	void InitStartEndBeatCoordinate(CoordinateFloat*);
+	
+
+	void ControlMovesCheckers();
+
 protected:
 	virtual void InitChecker();
 	void CheckCheckers();

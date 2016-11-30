@@ -8,5 +8,6 @@ public:
 	 bool CheckWalkCoordinate(CoordinateFloat*) override;
 protected:	
 	void Init() override;
+	void ControlMove() override;
 };
 

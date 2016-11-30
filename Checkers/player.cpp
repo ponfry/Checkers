@@ -3,16 +3,16 @@
 #include "StateChecker.h"
 #include <ostream>
 #include <iostream>
-
+int CountCheckers = 12;
 Player::Player()
 {
-	checker = new CheckerWhite[12];
+	checker = new CheckerWhite[CountCheckers];
 	Player::InitChecker();	
 }
 
 void Player::Draw()
 {
-	for(int i=0; i<12; i++)
+	for(int i=0; i<CountCheckers; i++)
 	{
 		checker[i].Draw();
 	}
@@ -22,7 +22,7 @@ bool Player::SetStateSelectChecker()
 {
 	CheckCheckers();
 
-	if (indexSelected < 12 && indexSelected >= 0)
+	if (indexSelected < CountCheckers && indexSelected >= 0)
 	{
 		checker[indexSelected].SetState(selected);
 		result = checker[indexSelected];
@@ -35,7 +35,7 @@ bool Player::SetStateSelectChecker()
 
 void Player::SetStateUnSelectChecker()
 {
-	if (indexSelected < 12 && indexSelected >= 0)
+	if (indexSelected < CountCheckers && indexSelected >= 0)
 		checker[11].SetState(draw);
 }
 
@@ -44,7 +44,7 @@ bool Player::CheckCoordinatePassive()
 	delete checkCoordf;
 	checkCoordf = MyMouse::ConvertIntTOFloatForBoard(coordinateMousePassiveMove.X,
 		coordinateMousePassiveMove.Y);
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < CountCheckers; i++)
 	{
 		if (checker[i].CheckContactCoordinate(checkCoordf))
 		{
@@ -62,7 +62,7 @@ bool Player::SetWalkCoordinateSelectedChecker(CoordinateFloat* coordinate)
 	{
 		return false;
 	}
-	if (indexSelected < 12 && indexSelected >= 0)
+	if (indexSelected < CountCheckers && indexSelected >= 0)
 	{
 		if(checker[11].CheckWalkCoordinate(coordinate) && 
 			!CheckСonflictCoordinateCheckers(coordinate))
@@ -110,7 +110,7 @@ void Player::InitChecker()
 
 void Player::CheckCheckers()
 {
-	for(int i = 0; i < 12; i++)
+	for(int i = 0; i < CountCheckers; i++)
 	{
 		if(checker[i].CheckContactCoordinate(&coordinateMouseMove))
 		{
@@ -127,7 +127,7 @@ bool Player::CheckСonflictCoordinateCheckers(CoordinateFloat* coordinate)
 	{
 		return false;
 	}
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < CountCheckers; i++)
 	{
 		if(checker[i].CheckContactCoordinate(coordinate))
 		{
@@ -144,7 +144,7 @@ bool Player::SetBeatCoordinateSelectedChecker(CoordinateFloat* coordinate)
 	{
 		return false;
 	}
-	if (indexSelected < 12 && indexSelected >= 0)
+	if (indexSelected < CountCheckers && indexSelected >= 0)
 	{
 		if (checker[11].CheckBeatCoordinate(coordinate) &&
 			!CheckСonflictCoordinateCheckers(coordinate))
@@ -161,9 +161,10 @@ bool Player::SetBeatCoordinateSelectedChecker(CoordinateFloat* coordinate)
 
 bool Player::SetStateNotDrawChecker(CoordinateFloat* coordinate)
 {
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < CountCheckers; i++)
 	{
-		if (checker[i].GetCurrentCoordinate() != nullptr && checker[i].GetCurrentCoordinate()->operator==(coordinate))
+		if (checker[i].GetCurrentCoordinate() != nullptr &&
+			checker[i].GetCurrentCoordinate()->operator==(coordinate))
 		{
 			checker[i].SetState(notdraw);
 			return true;
@@ -179,4 +180,12 @@ void Player::InitStartEndBeatCoordinate(CoordinateFloat* coordinate)
 	delete res;
 
 	endBeatCoordinateChecker.Set(coordinate);
+}
+
+void Player::ControlMovesCheckers()
+{
+	for (int i = 0; i < CountCheckers; i++)
+	{
+		checker[i].GetCountMove();
+	}
 }

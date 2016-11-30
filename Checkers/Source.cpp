@@ -295,7 +295,7 @@ bool CheckFlags(FlagsPlayer* flagplayer, Player* player, Player* player1)
 			}
 
 		}
-
+		player->ControlMovesCheckers();
 		if (!flagplayer->CheckAll())
 		{
 			player->SetStateUnSelectChecker();

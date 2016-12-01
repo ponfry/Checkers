@@ -66,7 +66,7 @@
     <ClCompile Include="player.cpp">
       <Filter>Resource Files\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Conversion.cpp">
+    <ClCompile Include="ControlMatrix.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,11 +122,11 @@
     <ClInclude Include="MatrixMove.h">
       <Filter>Header Files\types</Filter>
     </ClInclude>
-    <ClInclude Include="Conversion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Move.h">
       <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlMatrix.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

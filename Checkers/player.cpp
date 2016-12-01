@@ -4,13 +4,14 @@
 #include <ostream>
 #include <iostream>
 #include <windows.h>
+#include "ControlMatrix.h"
 
 
 Player::Player()
 {
 	CountCheckers = 12;
 	checker = new CheckerWhite[CountCheckers+1];	
-	//InitChecker();	
+	InitChecker();	
 }
 
 void Player::Draw()
@@ -165,23 +166,35 @@ bool Player::SetNewCoordinateChecker(CoordinateFloat *coordinate)
 	{
 		if (ismove)
 		{
-			CoordinateFloat* begin = checker[11].GetCurrentCoordinate();
-			coordinateNotDrawChecker.Set(begin->X - (begin->X - coordinate->X) / 2.0,
-				begin->Y - (begin->Y - coordinate->Y) / 2.0);
+			if (checker[11].CheckMove(coordinate))
+			{
+				CoordinateFloat* begin = checker[11].GetCurrentCoordinate();
+				coordinateNotDrawChecker.Set(begin->X - (begin->X - coordinate->X) / 2.0,
+					begin->Y - (begin->Y - coordinate->Y) / 2.0);
+				if(ControlMatrix::GetStateForGameField(
+					ControlMatrix::GetCoordinateForMatrix(&coordinateNotDrawChecker))
+						== flags->Enemy)
+				{
+					flags->WasBeat = true;
 
+					checker[11].SetCoordinate(coordinate->X, coordinate->Y);
+					checker[11].SetState(draw);
 
-			flags->WasBeat = true;
-
-			checker[11].SetCoordinate(coordinate->X, coordinate->Y);
-			checker[11].SetState(draw);
-
-			delete coordinate;
-			delete begin;
-			resultB = true;
+					delete coordinate;
+					delete begin;
+					resultB = true;
+				}
+				else
+				{
+					flags->MustBeat = true;
+				}
+				
+			}
 		}
 		else
 		{
-			std::cout << "move";
+			flags->MustBeat = true;
+			return false;
 		}
 	}
 
@@ -200,7 +213,19 @@ bool Player::CheckСonflictCoordinateCheckers(CoordinateFloat* coordinate)
 		{
 			return true;
 		}
-
 	}
 	return false;
+}
+
+int Player::ControlCheckers()
+{
+	int count = 0;
+	for (int i = 0; i < CountCheckers; i++)
+	{
+		 if(checker[i].GetState() == notdraw)
+		 {
+			 count++;
+		 }
+	}
+	return count;
 }

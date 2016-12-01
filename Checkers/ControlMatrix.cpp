@@ -1,23 +1,35 @@
-#include "Conversion.h"
+﻿#include "ControlMatrix.h"
 #include "MatrixMove.h"
+#include "ChessBoard.h"
 
-CoordinateInt* Conversion::GetCoordinateForMatrix(CoordinateFloat *coordinate)
+StateGameField ControlMatrix::GetStateForGameField(int i, int j)
+{
+	return MatrixGameField[i][j];
+}
+StateGameField ControlMatrix::GetStateForGameField(CoordinateInt* coord)
+{
+	if (coord != nullptr)
+		return MatrixGameField[coord->X][coord->Y];
+	return incorrect;
+}
+
+CoordinateInt* ControlMatrix::GetCoordinateForMatrix(CoordinateFloat *coordinate)
 {
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			if(MatrixCheckBoard[i][j]->CheckQuad(coordinate))
+			if (MatrixCheckBoard[i][j]->CheckQuad(coordinate))
 			{
 				CoordinateInt* result = new CoordinateInt(i, j);
 				return result;
 			}
 		}
 	}
-	return nullptr;	
+	return nullptr;
 }
 
-void Conversion::Init()
+void ControlMatrix::Init()
 {
 	for (int i = 0; i < 8; i++)
 	{

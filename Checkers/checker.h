@@ -32,16 +32,16 @@ public:
 	void ControlMove();
 
 	void SetState(StateChecker);
-	
+	StateChecker GetState();
 protected:
 	void InitDraw();
 	void Print();
 
-	virtual void Init();
 	virtual void CheckBeatCoordinate(CoordinateInt*);
 	virtual void CheckWalkCoordinate(CoordinateInt*);
 
-	CoordinateFloat* coordinateDraw, *coordinateState, *coordinateCheck;
+	CoordinateFloat* coordinateDraw, *coordinateState;
+
 	DrawTexture *drawing, *selecting, *lighting;
 	StateChecker state;
 	

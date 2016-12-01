@@ -1,18 +1,14 @@
 ﻿#include "CheckerBlack.h"
 #include "Texture.h"
 #include "MatrixMove.h"
-#include "Conversion.h"
 #include "CoordinateMouse.h"
+#include "ControlMatrix.h"
 
 CheckerBlack::CheckerBlack()
 {
-	CheckerBlack::Init();
-}
-void CheckerBlack::Init()
-{
-	drawing = Texture::Init(L"blackChecker/checker.png");
-	selecting = Texture::Init(L"blackChecker/select.png");
-	lighting = Texture::Init(L"blackChecker/lighting.png");
+	drawing = BlackDrawing;
+	lighting = BlackLighting;
+	selecting = BlackSelecting;	
 }
 
 void CheckerBlack::CheckWalkCoordinate(CoordinateInt*coord)
@@ -84,12 +80,12 @@ void CheckerBlack::SetCoordinate(int x, int y)
 	if (state != notdraw)
 	{
 		CoordinateFloat *result = MyMouse::ConvertIntTOFloatForBoard(x, y);
-		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(result);
+		CoordinateInt* coord = ControlMatrix::GetCoordinateForMatrix(result);
 
 		if (coord != nullptr)
 		{
 			MatrixGameField[coord->X][coord->Y] = black;
-			coord = Conversion::GetCoordinateForMatrix(coordinateState);
+			coord = ControlMatrix::GetCoordinateForMatrix(coordinateState);
 			MatrixGameField[coord->X][coord->Y] = freely;
 			delete coordinateState;
 			coordinateState = result;
@@ -101,13 +97,13 @@ void CheckerBlack::SetCoordinate(float x, float y)
 {
 	if (state != notdraw)
 	{
-		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(new CoordinateFloat(x, y));
+		CoordinateInt* coord = ControlMatrix::GetCoordinateForMatrix(new CoordinateFloat(x, y));
 		if (coord != nullptr)
 		{
 			MatrixGameField[coord->X][coord->Y] = black;
 
 			if (coordinateState != nullptr)
-				coord = Conversion::GetCoordinateForMatrix(coordinateState);
+				coord = ControlMatrix::GetCoordinateForMatrix(coordinateState);
 
 			coordinateState->Set(x, y);
 

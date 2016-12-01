@@ -4,19 +4,19 @@
 #include "CoordinateMouse.h"
 #include <iostream>
 #include "MatrixMove.h"
-#include "Conversion.h"
+#include "ControlMatrix.h"
 using namespace std;
 
 Checker::Checker(int color)
 {
-	drawing = nullptr; 
-	selecting = nullptr;
-	lighting = nullptr;
+	drawing = WhiteDrawing;
+	lighting = WhiteLighting;
+	selecting = WhiteSelecting;
+
 	result = false;
 	state = draw;
 	coordinateDraw = new CoordinateFloat;
 	coordinateState = new CoordinateFloat;
-	coordinateCheck = new CoordinateFloat;
 	availableMoves = new Move[15];
 	countMove = 0;
 }
@@ -86,10 +86,6 @@ void Checker::Print()
 	glDisable(GL_BLEND);
 }
 
-void Checker::Init()
-{
-}
-
 void Checker::CheckBeatCoordinate(CoordinateInt*)
 {
 }
@@ -102,7 +98,7 @@ void Checker::ControlMove()
 {
 	if (state != notdraw)
 	{
-		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(coordinateState);
+		CoordinateInt* coord = ControlMatrix::GetCoordinateForMatrix(coordinateState);
 		countMove = 0;
 
 		CheckWalkCoordinate(coord);
@@ -220,11 +216,16 @@ CoordinateFloat* Checker::GetAllBeatMove()
 
 bool Checker::CheckMove(CoordinateFloat *coordinate)
 {
-	for (int i = 0; i < countMove; i++)
-	{	
-		if(availableMoves[i].Coordinate->operator==(coordinate))
+	if (state != notdraw)
+	{
+		
+		ControlMove();
+		for (int i = 0; i < countMove; i++)
 		{
-			return true;
+			if (availableMoves[i].Coordinate->operator==(coordinate))
+			{
+				return true;
+			}
 		}
 	}
 	return false;
@@ -242,7 +243,7 @@ void Checker::SetState(StateChecker state_)
 	else
 	{
 		state = notdraw;
-		CoordinateInt* coord = Conversion::GetCoordinateForMatrix(coordinateState);
+		CoordinateInt* coord = ControlMatrix::GetCoordinateForMatrix(coordinateState);
 		MatrixGameField[coord->X][coord->Y] = freely;
 		coordinateState = nullptr;
 		return;
@@ -254,4 +255,9 @@ void Checker::SetState(StateChecker state_)
 	}
 
 	
+}
+
+StateChecker Checker::GetState()
+{
+	return state;
 }

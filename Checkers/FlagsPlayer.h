@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "MatrixMove.h"
 
 struct FlagsPlayer
 {
@@ -7,6 +8,8 @@ struct FlagsPlayer
 	bool WasSetNewCoordinate = false;
 	bool WasDeleteCheckerOtherPlayer = false;
 	bool WasBeat = false;
+	bool MustBeat = false;
+	StateGameField Enemy = incorrect;
 
 	bool CheckAll()
 	{

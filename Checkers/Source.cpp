@@ -11,14 +11,14 @@
 #include "PlayerOne.h"
 #include "PlayerTwo.h"
 //#include <ctime>    
-#include "Conversion.h"
+#include "ControlMatrix.h"
 using namespace std;
 
 ChessBoard* chess_board;
 PlayerTwo* playerTwo;
 PlayerOne* playerOne;
 
-DrawTexture* drawErrorWrong, *drawErrorPlayer;
+DrawTexture* drawErrorWrong, *drawErrorBeat, *drawEnd;
 
 CheckerWhite *checkerWhite;
 CheckerBlack *checkerBlack;
@@ -29,7 +29,8 @@ struct FlagsGame
 {
 	bool FirstPlayerMove = true;
 	bool SecondPlayerMove = false;
-	bool BeginGame = false;
+	bool BeginGame = true;
+	bool EndGame = false;
 }flags_game;
 
 void Textout(char* str, float X, float Y, float phi = 0.02)
@@ -51,7 +52,7 @@ void Textout(char* str, CoordinateFloat coordf, float phi = 0.02)
 	Textout(str, coordf.X, coordf.Y, phi);
 }
 
-void init()
+void initDraw()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
@@ -156,9 +157,9 @@ void drawError()
 	Sleep(1150);
 }
 
-void drawErrorPlayers()
+void drawErrorBeatMove()
 {
-	Texture::LoadDraw(drawErrorPlayer);
+	Texture::LoadDraw(drawErrorBeat);
 
 	glBegin(GL_TRIANGLE_STRIP);
 	glTexCoord2f(0, 1);
@@ -172,6 +173,29 @@ void drawErrorPlayers()
 
 	glTexCoord2f(1, 0);
 	glVertex2f(0.5f, 0.25f);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
+	glutSwapBuffers();
+	Sleep(1150);
+}
+
+void drawEndGame()
+{
+	Texture::LoadDraw(drawEnd);
+	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
+	glBegin(GL_TRIANGLE_STRIP);
+	glTexCoord2f(0, 1);
+	glVertex2f(-1.0f, -1.0f);
+
+	glTexCoord2f(0, 0);
+	glVertex2f(-1.0f, 1.0f);
+
+	glTexCoord2f(1, 1);
+	glVertex2f(1.0f, -1.0f);
+
+	glTexCoord2f(1, 0);
+	glVertex2f(1.0f, 1.0f);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
@@ -275,9 +299,8 @@ bool CheckFlags(FlagsPlayer* flagplayer, Player* player, Player* player1)
 		if(flagplayer->CheckChessBoardCoordinate)
 		{
 			CoordinateFloat* result = chess_board->GetEntryCoordinate();
-
 			player->ControlMovesCheckers();
-
+			
 			flagplayer->WasSetNewCoordinate = player->SetNewCoordinateChecker(result);
 
 			if (flagplayer->WasBeat)
@@ -285,16 +308,28 @@ bool CheckFlags(FlagsPlayer* flagplayer, Player* player, Player* player1)
 				flagplayer->WasDeleteCheckerOtherPlayer = player1->SetStateNotDrawChecker();
 			}
 
-		}
-			
-		
+		}		
 		
 		if (!flagplayer->CheckAll())
 		{
 			player->SetStateUnSelectChecker();
-			drawError();
+			if(flagplayer->MustBeat)
+			{
+				flagplayer->MustBeat = false;
+				drawError();
+				drawErrorBeatMove();
+			}
+			else
+			{
+				drawError();
+			}		
 			resultB = false;
 		}
+	}
+	if (player->ControlCheckers() > 11 || player1->ControlCheckers()>11)
+	{
+		flags_game.EndGame = true;
+		return false;
 	}
 	flagplayer->SetFalseAll();
 	return resultB;
@@ -307,6 +342,11 @@ void mouse(int button, int state, int x, int y)
 		coordinateMouseMove.Set(x,y);
 		if (flags_game.FirstPlayerMove)
 		{
+			/*if (playerOne->ControlCheckers() < 0)
+			{
+				flags_game.EndGame = true;
+				return;
+			}*/
 			flags_player_one.CaptureChecker = playerOne->SetStateSelectChecker();
 		}
 		if (flags_game.SecondPlayerMove)
@@ -330,20 +370,38 @@ void mouse(int button, int state, int x, int y)
 			flags_game.SecondPlayerMove = false;
 		}
 	}
-	reDraw();
+	if(flags_game.EndGame)
+	{
+		drawEndGame();
+	}
+	else
+	{
+		reDraw();
+	}
+	
 }
 
 void InitGame()
 {
-	Conversion::Init();
+	ControlMatrix::Init();
+	flags_player_one.Enemy = black;
+	flags_player_two.Enemy = white;
+
+	WhiteDrawing = Texture::Init(L"whiteChecker/checker.png");
+	WhiteSelecting = Texture::Init(L"whiteChecker/select.png");
+	WhiteLighting = Texture::Init(L"whiteChecker/lighting.png");
+
+	BlackDrawing = Texture::Init(L"blackChecker/checker.png");
+	BlackLighting = Texture::Init(L"blackChecker/lighting.png");
+	BlackSelecting = Texture::Init(L"blackChecker/select.png");
 	
 	playerTwo = new PlayerTwo();
 	playerOne = new PlayerOne();
 	chess_board = new ChessBoard();
 
 	drawErrorWrong = Texture::Init(L"errors/ErrorWrongMove.png");
-	drawErrorPlayer = Texture::Init(L"errors/ErrorPlayer.png");
-
+	drawErrorBeat = Texture::Init(L"errors/ErrorBeat.png");
+	drawEnd = Texture::Init(L"EndGame.png");
 	checkerWhite = new CheckerWhite();
 	checkerBlack = new CheckerBlack();
 
@@ -351,17 +409,18 @@ void InitGame()
 	checkerBlack->SetCoordinate(0.8f, -0.7f);
 
 	checkerWhite->SetState(constant);
-	 
-	/*cout << busy << incorrect << freely<< endl;
-	for (int i = 0; i < 8; i++)
+}
+
+void init()
+{
+	if (flags_game.EndGame)
 	{
-		for (int j = 0; j < 8; j++)
-		{
-			cout << " "<< MatrixCheckBoard[i][j]->X << MatrixCheckBoard[i][j]->Y 
-			;
-		}
-		cout << endl;
-	}*/
+		drawEndGame();
+	}
+	else
+	{
+		initDraw();
+	}
 }
 void main(int argc, char* argv[])
 {

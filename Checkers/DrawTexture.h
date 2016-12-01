@@ -12,3 +12,10 @@ struct DrawTexture
 		characteristic = characteristi;
 	}
 };
+__declspec(selectany) DrawTexture *WhiteDrawing;
+__declspec(selectany) DrawTexture *WhiteSelecting;
+__declspec(selectany) DrawTexture *WhiteLighting;
+
+__declspec(selectany) DrawTexture *BlackDrawing;
+__declspec(selectany) DrawTexture *BlackLighting;
+__declspec(selectany) DrawTexture *BlackSelecting;

@@ -19,7 +19,7 @@ public:
 	bool SetNewCoordinateChecker(CoordinateFloat*);
 
 	bool CheckСonflictCoordinateCheckers(CoordinateFloat*);
-	
+	int ControlCheckers();
 protected:
 	virtual void InitChecker();
 	void CheckCheckers();

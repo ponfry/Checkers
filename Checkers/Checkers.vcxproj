@@ -108,6 +108,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32.lib; glut32.lib; DevIL.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -154,6 +155,7 @@
     <ClCompile Include="ControlMatrix.cpp" />
     <ClCompile Include="CoordinateMouse.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MyErrors.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="PlayerOne.cpp" />
@@ -175,7 +177,10 @@
     <ClInclude Include="FlagsGame.h" />
     <ClInclude Include="FlagsPlayer.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="ItemMenu.h" />
     <ClInclude Include="MatrixMove.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="MenuState.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MyErrors.h" />
     <ClInclude Include="player.h" />

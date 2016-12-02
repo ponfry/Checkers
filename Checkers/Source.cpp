@@ -7,6 +7,8 @@
 #include "FlagsGame.h"
 #include "Game.h"
 #include "MyErrors.h"
+#include <ctime>
+#include "Menu.h"
 
 using namespace std;
 
@@ -21,7 +23,13 @@ void mouseActive(int x, int y)
 void mousePassive(int x, int y)
 {
 	coordinateMousePassiveMove.Set(x, y);
-	game.ControlPassive();	
+	
+	menu.ControlPassive();
+	game.ControlPassive();
+	char title[20];
+	sprintf_s(title, "%dx%d", coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
+
+	glutSetWindowTitle(title);
 }
 
 void ChangeWH(int w, int h)
@@ -44,13 +52,13 @@ void ChangeWH(int w, int h)
 	}
 }
 
-
 void mouse(int button, int state, int x, int y)
 {
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		coordinateMouseMove.Set(x,y);
+		coordinateMouseMove.Set(x, y);
 		game.CaptureCheckers();
+		
 	}
 
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_UP)
@@ -58,6 +66,7 @@ void mouse(int button, int state, int x, int y)
 		coordinateMouseMove.Set(x, y);
 		game.CheckPlayers();
 	}
+
 	if(flags_game.EndGame)
 	{
 		Errors::Draw(endGame);
@@ -65,10 +74,10 @@ void mouse(int button, int state, int x, int y)
 	else
 	{
 		game.Redraw();
+		menu.DrawGameMenu();
 	}
 	
 }
-
 
 void init()
 {
@@ -81,8 +90,11 @@ void init()
 		game.InitDraw();
 	}
 }
+
 void main(int argc, char* argv[])
-{
+{	
+	clock_t start, finish;
+	start = clock();
 	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
@@ -99,19 +111,9 @@ void main(int argc, char* argv[])
 	glutDisplayFunc(init);
 	glutReshapeFunc(ChangeWH);
 	glewInit();
-	
-	glutMainLoop();
-	
+	finish = clock();
+	cout << "time load=";
+	cout << (finish - start) << endl;
+	glutMainLoop();	
 }
 
-
-/*char title[20];
-sprintf_s(title, "%dx%dc%dx%d", window_size.Weigth, window_size.Heigth, coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
-
-glutSetWindowTitle(title);*/
-
-//clock_t start, finish;
-//start = clock();
-//finish = clock();
-//cout << "time=";
-//cout << (finish - start) << endl;

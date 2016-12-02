@@ -47,7 +47,7 @@ void Player::SetStateUnSelectChecker()
 bool Player::CheckCoordinatePassive()
 {
 	delete checkCoordf;
-	checkCoordf = MyMouse::ConvertIntTOFloatForBoard(coordinateMousePassiveMove.X,
+	checkCoordf = MyMouse::ConvertIntToFloatForBoard(coordinateMousePassiveMove.X,
 		coordinateMousePassiveMove.Y);
 	for (int i = 0; i < CountCheckers; i++)
 	{

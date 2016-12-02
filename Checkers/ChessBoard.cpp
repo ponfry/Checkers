@@ -11,6 +11,7 @@ void ChessBoard::Draw()
 {
 	glViewport(window_size.IndentX, window_size.IndentY,
 		window_size.Board, window_size.Board);
+
 	glColor3f(1, 1, 1);
 
 	glBegin(GL_TRIANGLE_STRIP);
@@ -77,7 +78,7 @@ void ChessBoard::Init()
 
 bool ChessBoard::CheckCoordinate()
 {
-	CoordinateFloat* coordf = MyMouse::ConvertIntTOFloatForBoard(&coordinateMouseMove);
+	CoordinateFloat* coordf = MyMouse::ConvertIntToFloatForBoard(&coordinateMouseMove);
 
 	for (int i = 0; i < 33; i++)
 	{
@@ -91,7 +92,7 @@ bool ChessBoard::CheckCoordinate()
 
 CoordinateFloat* ChessBoard::GetEntryCoordinate()
 {
-	CoordinateFloat* coordf = MyMouse::ConvertIntTOFloatForBoard(&coordinateMouseMove);
+	CoordinateFloat* coordf = MyMouse::ConvertIntToFloatForBoard(&coordinateMouseMove);
 
 	for (int i = 0; i < 33; i++)
 	{

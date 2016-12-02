@@ -34,6 +34,12 @@
     <Filter Include="Resource Files\Player">
       <UniqueIdentifier>{ee73ca36-9f87-4628-a5f8-7d380605166f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\types\coordinates">
+      <UniqueIdentifier>{390857cd-1544-4028-8c8f-f18a82264c16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\types\states">
+      <UniqueIdentifier>{1c908dc0-32b5-45f8-bd71-06e618b2e63c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -75,6 +81,9 @@
     <ClCompile Include="MyErrors.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -95,15 +104,6 @@
     <ClInclude Include="DrawTexture.h">
       <Filter>Header Files\types</Filter>
     </ClInclude>
-    <ClInclude Include="CoordinateInt.h">
-      <Filter>Header Files\types</Filter>
-    </ClInclude>
-    <ClInclude Include="StateChecker.h">
-      <Filter>Header Files\types</Filter>
-    </ClInclude>
-    <ClInclude Include="CoordinateFloat.h">
-      <Filter>Header Files\types</Filter>
-    </ClInclude>
     <ClInclude Include="player.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
@@ -122,9 +122,6 @@
     <ClInclude Include="PlayerTwo.h">
       <Filter>Header Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="FlagsPlayer.h">
-      <Filter>Header Files\types</Filter>
-    </ClInclude>
     <ClInclude Include="MatrixMove.h">
       <Filter>Header Files\types</Filter>
     </ClInclude>
@@ -134,17 +131,38 @@
     <ClInclude Include="ControlMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TypeError.h">
-      <Filter>Header Files\types</Filter>
-    </ClInclude>
-    <ClInclude Include="FlagsGame.h">
-      <Filter>Header Files\types</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files\game</Filter>
     </ClInclude>
     <ClInclude Include="MyErrors.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateFloat.h">
+      <Filter>Header Files\types\coordinates</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateInt.h">
+      <Filter>Header Files\types\coordinates</Filter>
+    </ClInclude>
+    <ClInclude Include="FlagsGame.h">
+      <Filter>Header Files\types\states</Filter>
+    </ClInclude>
+    <ClInclude Include="FlagsPlayer.h">
+      <Filter>Header Files\types\states</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuState.h">
+      <Filter>Header Files\types\states</Filter>
+    </ClInclude>
+    <ClInclude Include="StateChecker.h">
+      <Filter>Header Files\types\states</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeError.h">
+      <Filter>Header Files\types\states</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemMenu.h">
+      <Filter>Header Files\types</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

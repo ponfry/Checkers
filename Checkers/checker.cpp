@@ -57,7 +57,7 @@ void Checker::Print()
 	{
 	case selected:
 		delete coordinateDraw;
-		coordinateDraw = MyMouse::ConvertIntTOFloatForBoard(coordinateMouseMove.X,
+		coordinateDraw = MyMouse::ConvertIntToFloatForBoard(coordinateMouseMove.X,
 			coordinateMouseMove.Y);
 		break;
 	default:
@@ -111,6 +111,11 @@ void Checker::SetCoordinate(CoordinateInt *coord)
 	SetCoordinate(coord->X, coord->Y);
 }
 
+void Checker::SetCoordinates(float x, float y)
+{
+	coordinateState->Set(x, y);
+}
+
 void Checker::SetCoordinate(int, int)
 {
 }
@@ -143,7 +148,7 @@ bool Checker::CheckContactCoordinate(int x, int y)
 {
 	if (state != notdraw)
 	{
-		CoordinateFloat *res = MyMouse::ConvertIntTOFloatForBoard(x, y);
+		CoordinateFloat *res = MyMouse::ConvertIntToFloatForBoard(x, y);
 		result = coordinateState->CheckQuad(res);
 
 		delete res;

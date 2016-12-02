@@ -23,3 +23,6 @@ __declspec(selectany) DrawTexture *BlackSelecting;
 __declspec(selectany) DrawTexture *drawErrorWrong;
 __declspec(selectany) DrawTexture *drawErrorBeat;
 __declspec(selectany) DrawTexture *drawEnd;
+
+__declspec(selectany) DrawTexture *menuDrawing;
+__declspec(selectany) DrawTexture *menuLighting;	

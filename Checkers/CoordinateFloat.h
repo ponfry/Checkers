@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 struct CoordinateFloat
 {
@@ -36,9 +37,25 @@ struct CoordinateFloat
 		}
 		return false;
 	}
+	
 	bool CheckQuad(CoordinateFloat* coordinate)
 	{		
 		return CheckQuad(coordinate->X, coordinate->Y);
+	}
+
+	bool CheckRectangle(float x, float y )
+	{
+		if(x < X && y > Y)
+		{
+			std::cout << "true\n";
+			return true;
+		}
+		return false;
+	}
+
+	bool CheckRectangle(CoordinateFloat* coordinate)
+	{
+		return CheckRectangle(coordinate->X, coordinate->Y);
 	}
 	bool operator ==(CoordinateFloat* coordinateone)
 	{

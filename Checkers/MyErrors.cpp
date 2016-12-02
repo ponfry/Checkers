@@ -4,6 +4,7 @@
 #include "glew.h"
 #include "glut.h"
 #include <windows.h>
+#include "WindowSize.h"
 
 void Errors::Draw(TypeErrors type)
 {
@@ -23,6 +24,7 @@ void Errors::Draw(TypeErrors type)
 		break;
 
 	case endGame:
+		glViewport(0, 0, window_size.Weigth, window_size.Heigth);
 		Texture::LoadDraw(drawEnd);
 		X = 1.0f;
 		Y = 1.0f;
@@ -49,5 +51,6 @@ void Errors::Draw(TypeErrors type)
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
 	glutSwapBuffers();
-	Sleep(1150);
+	if(type!= endGame)
+		Sleep(1150);
 }

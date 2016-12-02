@@ -14,6 +14,7 @@ public:
 	void Draw();
 
 	void SetCoordinate(CoordinateInt*);
+	void SetCoordinates(float, float);
 	virtual void SetCoordinate(int, int);
 	virtual void SetCoordinate(float, float);
 

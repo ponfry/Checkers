@@ -4,8 +4,9 @@
 class MyMouse
 {
 public:	
-	static CoordinateFloat* ConvertIntTOFloatForBoard(int x, int y);
-	static CoordinateFloat* ConvertIntTOFloatForBoard(CoordinateInt*);
+	static CoordinateFloat* ConvertIntToFloatForBoard(int x, int y);
+	static CoordinateFloat* ConvertIntToFloatForBoard(CoordinateInt*);
+	static CoordinateFloat* ConvertIntToFloat(CoordinateInt*);
 
 	static bool InBoard(int x, int y);
 };

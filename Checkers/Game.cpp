@@ -22,10 +22,6 @@ Game::Game()
 
 void Game::Init()
 {
-	ControlMatrix::Init();
-	flags_player_one.Enemy = black;
-	flags_player_two.Enemy = white;
-
 	WhiteDrawing = Texture::Init(L"whiteChecker/checker.png");
 	WhiteSelecting = Texture::Init(L"whiteChecker/select.png");
 	WhiteLighting = Texture::Init(L"whiteChecker/lighting.png");
@@ -34,26 +30,36 @@ void Game::Init()
 	BlackLighting = Texture::Init(L"blackChecker/lighting.png");
 	BlackSelecting = Texture::Init(L"blackChecker/select.png");
 
-	playerTwo = new PlayerTwo();
-	playerOne = new PlayerOne();
-	chess_board = new ChessBoard();
-
 	drawErrorWrong = Texture::Init(L"errors/ErrorWrongMove.png");
 	drawErrorBeat = Texture::Init(L"errors/ErrorBeat.png");
 	drawEnd = Texture::Init(L"EndGame.png");
+
+	menuLighting = Texture::Init(L"menu/MenuP.png");	
+	menuDrawing = Texture::Init(L"menu/Menu.png");	
+
+	menu.SetState(drawing);
+
+	ControlMatrix::Init();
+	flags_player_one.Enemy = black;
+	flags_player_two.Enemy = white;	
+
+	chess_board = new ChessBoard();
+	playerOne = new PlayerOne();
+	playerTwo = new PlayerTwo();	
+	
 	checkerWhite = new CheckerWhite();
 	checkerBlack = new CheckerBlack();
 
-	checkerWhite->SetCoordinate(0.4f, -0.7f);
-	checkerBlack->SetCoordinate(0.8f, -0.7f);
+	checkerWhite->SetCoordinates(-0.1f, 0.3f);
+	checkerBlack->SetCoordinates(0.6f, 0.3f);
 
 	checkerWhite->SetState(constant);
 }
 
 void Game::InitDraw()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);	
 
 	glColor3f(0.9, 0.9, 0.9);
 	glBegin(GL_TRIANGLE_STRIP);
@@ -62,34 +68,25 @@ void Game::InitDraw()
 	glVertex2f(1.0f, -1.0f);
 	glVertex2f(1.0f, 1.0f);
 	glEnd();
-
+	
 	X = (-2) * (window_size.Weigth / 2.0 - 163) / window_size.Weigth;
 	Y = 2 * (window_size.Heigth / 2.0 - 33) / window_size.Heigth;
 
-	glColor3f(1.0f, 0, 0);
-	glBegin(GL_TRIANGLE_STRIP);
-	glVertex2f(-1.0f, 1.0f);
-	glVertex2f(X, 1.0f);
-	glVertex2f(-1.0f, Y);
-	glVertex2f(X, Y);
-	glEnd();
-	X = (-2) * (window_size.Weigth / 2.0 - 50) / window_size.Weigth;
-	Y = 2 * (window_size.Heigth / 2.0 - 25) / window_size.Heigth;
-	glColor3f(0, 0, 1);
 
 	glViewport(window_size.Weigth - window_size.Heigth, 0, window_size.Heigth, window_size.Heigth);
-
 	checkerWhite->Draw();
 	checkerBlack->Draw();
-
-	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
 
 	chess_board->Draw();
 	playerOne->Draw();
 	playerTwo->Draw();
-
+	
+	menu.DrawGameMenu();
 	glutSwapBuffers();
 
+
+
+
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
 
@@ -104,35 +101,23 @@ void Game::InitDraw()
 	X = (-2) * (window_size.Weigth / 2.0 - 163) / window_size.Weigth;
 	Y = 2 * (window_size.Heigth / 2.0 - 33) / window_size.Heigth;
 
-	glColor3f(1.0f, 0, 0);
-	glBegin(GL_TRIANGLE_STRIP);
-	glVertex2f(-1.0f, 1.0f);
-	glVertex2f(X, 1.0f);
-	glVertex2f(-1.0f, Y);
-	glVertex2f(X, Y);
-	glEnd();
-	X = (-2) * (window_size.Weigth / 2.0 - 50) / window_size.Weigth;
-	Y = 2 * (window_size.Heigth / 2.0 - 25) / window_size.Heigth;
-	glColor3f(0, 0, 1);
-	
-
 	glViewport(window_size.Weigth - window_size.Heigth, 0, window_size.Heigth, window_size.Heigth);
-
 	checkerWhite->Draw();
 	checkerBlack->Draw();
 
-	glViewport(0, 0, window_size.Weigth, window_size.Heigth);
 
 	chess_board->Draw();
 	playerOne->Draw();
 	playerTwo->Draw();
 
+	menu.DrawGameMenu();
 	glutSwapBuffers();
 }
 
 void Game::DrawWhoMove()
 {
 	glViewport(window_size.Weigth - window_size.Heigth, 0, window_size.Heigth, window_size.Heigth);
+	
 	if (flags_game.FirstPlayerMove)
 	{
 		checkerWhite->SetState(constant);
@@ -151,74 +136,91 @@ void Game::DrawWhoMove()
 
 void Game::Redraw()
 {
-	chess_board->Draw();
-	if (flags_game.FirstPlayerMove)
-	{
-		playerTwo->Draw();
-		playerOne->Draw();
-	}
-	if (flags_game.SecondPlayerMove)
-	{
-		playerOne->Draw();
-		playerTwo->Draw();
-	}
-	DrawWhoMove();
+	glViewport(window_size.IndentX, window_size.IndentY,
+		window_size.Board, window_size.Board);
 
-	glutSwapBuffers();
+	if (!flags_game.EndGame)
+	{
+		chess_board->Draw();
+		if (flags_game.FirstPlayerMove)
+		{
+			playerTwo->Draw();
+			playerOne->Draw();
+		}
+		if (flags_game.SecondPlayerMove)
+		{
+			playerOne->Draw();
+			playerTwo->Draw();
+		}
+		DrawWhoMove();
+
+		glutSwapBuffers();
+	}
+	else
+	{
+		Errors::Draw(endGame);
+	}
 }
 
 void Game::ControlPassive()
 {
-	if (flags_game.FirstPlayerMove)
+	if (!flags_game.EndGame)
 	{
-		playerOne->CheckCoordinatePassive();
-	}
-	if (flags_game.SecondPlayerMove)
-	{
-		playerTwo->CheckCoordinatePassive();
-	}
-	if (flags_game.EndGame)
-	{
-		Errors::Draw(endGame);
+		if (flags_game.FirstPlayerMove)
+		{
+			playerOne->CheckCoordinatePassive();
+		}
+		if (flags_game.SecondPlayerMove)
+		{
+			playerTwo->CheckCoordinatePassive();
+		}
+		Redraw();
+	
 	}
 	else
 	{
-		Redraw();
+		Errors::Draw(endGame);
 	}
 }
 
 void Game::CheckPlayers()
 {
-	if (flags_game.FirstPlayerMove)
+	if (!flags_game.EndGame)
 	{
-		if (flags_player_one.CaptureChecker &&
-			CheckFlags(&flags_player_one, playerOne, playerTwo))
+		if (flags_game.FirstPlayerMove)
 		{
-			flags_game.FirstPlayerMove = false;
-			flags_game.SecondPlayerMove = true;
+			if (flags_player_one.CaptureChecker &&
+				CheckFlags(&flags_player_one, playerOne, playerTwo))
+			{
+				flags_game.FirstPlayerMove = false;
+				flags_game.SecondPlayerMove = true;
+			}
 		}
-	}
 
-	if (flags_game.SecondPlayerMove)
-	{
-		if (flags_player_two.CaptureChecker && 
-			CheckFlags(&flags_player_two, playerTwo, playerOne))
+		if (flags_game.SecondPlayerMove)
 		{
-			flags_game.FirstPlayerMove = true;
-			flags_game.SecondPlayerMove = false;
+			if (flags_player_two.CaptureChecker &&
+				CheckFlags(&flags_player_two, playerTwo, playerOne))
+			{
+				flags_game.FirstPlayerMove = true;
+				flags_game.SecondPlayerMove = false;
+			}
 		}
 	}
 }
 
 void Game::CaptureCheckers()
 {
-	if (flags_game.FirstPlayerMove)
+	if (!flags_game.EndGame)
 	{
-		flags_player_one.CaptureChecker = playerOne->SetStateSelectChecker();
-	}
-	if (flags_game.SecondPlayerMove)
-	{
-		flags_player_two.CaptureChecker = playerTwo->SetStateSelectChecker();
+		if (flags_game.FirstPlayerMove)
+		{
+			flags_player_one.CaptureChecker = playerOne->SetStateSelectChecker();
+		}
+		if (flags_game.SecondPlayerMove)
+		{
+			flags_player_two.CaptureChecker = playerTwo->SetStateSelectChecker();
+		}
 	}
 }
 

@@ -2,7 +2,7 @@
 #include "WindowSize.h"
 #include <iostream>
 using namespace std;
-CoordinateFloat* MyMouse::ConvertIntTOFloatForBoard(int x, int y)
+CoordinateFloat* MyMouse::ConvertIntToFloatForBoard(int x, int y)
 {
 	CoordinateFloat *result = new CoordinateFloat;
 	result->Set(0, 0);
@@ -39,9 +39,38 @@ CoordinateFloat* MyMouse::ConvertIntTOFloatForBoard(int x, int y)
 	}
 }
 
-CoordinateFloat* MyMouse::ConvertIntTOFloatForBoard(CoordinateInt* coordinate)
+CoordinateFloat* MyMouse::ConvertIntToFloatForBoard(CoordinateInt* coordinate)
 {
-	return ConvertIntTOFloatForBoard(coordinate->X, coordinate->Y);
+	return ConvertIntToFloatForBoard(coordinate->X, coordinate->Y);
+}
+
+CoordinateFloat* MyMouse::ConvertIntToFloat(CoordinateInt* coordinate)
+{
+	CoordinateFloat *result = new CoordinateFloat;
+	result->Set(0, 0);
+	int X = coordinate->X;
+	int Y = coordinate->Y;
+
+	if (X >= window_size.Weigth/2.0)
+	{
+		result->X = (X - window_size.Weigth / 2.0) / (window_size.Weigth / 2.0);
+	}
+	else
+	{
+		result->X = (-1) * (window_size.Weigth / 2.0 - X) / (window_size.Weigth / 2.0);
+	}
+
+	if (Y >= window_size.Heigth / 2.0)
+	{
+		result->Y = (-1)*(Y - window_size.Heigth / 2.0) / (window_size.Heigth / 2.0);
+	}
+	else
+	{
+		result->Y = (window_size.Heigth / 2.0 - Y) / (window_size.Heigth / 2.0);
+
+	}
+
+	return result;
 }
 
 bool MyMouse::InBoard(int x, int y)

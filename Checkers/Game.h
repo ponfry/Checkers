@@ -4,6 +4,7 @@
 #include "PlayerOne.h"
 #include "PlayerTwo.h"
 #include "ChessBoard.h"
+#include "Menu.h"
 
 class Game
 {
@@ -29,6 +30,5 @@ private:
 
 	CheckerWhite *checkerWhite;
 	CheckerBlack *checkerBlack;
-
 	float X, Y;
 };

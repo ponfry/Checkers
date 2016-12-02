@@ -91,7 +91,7 @@ void CheckerWhite::SetCoordinate(int x, int y)
 {
 	if (state != notdraw)
 	{
-		CoordinateFloat *result = MyMouse::ConvertIntTOFloatForBoard(x, y);
+		CoordinateFloat *result = MyMouse::ConvertIntToFloatForBoard(x, y);
 		CoordinateInt* coord = ControlMatrix::GetCoordinateForMatrix(result);
 
 		if (coord != nullptr)

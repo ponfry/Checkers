@@ -169,8 +169,8 @@ bool Player::SetNewCoordinateChecker(CoordinateFloat *coordinate)
 			if (checker[11].CheckMove(coordinate))
 			{
 				CoordinateFloat* begin = checker[11].GetCurrentCoordinate();
-				coordinateNotDrawChecker.Set(begin->X - (begin->X - coordinate->X) / 2.0,
-					begin->Y - (begin->Y - coordinate->Y) / 2.0);
+				coordinateNotDrawChecker.Set(begin->X - (begin->X - coordinate->X) / 2.0f,
+					begin->Y - (begin->Y - coordinate->Y) / 2.0f);
 				if(ControlMatrix::GetStateForGameField(
 					ControlMatrix::GetCoordinateForMatrix(&coordinateNotDrawChecker))
 						== flags->Enemy)

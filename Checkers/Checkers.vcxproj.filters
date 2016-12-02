@@ -69,6 +69,12 @@
     <ClCompile Include="ControlMatrix.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Resource Files\game</Filter>
+    </ClCompile>
+    <ClCompile Include="MyErrors.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Texture.h">
@@ -126,6 +132,18 @@
       <Filter>Header Files\types</Filter>
     </ClInclude>
     <ClInclude Include="ControlMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeError.h">
+      <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="FlagsGame.h">
+      <Filter>Header Files\types</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\game</Filter>
+    </ClInclude>
+    <ClInclude Include="MyErrors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -153,6 +153,8 @@
     <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ControlMatrix.cpp" />
     <ClCompile Include="CoordinateMouse.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="MyErrors.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="PlayerOne.cpp" />
     <ClCompile Include="PlayerTwo.cpp" />
@@ -170,14 +172,18 @@
     <ClInclude Include="CoordinateFloat.h" />
     <ClInclude Include="DrawTexture.h" />
     <ClInclude Include="CoordinateMouse.h" />
+    <ClInclude Include="FlagsGame.h" />
     <ClInclude Include="FlagsPlayer.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="MatrixMove.h" />
     <ClInclude Include="Move.h" />
+    <ClInclude Include="MyErrors.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="PlayerOne.h" />
     <ClInclude Include="PlayerTwo.h" />
     <ClInclude Include="StateChecker.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TypeError.h" />
     <ClInclude Include="WindowSize.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

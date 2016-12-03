@@ -8,16 +8,17 @@ public:
 	Menu();
 	bool CheckContactCoordinate();
 	void ControlPassive();
-	
+	void CaptureItemMenu();
 	
 	void DrawBegin();
 	void DrawGameMenu();
 	void DrawEndGame();
 	void SetState(MenuState);
-
-private:
+	void SetStateSelect();
 	void Init();
-	MenuState state;
+private:
+	
 	ItemMenu *beginMenu, *gameMenu;
+	float X, Y, offset;
 };
 __declspec(selectany) Menu menu;

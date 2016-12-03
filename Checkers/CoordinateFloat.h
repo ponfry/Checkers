@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 
 struct CoordinateFloat
 {
@@ -45,9 +44,9 @@ struct CoordinateFloat
 
 	bool CheckRectangle(float x, float y )
 	{
-		if(x < X && y > Y)
+		if (x < (X + 0.15f) && x >(X - 0.15f)
+			&& y < (Y + 0.0615f) && y >(Y - 0.0615f))
 		{
-			std::cout << "true\n";
 			return true;
 		}
 		return false;

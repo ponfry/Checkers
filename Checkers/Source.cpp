@@ -54,17 +54,21 @@ void ChangeWH(int w, int h)
 
 void mouse(int button, int state, int x, int y)
 {
+	coordinateMouseMove.Set(x, y);
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		coordinateMouseMove.Set(x, y);
 		game.CaptureCheckers();
-		
+		menu.CaptureItemMenu();
 	}
 
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
-		coordinateMouseMove.Set(x, y);
 		game.CheckPlayers();
+		if (flags_game.NewGame)
+		{
+			flags_game.NewGame = false;
+			game.Init();
+		}
 	}
 
 	if(flags_game.EndGame)
@@ -88,6 +92,11 @@ void init()
 	else
 	{
 		game.InitDraw();
+	}
+	if(flags_game.NewGame)
+	{
+		flags_game.NewGame = false;
+		game.Init();
 	}
 }
 

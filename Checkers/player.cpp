@@ -1,17 +1,18 @@
 ﻿#include "player.h"
 #include "CoordinateMouse.h"
 #include "StateChecker.h"
-#include <ostream>
 #include <iostream>
-#include <windows.h>
 #include "ControlMatrix.h"
 
 
 Player::Player()
 {
 	CountCheckers = 12;
-	checker = new CheckerWhite[CountCheckers+1];	
-	InitChecker();	
+	checker = new CheckerWhite[CountCheckers + 1];
+	flags = nullptr;
+	checkCoordf = nullptr;
+	indexSelected = 0;
+	//InitChecker();	
 }
 
 void Player::Draw()

@@ -22,6 +22,7 @@ Game::Game()
 
 void Game::Init()
 {
+	flags_game.Reset();
 	WhiteDrawing = Texture::Init(L"whiteChecker/checker.png");
 	WhiteSelecting = Texture::Init(L"whiteChecker/select.png");
 	WhiteLighting = Texture::Init(L"whiteChecker/lighting.png");
@@ -37,7 +38,15 @@ void Game::Init()
 	menuLighting = Texture::Init(L"menu/MenuP.png");	
 	menuDrawing = Texture::Init(L"menu/Menu.png");	
 
+	newGameDrawing = Texture::Init(L"menu/NewGame.png");
+	newGameLighting = Texture::Init(L"menu/NewGameP.png");
+
+	continueDrawing = Texture::Init(L"menu/Continue.png");
+	continueLighting = Texture::Init(L"menu/ContinueP.png");
+
+	
 	menu.SetState(drawing);
+	
 
 	ControlMatrix::Init();
 	flags_player_one.Enemy = black;
@@ -54,6 +63,7 @@ void Game::Init()
 	checkerBlack->SetCoordinates(0.6f, 0.3f);
 
 	checkerWhite->SetState(constant);
+	menu.Init();
 }
 
 void Game::InitDraw()

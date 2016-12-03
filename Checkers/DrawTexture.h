@@ -26,3 +26,9 @@ __declspec(selectany) DrawTexture *drawEnd;
 
 __declspec(selectany) DrawTexture *menuDrawing;
 __declspec(selectany) DrawTexture *menuLighting;	
+
+__declspec(selectany) DrawTexture *newGameDrawing;
+__declspec(selectany) DrawTexture *newGameLighting;
+
+__declspec(selectany) DrawTexture *continueDrawing;
+__declspec(selectany) DrawTexture *continueLighting;

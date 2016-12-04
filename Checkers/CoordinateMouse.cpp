@@ -53,20 +53,20 @@ CoordinateFloat* MyMouse::ConvertIntToFloat(CoordinateInt* coordinate)
 
 	if (X >= window_size.Weigth/2.0)
 	{
-		result->X = (X - window_size.Weigth / 2.0) / (window_size.Weigth / 2.0);
+		result->X = (X - window_size.Weigth / 2.0f) / (window_size.Weigth / 2.0f);
 	}
 	else
 	{
-		result->X = (-1) * (window_size.Weigth / 2.0 - X) / (window_size.Weigth / 2.0);
+		result->X = (-1) * (window_size.Weigth / 2.0f - X) / (window_size.Weigth / 2.0f);
 	}
 
 	if (Y >= window_size.Heigth / 2.0)
 	{
-		result->Y = (-1)*(Y - window_size.Heigth / 2.0) / (window_size.Heigth / 2.0);
+		result->Y = (-1)*(Y - window_size.Heigth / 2.0f) / (window_size.Heigth / 2.0f);
 	}
 	else
 	{
-		result->Y = (window_size.Heigth / 2.0 - Y) / (window_size.Heigth / 2.0);
+		result->Y = (window_size.Heigth / 2.0f - Y) / (window_size.Heigth / 2.0f);
 
 	}
 

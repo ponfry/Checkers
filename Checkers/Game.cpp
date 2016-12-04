@@ -23,6 +23,7 @@ Game::Game()
 void Game::Init()
 {
 	flags_game.Reset();
+
 	WhiteDrawing = Texture::Init(L"whiteChecker/checker.png");
 	WhiteSelecting = Texture::Init(L"whiteChecker/select.png");
 	WhiteLighting = Texture::Init(L"whiteChecker/lighting.png");
@@ -59,11 +60,26 @@ void Game::Init()
 	checkerWhite = new CheckerWhite();
 	checkerBlack = new CheckerBlack();
 
-	checkerWhite->SetCoordinates(-0.1f, 0.3f);
+	checkerWhite->SetCoordinates(0.1f, 0.3f);
 	checkerBlack->SetCoordinates(0.6f, 0.3f);
 
 	checkerWhite->SetState(constant);
 	menu.Init();
+	InitDraw();
+}
+
+void Game::Reset()
+{
+	delete chess_board;
+	delete playerOne;
+	delete playerTwo;
+
+	chess_board = new ChessBoard();
+	playerOne = new PlayerOne();
+	playerTwo = new PlayerTwo();
+	flags_game.Reset();
+	menu.Init();
+	InitDraw();
 }
 
 void Game::InitDraw()
@@ -126,7 +142,16 @@ void Game::InitDraw()
 
 void Game::DrawWhoMove()
 {
-	glViewport(window_size.Weigth - window_size.Heigth, 0, window_size.Heigth, window_size.Heigth);
+	if(window_size.Weigth < window_size.Heigth)
+	{
+		glViewport(window_size.Heigth - window_size.Weigth, 0,
+			window_size.Heigth, window_size.Heigth);
+	}
+	else
+	{
+		glViewport(window_size.Weigth - window_size.Heigth, 0, 
+			window_size.Heigth, window_size.Heigth);
+	}
 	
 	if (flags_game.FirstPlayerMove)
 	{
@@ -164,11 +189,11 @@ void Game::Redraw()
 		}
 		DrawWhoMove();
 
-		glutSwapBuffers();
 	}
 	else
 	{
 		Errors::Draw(endGame);
+		menu.DrawEndGame();
 	}
 }
 
@@ -186,10 +211,6 @@ void Game::ControlPassive()
 		}
 		Redraw();
 	
-	}
-	else
-	{
-		Errors::Draw(endGame);
 	}
 }
 

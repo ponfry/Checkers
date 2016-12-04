@@ -42,20 +42,6 @@ struct CoordinateFloat
 		return CheckQuad(coordinate->X, coordinate->Y);
 	}
 
-	bool CheckRectangle(float x, float y )
-	{
-		if (x < (X + 0.15f) && x >(X - 0.15f)
-			&& y < (Y + 0.0615f) && y >(Y - 0.0615f))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	bool CheckRectangle(CoordinateFloat* coordinate)
-	{
-		return CheckRectangle(coordinate->X, coordinate->Y);
-	}
 	bool operator ==(CoordinateFloat* coordinateone)
 	{
 		if(coordinateone->X == X && coordinateone->Y == Y)

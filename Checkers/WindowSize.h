@@ -28,7 +28,7 @@ struct WindowSize
 		Board = Weigth / 2.26;
 		Board2 = Board / 2.0;
 		Board2f = Board2;
-		IndentX = Board * 0.4;
+		IndentX = Board * 0.5;
 		IndentY = (Heigth - Board - 33) / 2.0;
 	}
 

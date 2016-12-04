@@ -11,6 +11,7 @@ class Game
 public:
 	Game();
 	void Init();
+	void Reset();
 	void InitDraw();
 
 	void DrawWhoMove();

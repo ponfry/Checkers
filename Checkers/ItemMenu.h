@@ -1,11 +1,11 @@
 ﻿#pragma once
-#include "CoordinateFloat.h"
+#include "CoordinateInt.h"
 #include "MenuState.h"
 #include "DrawTexture.h"
 
 struct ItemMenu
 {
-	CoordinateFloat* coordinate;
+	CoordinateInt* coordinate;
 	MenuState state;
 	DrawTexture *drawed;
 	DrawTexture *lighted;

@@ -18,6 +18,7 @@ void mouseActive(int x, int y)
 {
 	coordinateMouseMove.Set(x, y);
 	game.Redraw();
+	glutSwapBuffers();
 }	
 
 void mousePassive(int x, int y)
@@ -26,10 +27,20 @@ void mousePassive(int x, int y)
 	
 	menu.ControlPassive();
 	game.ControlPassive();
-	char title[20];
+
+	if (flags_game.EndGame)
+	{
+		Errors::Draw(endGame);
+		menu.DrawEndGame();
+	}
+	glutSwapBuffers();
+
+	
+	/*char title[20];
 	sprintf_s(title, "%dx%d", coordinateMousePassiveMove.X, coordinateMousePassiveMove.Y);
 
-	glutSetWindowTitle(title);
+	glutSetWindowTitle(title);*/
+	
 }
 
 void ChangeWH(int w, int h)
@@ -39,6 +50,7 @@ void ChangeWH(int w, int h)
 		if (((h - w / 2.26 - 33) / 2.0) > 1)
 		{
 			window_size.Set(w, h);
+			menu.SetNewCoordinate();
 		}
 		else
 		{
@@ -49,7 +61,9 @@ void ChangeWH(int w, int h)
 	{
 		window_size.Set(501, 301);
 		glutReshapeWindow(window_size.Weigth, window_size.Heigth);
+		menu.SetNewCoordinate();
 	}
+	
 }
 
 void mouse(int button, int state, int x, int y)
@@ -57,30 +71,43 @@ void mouse(int button, int state, int x, int y)
 	coordinateMouseMove.Set(x, y);
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		game.CaptureCheckers();
+		if(!flags_game.EndGame)
+		{
+			game.CaptureCheckers();
+		}
+		
 		menu.CaptureItemMenu();
 	}
 
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
-		game.CheckPlayers();
+		if (!flags_game.EndGame)
+		{
+			game.CheckPlayers();
+		}
 		if (flags_game.NewGame)
 		{
 			flags_game.NewGame = false;
-			game.Init();
+			game.Reset();
+		}
+		if (flags_game.Continue)
+		{
+			flags_game.Continue = false;
+			menu.SetState(drawing);
 		}
 	}
 
 	if(flags_game.EndGame)
 	{
 		Errors::Draw(endGame);
+		menu.DrawEndGame();
 	}
 	else
-	{
-		game.Redraw();
+	{		
 		menu.DrawGameMenu();
+		game.Redraw();
 	}
-	
+	glutSwapBuffers();
 }
 
 void init()
@@ -88,6 +115,7 @@ void init()
 	if (flags_game.EndGame)
 	{
 		Errors::Draw(endGame);
+		menu.DrawEndGame();
 	}
 	else
 	{

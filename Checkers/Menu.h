@@ -9,7 +9,8 @@ public:
 	bool CheckContactCoordinate();
 	void ControlPassive();
 	void CaptureItemMenu();
-	
+	void SetNewCoordinate();
+
 	void DrawBegin();
 	void DrawGameMenu();
 	void DrawEndGame();
@@ -18,7 +19,8 @@ public:
 	void Init();
 private:
 	
-	ItemMenu *beginMenu, *gameMenu;
+	ItemMenu *beginMenu, *gameMenu, *endMenu;
 	float X, Y, offset;
+	int Xi, Yi, offseti;
 };
 __declspec(selectany) Menu menu;

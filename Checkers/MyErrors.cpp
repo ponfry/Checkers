@@ -50,7 +50,11 @@ void Errors::Draw(TypeErrors type)
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
-	glutSwapBuffers();
-	if(type!= endGame)
+	
+	if (type != endGame)
+	{
+		glutSwapBuffers();
 		Sleep(1150);
+	}
+	
 }

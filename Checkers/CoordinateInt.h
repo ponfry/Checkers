@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "WindowSize.h"
 
 struct CoordinateInt
 {
@@ -21,6 +22,24 @@ struct CoordinateInt
 	{
 		X = x;
 		Y = y;
+	}
+
+	bool CheckRectangle(int x, int y)
+	{
+		int Xi = window_size.Weigth / 13;
+		int Yi = window_size.Heigth / 32.5 + 1;
+
+		if (x < (X + Xi) && x >(X - Xi)
+			&& y < (Y + Yi) && y >(Y - Yi))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	bool CheckRectangle(CoordinateInt* coordinate)
+	{
+		return CheckRectangle(coordinate->X, coordinate->Y);
 	}
 };
 

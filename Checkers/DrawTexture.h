@@ -32,3 +32,4 @@ __declspec(selectany) DrawTexture *newGameLighting;
 
 __declspec(selectany) DrawTexture *continueDrawing;
 __declspec(selectany) DrawTexture *continueLighting;
+__declspec(selectany) DrawTexture *board;

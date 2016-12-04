@@ -15,7 +15,7 @@ struct WindowSize
 		Weigth = 1300;
 		Heigth = 650;
 		IndentX = 230;
-		IndentY = 21;
+		IndentY = 37;
 		Board = 575;
 		Board2 = Board / 2.0f;
 		Board2f = Board2;
@@ -29,7 +29,7 @@ struct WindowSize
 		Board2 = Board / 2.0;
 		Board2f = Board2;
 		IndentX = Board * 0.5;
-		IndentY = (Heigth - Board - 33) / 2.0;
+		IndentY = (Heigth - Board) / 2.0;
 	}
 
 	bool CheckBoardHeigth(int weigth, int heigth)

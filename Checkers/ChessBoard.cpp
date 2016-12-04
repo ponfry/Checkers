@@ -9,8 +9,29 @@
 
 void ChessBoard::Draw() 
 {
-	glViewport(window_size.IndentX, window_size.IndentY,
-		window_size.Board, window_size.Board);
+	int x = window_size.Weigth / 50;
+	glViewport(window_size.IndentX - x, window_size.IndentY - x,
+		window_size.Board + 2 * x, window_size.Board + 2 * x);
+	x = x / 4;
+	Texture::LoadDraw(board);
+
+	glBegin(GL_TRIANGLE_STRIP);
+	glTexCoord2f(0, 1);
+	glVertex2f(-1.0f, -1.0f);
+
+	glTexCoord2f(0, 0);
+	glVertex2f(-1.0f, 1.0f);
+
+	glTexCoord2f(1, 1);
+	glVertex2f(1.0f, -1.0f);
+
+	glTexCoord2f(1, 0);
+	glVertex2f(1.0f, 1.0f);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+
+	glViewport(window_size.IndentX + x, window_size.IndentY + x,
+		window_size.Board - 2 * x, window_size.Board - 2 * x);
 
 	glColor3f(1, 1, 1);
 

@@ -45,6 +45,7 @@ void Game::Init()
 	continueDrawing = Texture::Init(L"menu/Continue.png");
 	continueLighting = Texture::Init(L"menu/ContinueP.png");
 
+	board = Texture::Init(L"texture/Board.jpg");
 	
 	menu.SetState(drawing);
 	
@@ -60,7 +61,7 @@ void Game::Init()
 	checkerWhite = new CheckerWhite();
 	checkerBlack = new CheckerBlack();
 
-	checkerWhite->SetCoordinates(0.1f, 0.3f);
+	checkerWhite->SetCoordinates(0.6f, -0.2f);
 	checkerBlack->SetCoordinates(0.6f, 0.3f);
 
 	checkerWhite->SetState(constant);

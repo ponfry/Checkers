@@ -47,7 +47,7 @@ void ChangeWH(int w, int h)
 {
 	if (w > 500 && h > 300)
 	{
-		if (((h - w / 2.26 - 33) / 2.0) > 1)
+		if (((h - w / 2.26 - 33) / 2.0) > 20)
 		{
 			window_size.Set(w, h);
 			menu.SetNewCoordinate();
